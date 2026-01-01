@@ -205,7 +205,7 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-2xl w-[700px] max-h-[80vh] overflow-hidden flex flex-col">
+      <div className="bg-white rounded-xl shadow-2xl w-[900px] max-h-[85vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="px-6 py-4 border-b border-pid-border">
           <div className="flex items-center justify-between">
@@ -244,9 +244,9 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
         </div>
 
         {/* Toolbar */}
-        <div className="px-6 py-3 border-b border-pid-border flex items-center gap-3">
+        <div className="px-6 py-3 border-b border-pid-border flex flex-wrap items-center gap-3">
           {/* Search */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-[200px]">
             <input
               type="text"
               value={searchQuery}
