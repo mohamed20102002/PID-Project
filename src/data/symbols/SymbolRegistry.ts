@@ -214,18 +214,9 @@ class SymbolRegistryClass {
       'CQ': 'CQ - Quality & Substance Analysis',
       'CS': 'CS - Speed, Revolutions & Acceleration',
       'CT': 'CT - Temperature',
-      // Legacy categories
-      valves: 'Valves',
-      pumps: 'Pumps',
-      vessels: 'Vessels & Tanks',
-      instruments: 'Instruments',
-      terminals: 'System Terminals',
-      'heat-exchangers': 'Heat Exchangers',
-      piping: 'Piping Components',
-      reactors: 'Reactors',
-      compressors: 'Compressors',
-      electrical: 'Electrical',
-      misc: 'Miscellaneous',
+      // Special categories
+      'terminals': 'System Terminals',
+      'corners': 'Pipe Corners & Bends',
     };
     return displayNames[category] || category;
   }
@@ -262,18 +253,9 @@ class SymbolRegistryClass {
       'CQ': '🔍',  // Quality
       'CS': '⏱',   // Speed
       'CT': '🌡',  // Temperature
-      // Legacy categories
-      valves: '⛭',
-      pumps: '⚙',
-      vessels: '⬡',
-      instruments: '◉',
-      terminals: '⬚',
-      'heat-exchangers': '≋',
-      piping: '┃',
-      reactors: '⬢',
-      compressors: '⚙',
-      electrical: '⚡',
-      misc: '◇',
+      // Special categories
+      'terminals': '⬚',  // System terminals
+      'corners': '⌐',    // Pipe corners
     };
     return icons[category] || '◇';
   }
@@ -323,18 +305,9 @@ export const CATEGORY_ORDER: SymbolCategory[] = [
   'BB', 'BN', 'BP', 'BQ', 'BR', 'BS',
   // C - Sensors
   'CE', 'CF', 'CJ', 'CL', 'CM', 'CP', 'CQ', 'CS', 'CT',
-  // Legacy categories (for backward compatibility)
-  'valves',
-  'pumps',
-  'vessels',
-  'instruments',
+  // Special categories
   'terminals',
-  'piping',
-  'heat-exchangers',
-  'reactors',
-  'compressors',
-  'electrical',
-  'misc',
+  'corners',
 ];
 
 // KKS Main Categories structure for hierarchical display

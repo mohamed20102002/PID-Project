@@ -8,7 +8,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Stage, Layer } from 'react-konva';
 import { SymbolDefinition, SymbolCategory } from '../../types/symbol.types';
-import { SymbolRegistry } from '../../data/symbols/SymbolRegistry';
+import { SymbolRegistry, KKS_HIERARCHY } from '../../data/symbols/SymbolRegistry';
 import { useCustomSymbolStore } from '../../store/customSymbolStore';
 import { SymbolEditor } from './SymbolEditor';
 import { VisualComponentDesigner } from './VisualComponentDesigner';
@@ -264,13 +264,19 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
             className="px-3 py-2 text-sm border border-gray-300 rounded-lg"
           >
             <option value="all">All Categories</option>
-            <option value="valves">Valves</option>
-            <option value="pumps">Pumps</option>
-            <option value="vessels">Vessels</option>
-            <option value="instruments">Instruments</option>
-            <option value="piping">Piping</option>
-            <option value="heat-exchangers">Heat Exchangers</option>
-            <option value="misc">Miscellaneous</option>
+            {KKS_HIERARCHY.map((mainCategory) => (
+              <optgroup key={mainCategory.code} label={`${mainCategory.code} - ${mainCategory.name}`}>
+                {mainCategory.subCategories.map((subCat) => (
+                  <option key={subCat} value={subCat}>
+                    {SymbolRegistry.getCategoryDisplayName(subCat)}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+            <optgroup label="Special Categories">
+              <option value="terminals">System Terminals</option>
+              <option value="corners">Pipe Corners & Bends</option>
+            </optgroup>
           </select>
 
           {/* Import/Export/Migrate */}

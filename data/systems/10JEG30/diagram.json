@@ -1073,6 +1073,107 @@
         "opacity": 1
       },
       "kks": "CMPHVESSYKL"
+    },
+    "CMPVYHTXVCK": {
+      "type": "terminals:system-terminal",
+      "systemKks": "10JEG30",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1540,
+        "y": 480
+      },
+      "rotation": 0,
+      "size": {
+        "width": 140,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "left",
+          "name": "Left",
+          "position": {
+            "x": 0.05,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "right",
+          "name": "Right",
+          "position": {
+            "x": 0.95,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "top",
+          "name": "Top",
+          "position": {
+            "x": 0.5,
+            "y": 0.15
+          },
+          "direction": "bidirectional",
+          "angle": 270,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "bottom",
+          "name": "Bottom",
+          "position": {
+            "x": 0.5,
+            "y": 0.85
+          },
+          "direction": "bidirectional",
+          "angle": 90,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPVYHTXVCK"
+    },
+    "CMP1P3ZUI2B": {
+      "type": "bff-1767309385681",
+      "systemKks": "10JEG30",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 900,
+        "y": 500
+      },
+      "rotation": 0,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMP1P3ZUI2B"
     }
   },
   "connections": {
@@ -1400,5 +1501,5 @@
     }
   },
   "createdAt": "2025-12-29T06:51:48.573Z",
-  "modifiedAt": "2026-01-01T23:18:11.699Z"
+  "modifiedAt": "2026-01-01T23:32:41.535Z"
 }

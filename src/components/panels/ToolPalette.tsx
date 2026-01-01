@@ -7,7 +7,7 @@
 
 import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { Stage, Layer } from 'react-konva';
-import { SymbolRegistry, CATEGORY_ORDER, KKS_HIERARCHY, KKSMainCategoryInfo } from '../../data/symbols/SymbolRegistry';
+import { SymbolRegistry, KKS_HIERARCHY, KKSMainCategoryInfo } from '../../data/symbols/SymbolRegistry';
 import { SymbolPreview } from '../symbols/base/BaseSymbol';
 import { SymbolDefinition, SymbolCategory } from '../../types/symbol.types';
 import { useUIStore } from '../../store/uiStore';
@@ -250,76 +250,6 @@ const MainCategorySection: React.FC<{
 };
 
 /**
- * Legacy Category Section Component (for backward compatibility)
- */
-const LegacyCategorySection: React.FC<{
-  category: SymbolCategory;
-  symbols: SymbolDefinition[];
-  isExpanded: boolean;
-  onToggle: () => void;
-  onSymbolDragStart: (symbol: SymbolDefinition, e: React.DragEvent) => void;
-  onSymbolClick: (symbol: SymbolDefinition) => void;
-  onSymbolEdit?: (symbol: SymbolDefinition) => void;
-}> = ({
-  category,
-  symbols,
-  isExpanded,
-  onToggle,
-  onSymbolDragStart,
-  onSymbolClick,
-  onSymbolEdit,
-}) => {
-  const displayName = SymbolRegistry.getCategoryDisplayName(category);
-  const icon = SymbolRegistry.getCategoryIcon(category);
-
-  return (
-    <div className="border-b border-gray-200 last:border-b-0">
-      {/* Category Header */}
-      <button
-        className="w-full px-3 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors"
-        onClick={onToggle}
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-lg">{icon}</span>
-          <span className="font-medium text-gray-700">{displayName}</span>
-          <span className="text-xs text-gray-500">({symbols.length})</span>
-        </div>
-        <svg
-          className={`w-4 h-4 text-gray-500 transition-transform ${
-            isExpanded ? 'rotate-180' : ''
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-
-      {/* Symbols Grid */}
-      {isExpanded && (
-        <div className="grid grid-cols-3 gap-1 p-2">
-          {symbols.map((symbol) => (
-            <SymbolItem
-              key={symbol.id}
-              symbol={symbol}
-              onDragStart={onSymbolDragStart}
-              onClick={onSymbolClick}
-              onEdit={onSymbolEdit}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-/**
  * Tool Palette Component
  */
 export const ToolPalette: React.FC<ToolPaletteProps> = ({ className = '', onEditSymbol }) => {
@@ -331,11 +261,6 @@ export const ToolPalette: React.FC<ToolPaletteProps> = ({ className = '', onEdit
   // State for expanded sub-categories (AA, AB, etc.)
   const [expandedSubCategories, setExpandedSubCategories] = useState<Set<SymbolCategory>>(
     new Set(['AP'] as SymbolCategory[])
-  );
-
-  // State for legacy categories (for backward compatibility)
-  const [expandedLegacyCategories, setExpandedLegacyCategories] = useState<Set<SymbolCategory>>(
-    new Set()
   );
 
   // Search state
@@ -379,19 +304,6 @@ export const ToolPalette: React.FC<ToolPaletteProps> = ({ className = '', onEdit
   // Toggle sub-category expansion (AA, AB, etc.)
   const toggleSubCategory = useCallback((category: SymbolCategory) => {
     setExpandedSubCategories((prev) => {
-      const next = new Set(prev);
-      if (next.has(category)) {
-        next.delete(category);
-      } else {
-        next.add(category);
-      }
-      return next;
-    });
-  }, []);
-
-  // Toggle legacy category expansion
-  const toggleLegacyCategory = useCallback((category: SymbolCategory) => {
-    setExpandedLegacyCategories((prev) => {
       const next = new Set(prev);
       if (next.has(category)) {
         next.delete(category);
@@ -569,19 +481,16 @@ export const ToolPalette: React.FC<ToolPaletteProps> = ({ className = '', onEdit
               />
             ))}
 
-            {/* Legacy Categories (for backward compatibility) */}
-            {(['valves', 'pumps', 'vessels', 'instruments', 'terminals', 'piping', 'heat-exchangers', 'reactors', 'compressors', 'electrical', 'misc'] as SymbolCategory[])
-              .filter((category) => {
-                const symbols = getSymbolsByCategory(category);
-                return symbols.length > 0;
-              })
+            {/* Special Categories (Terminals, Corners) */}
+            {(['terminals', 'corners'] as SymbolCategory[])
+              .filter((category) => getSymbolsByCategory(category).length > 0)
               .map((category) => (
-                <LegacyCategorySection
+                <SubCategorySection
                   key={category}
                   category={category}
                   symbols={getSymbolsByCategory(category)}
-                  isExpanded={expandedLegacyCategories.has(category)}
-                  onToggle={() => toggleLegacyCategory(category)}
+                  isExpanded={expandedSubCategories.has(category)}
+                  onToggle={() => toggleSubCategory(category)}
                   onSymbolDragStart={handleSymbolDragStart}
                   onSymbolClick={handleSymbolClick}
                   onSymbolEdit={handleSymbolEdit}

@@ -88,18 +88,9 @@ export type SymbolCategory =
   | 'CQ'  // Quality indicators (analyses, properties of substances)
   | 'CS'  // Speed, revolutions, frequency (mechanical), acceleration
   | 'CT'  // Temperature
-  // Legacy categories (for backward compatibility)
-  | 'valves'
-  | 'pumps'
-  | 'vessels'
-  | 'instruments'
-  | 'piping'
-  | 'terminals'
-  | 'heat-exchangers'
-  | 'reactors'
-  | 'compressors'
-  | 'electrical'
-  | 'misc';
+  // Special categories (outside KKS hierarchy)
+  | 'terminals'  // System terminals / cross-system connectors
+  | 'corners';   // Pipe corners and bends
 
 /**
  * Symbol standard

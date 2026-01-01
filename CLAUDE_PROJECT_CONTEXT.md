@@ -4,7 +4,7 @@
 
 ---
 
-## Last Updated: 2026-01-02 01:25 AM
+## Last Updated: 2026-01-02 02:15 AM
 
 ## Project Overview
 
@@ -137,6 +137,20 @@ Symbols can have a custom `centerPoint` property (relative 0-1 coordinates) that
 
 ## Recent Changes Log
 
+### 2026-01-02 02:15 AM - Remove Legacy Categories + Restore Special Categories
+**Files Modified:**
+- `src/types/symbol.types.ts` - Removed legacy categories, kept 'terminals' and 'corners' as special categories
+- `src/data/symbols/SymbolRegistry.ts` - Updated displayNames, icons for KKS + special categories
+- `src/components/panels/ToolPalette.tsx` - Removed LegacyCategorySection, added special categories section
+- `src/components/panels/SymbolLibraryManager.tsx` - Updated category filter with KKS + special categories
+- `src/components/panels/designer/PropertiesPanel.tsx` - Added special categories group to category dropdown
+
+**Changes:**
+- SymbolCategory type now only contains KKS codes (AA-CT) + 'terminals' + 'corners'
+- Tool palette shows A, B, C hierarchical categories plus special categories section
+- Special categories (terminals, corners) auto-set noKks=true (no KKS required)
+- Symbol library manager filter uses grouped KKS categories + special categories
+
 ### 2026-01-02 01:25 AM - KKS Names Enhancement
 **Files Modified:**
 - `src/types/kks.types.ts` - Fixed KKS_EQUIPMENT_TYPES with correct Sector 4 codes and descriptive names
@@ -202,9 +216,8 @@ Symbols can have a custom `centerPoint` property (relative 0-1 coordinates) that
 
 ## Known Issues / TODOs
 
-1. **Legacy symbols**: Old symbols with legacy categories (valves, pumps, etc.) still work but appear in separate section
-2. **Symbol migration**: Consider migrating existing symbols to KKS categories
-3. **Angle display**: Only shows for lines connected at endpoints, not for crossing lines
+1. **Angle display**: Only shows for lines connected at endpoints, not for crossing lines
+2. **GitHub Repository**: https://github.com/mohamed20102002/PID-Project
 
 ---
 

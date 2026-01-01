@@ -167,13 +167,27 @@ const GeneralTab: React.FC = () => {
         { value: 'CT', label: 'CT - Temperature', code: 'CT' },
       ],
     },
+    {
+      main: 'S',
+      label: 'Special Categories',
+      categories: [
+        { value: 'terminals', label: 'System Terminals', code: '' },
+        { value: 'corners', label: 'Pipe Corners & Bends', code: '' },
+      ],
+    },
   ];
 
   // Handle category change - also update KKS equipment code
   const handleCategoryChange = (value: SymbolCategory) => {
     setMetadata('category', value);
-    // Auto-set KKS equipment code based on category
-    setMetadata('kksEquipmentCode', value);
+    // Auto-set KKS equipment code based on category (only for KKS categories)
+    if (value !== 'terminals' && value !== 'corners') {
+      setMetadata('kksEquipmentCode', value);
+    } else {
+      // Special categories don't have KKS codes
+      setMetadata('kksEquipmentCode', '');
+      setMetadata('noKks', true);
+    }
   };
 
   const standards: Array<{ value: SymbolStandard; label: string }> = [
