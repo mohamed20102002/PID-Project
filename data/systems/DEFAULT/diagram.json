@@ -1,0 +1,33 @@
+{
+  "kks": "DIATDAJMUQN",
+  "name": "Untitled Diagram",
+  "version": "1.0.0",
+  "systemKks": "DEFAULT",
+  "metadata": {
+    "title": "Untitled Diagram",
+    "author": "User",
+    "revision": "A",
+    "tags": []
+  },
+  "settings": {
+    "gridSize": 20,
+    "gridEnabled": true,
+    "snapToGrid": true,
+    "snapTolerance": 10,
+    "canvasWidth": 3000,
+    "canvasHeight": 2000,
+    "backgroundColor": "#ffffff",
+    "defaultPipeStyle": {
+      "strokeColor": "#000000",
+      "strokeWidth": 2,
+      "lineType": "solid"
+    },
+    "showLabels": true,
+    "showPorts": false
+  },
+  "components": {},
+  "connections": {},
+  "buildings": {},
+  "createdAt": "2025-12-28T10:46:13.628Z",
+  "modifiedAt": "2025-12-28T23:43:57.609Z"
+}
