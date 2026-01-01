@@ -108,29 +108,94 @@ export const useCustomSymbolStore = create<CustomSymbolState & CustomSymbolActio
     immer((set, get) => ({
       ...initialState,
 
-      // Initialize default symbols from SymbolRegistry on first load
+      // Initialize default symbols (essential symbols like pipe corner)
       initializeDefaultSymbols: () => {
-        const hasInitialized = localStorage.getItem('flowmark_symbols_initialized');
+        // Default Pipe Corner symbol - essential for pipe routing
+        const pipeCorner: SymbolDefinition = {
+          id: 'piping:corner',
+          category: 'corners',
+          name: 'pipeCorner',
+          displayName: 'Pipe Corner',
+          description: 'Routing waypoint for pipe direction changes',
+          standard: 'ISA',
+          kksEquipmentCode: '',
+          noKks: true,  // Corners don't need KKS - auto-generate simple ID
 
-        if (!hasInitialized) {
-          // Import SymbolRegistry dynamically to load all built-in symbols
-          import('../data/symbols/SymbolRegistry').then(({ SymbolRegistry }) => {
-            const allSymbols = SymbolRegistry.getAllSymbols();
+          defaultSize: { width: 12, height: 12 },
+          minSize: { width: 8, height: 8 },
+          maxSize: { width: 20, height: 20 },
+          resizable: false,
+          aspectRatioLocked: true,
 
-            set((state) => {
-              allSymbols.forEach((symbol) => {
-                // Only add if doesn't exist
-                if (!state.customSymbols[symbol.id]) {
-                  state.customSymbols[symbol.id] = symbol;
-                }
-              });
-            });
+          rotatable: false,
+          rotationSteps: [0],
+          freeRotation: false,
 
-            // Mark as initialized
-            localStorage.setItem('flowmark_symbols_initialized', 'true');
-            console.log('Initialized symbol library with', allSymbols.length, 'default symbols');
-          });
-        }
+          paths: [
+            // Small filled circle
+            {
+              type: 'circle',
+              data: { cx: 0.5, cy: 0.5, r: 0.4 },
+              style: { stroke: 'inherit', strokeWidth: 2, fill: 'inherit' },
+            },
+          ],
+
+          ports: [
+            {
+              id: 'port1',
+              name: 'Port 1',
+              relativePosition: { x: 0, y: 0.5 },
+              direction: 'bidirectional',
+              defaultAngle: 180,
+              allowedConnections: ['pipe'],
+            },
+            {
+              id: 'port2',
+              name: 'Port 2',
+              relativePosition: { x: 1, y: 0.5 },
+              direction: 'bidirectional',
+              defaultAngle: 0,
+              allowedConnections: ['pipe'],
+            },
+            {
+              id: 'port3',
+              name: 'Port 3',
+              relativePosition: { x: 0.5, y: 0 },
+              direction: 'bidirectional',
+              defaultAngle: 270,
+              allowedConnections: ['pipe'],
+            },
+            {
+              id: 'port4',
+              name: 'Port 4',
+              relativePosition: { x: 0.5, y: 1 },
+              direction: 'bidirectional',
+              defaultAngle: 90,
+              allowedConnections: ['pipe'],
+            },
+          ],
+
+          labels: [],
+
+          propertySchema: {
+            required: [],
+            properties: {
+              description: {
+                type: 'string',
+                label: 'Description',
+                placeholder: 'Corner point description',
+              },
+            },
+          },
+        };
+
+        // Add pipe corner if it doesn't exist
+        set((state) => {
+          if (!state.customSymbols['piping:corner']) {
+            state.customSymbols['piping:corner'] = pipeCorner;
+            console.log('Added default Pipe Corner symbol');
+          }
+        });
       },
 
       addCustomSymbol: (symbol) => {
