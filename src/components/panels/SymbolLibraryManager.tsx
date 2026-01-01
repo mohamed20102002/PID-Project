@@ -42,6 +42,7 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
     importSymbols,
     exportSymbols,
     migrateAllSymbols,
+    cleanupLegacySymbols,
   } = useCustomSymbolStore();
 
   // Get all symbols based on tab and filters (all symbols are now in customSymbols)
@@ -180,6 +181,14 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
     }
   }, [migrateAllSymbols]);
 
+  // Handle cleanup of legacy symbols
+  const handleCleanupLegacy = useCallback(() => {
+    if (confirm('This will permanently delete all symbols with legacy categories (valves, pumps, vessels, etc.).\nOnly KKS-categorized symbols (AA-CT) and special categories (terminals, corners) will be kept.\n\nThis cannot be undone. Continue?')) {
+      const result = cleanupLegacySymbols();
+      alert(`Cleanup complete!\n${result.removed} legacy symbols removed.`);
+    }
+  }, [cleanupLegacySymbols]);
+
   if (!isOpen) return null;
 
   // Show symbol editor if editing (all symbols use Visual Component Designer now)
@@ -307,6 +316,16 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
               <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" />
             </svg>
             Fix Old Symbols
+          </button>
+          <button
+            className="px-3 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg flex items-center gap-1"
+            onClick={handleCleanupLegacy}
+            title="Remove symbols with legacy categories (valves, pumps, etc.)"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+            </svg>
+            Cleanup Legacy
           </button>
 
           <input

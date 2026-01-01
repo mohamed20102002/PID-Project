@@ -4,7 +4,7 @@
 
 ---
 
-## Last Updated: 2026-01-02 02:15 AM
+## Last Updated: 2026-01-02 02:30 AM
 
 ## Project Overview
 
@@ -137,19 +137,25 @@ Symbols can have a custom `centerPoint` property (relative 0-1 coordinates) that
 
 ## Recent Changes Log
 
-### 2026-01-02 02:15 AM - Remove Legacy Categories + Restore Special Categories
+### 2026-01-02 02:30 AM - Complete Legacy Cleanup
 **Files Modified:**
 - `src/types/symbol.types.ts` - Removed legacy categories, kept 'terminals' and 'corners' as special categories
-- `src/data/symbols/SymbolRegistry.ts` - Updated displayNames, icons for KKS + special categories
+- `src/data/symbols/SymbolRegistry.ts` - Removed built-in symbol imports, only KKS + special categories
+- `src/data/symbols/*.ts` - DELETED: valves.ts, pumps.ts, vessels.ts, instruments.ts, piping.ts, terminals.ts
 - `src/components/panels/ToolPalette.tsx` - Removed LegacyCategorySection, added special categories section
-- `src/components/panels/SymbolLibraryManager.tsx` - Updated category filter with KKS + special categories
+- `src/components/panels/SymbolLibraryManager.tsx` - Added "Cleanup Legacy" button and category filter
 - `src/components/panels/designer/PropertiesPanel.tsx` - Added special categories group to category dropdown
+- `src/store/customSymbolStore.ts` - Added `cleanupLegacySymbols()` function to remove invalid symbols
 
 **Changes:**
 - SymbolCategory type now only contains KKS codes (AA-CT) + 'terminals' + 'corners'
+- All built-in symbol files deleted - symbols now only come from customSymbolStore
+- Added "Cleanup Legacy" button in Symbol Library to remove symbols with old categories
 - Tool palette shows A, B, C hierarchical categories plus special categories section
 - Special categories (terminals, corners) auto-set noKks=true (no KKS required)
-- Symbol library manager filter uses grouped KKS categories + special categories
+
+**User Action Required:**
+- Click "Cleanup Legacy" button in Symbol Library to remove old symbols from localStorage
 
 ### 2026-01-02 01:25 AM - KKS Names Enhancement
 **Files Modified:**

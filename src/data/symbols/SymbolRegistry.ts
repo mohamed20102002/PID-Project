@@ -6,15 +6,12 @@
  */
 
 import { SymbolDefinition, SymbolCategory } from '../../types/symbol.types';
-import { valveSymbols } from './valves';
-import { pumpSymbols } from './pumps';
-import { vesselSymbols } from './vessels';
-import { instrumentSymbols } from './instruments';
-import { pipingSymbols } from './piping';
-import { terminalSymbols } from './terminals';
 
 /**
  * Symbol Registry class for managing all P&ID symbols
+ *
+ * NOTE: Built-in symbols have been removed. All symbols are now managed
+ * through the customSymbolStore (unified symbol storage).
  */
 class SymbolRegistryClass {
   private symbols: Map<string, SymbolDefinition> = new Map();
@@ -22,42 +19,7 @@ class SymbolRegistryClass {
   private customSymbols: Map<string, SymbolDefinition> = new Map();
 
   constructor() {
-    this.initializeSymbols();
-  }
-
-  /**
-   * Initialize the registry with all built-in symbols
-   */
-  private initializeSymbols(): void {
-    // Register valve symbols
-    Object.values(valveSymbols).forEach((symbol) => {
-      this.registerSymbol(symbol);
-    });
-
-    // Register pump symbols
-    Object.values(pumpSymbols).forEach((symbol) => {
-      this.registerSymbol(symbol);
-    });
-
-    // Register vessel symbols
-    Object.values(vesselSymbols).forEach((symbol) => {
-      this.registerSymbol(symbol);
-    });
-
-    // Register instrument symbols
-    Object.values(instrumentSymbols).forEach((symbol) => {
-      this.registerSymbol(symbol);
-    });
-
-    // Register piping symbols
-    Object.values(pipingSymbols).forEach((symbol) => {
-      this.registerSymbol(symbol);
-    });
-
-    // Register terminal symbols (cross-system connectors)
-    Object.values(terminalSymbols).forEach((symbol) => {
-      this.registerSymbol(symbol);
-    });
+    // No built-in symbols - all symbols come from customSymbolStore
   }
 
   /**

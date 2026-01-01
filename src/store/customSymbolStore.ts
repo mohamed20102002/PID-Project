@@ -76,6 +76,9 @@ interface CustomSymbolActions {
 
   /** Migrate all symbols to new coordinate system */
   migrateAllSymbols: () => { migrated: number; failed: number };
+
+  /** Remove symbols with legacy categories (not in KKS or special categories) */
+  cleanupLegacySymbols: () => { removed: number };
 }
 
 // ============================================================================
@@ -442,6 +445,38 @@ export const useCustomSymbolStore = create<CustomSymbolState & CustomSymbolActio
 
         console.log(`Migration complete: ${migrated} migrated, ${failed} failed`);
         return { migrated, failed };
+      },
+
+      // Remove symbols with legacy categories (not in KKS or special categories)
+      cleanupLegacySymbols: () => {
+        const validCategories: SymbolCategory[] = [
+          // A - Aggregates
+          'AA', 'AB', 'AC', 'AG', 'AH', 'AM', 'AN', 'AP', 'AT',
+          // B - Devices
+          'BB', 'BN', 'BP', 'BQ', 'BR', 'BS',
+          // C - Sensors
+          'CE', 'CF', 'CJ', 'CL', 'CM', 'CP', 'CQ', 'CS', 'CT',
+          // Special categories
+          'terminals', 'corners',
+        ];
+
+        const { customSymbols } = get();
+        let removed = 0;
+
+        Object.entries(customSymbols).forEach(([symbolId, symbol]) => {
+          if (!validCategories.includes(symbol.category)) {
+            console.log(`Removing symbol with legacy category: ${symbolId} (${symbol.category})`);
+            set((state) => {
+              delete state.customSymbols[symbolId];
+              state.favorites = state.favorites.filter((f) => f !== symbolId);
+              state.recentlyUsed = state.recentlyUsed.filter((r) => r !== symbolId);
+            });
+            removed++;
+          }
+        });
+
+        console.log(`Cleanup complete: ${removed} legacy symbols removed`);
+        return { removed };
       },
     })),
     {
