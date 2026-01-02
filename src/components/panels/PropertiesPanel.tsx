@@ -341,7 +341,7 @@ const ComponentInfo: React.FC<{
         </div>
         <div>
           <span className="text-gray-400">Type:</span>
-          <span className="ml-1">{component.type.split(':')[1] || component.type}</span>
+          <span className="ml-1">{symbolName}</span>
         </div>
       </div>
     </div>
