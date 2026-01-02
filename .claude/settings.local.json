@@ -27,7 +27,12 @@
       "Bash(git push)",
       "Bash(npx vite)",
       "Bash(taskkill:*)",
-      "Bash(cmd //c \"taskkill /PID 11000 /F\")"
+      "Bash(cmd //c \"taskkill /PID 11000 /F\")",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git rebase:*)",
+      "Bash(git stash:*)"
     ]
   }
 }
