@@ -285,6 +285,8 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
             <optgroup label="Special Categories">
               <option value="terminals">System Terminals</option>
               <option value="corners">Pipe Corners & Bends</option>
+              <option value="electrical">Electrical Components</option>
+              <option value="additional">Additional Components</option>
             </optgroup>
           </select>
 

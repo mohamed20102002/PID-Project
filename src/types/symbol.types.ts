@@ -89,8 +89,10 @@ export type SymbolCategory =
   | 'CS'  // Speed, revolutions, frequency (mechanical), acceleration
   | 'CT'  // Temperature
   // Special categories (outside KKS hierarchy)
-  | 'terminals'  // System terminals / cross-system connectors
-  | 'corners';   // Pipe corners and bends
+  | 'terminals'   // System terminals / cross-system connectors
+  | 'corners'     // Pipe corners and bends
+  | 'electrical'  // Electrical components
+  | 'additional'; // Additional/miscellaneous components
 
 /**
  * Symbol standard

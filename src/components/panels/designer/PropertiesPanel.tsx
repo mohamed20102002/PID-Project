@@ -173,6 +173,8 @@ const GeneralTab: React.FC = () => {
       categories: [
         { value: 'terminals', label: 'System Terminals', code: '' },
         { value: 'corners', label: 'Pipe Corners & Bends', code: '' },
+        { value: 'electrical', label: 'Electrical Components', code: '' },
+        { value: 'additional', label: 'Additional Components', code: '' },
       ],
     },
   ];
@@ -180,8 +182,9 @@ const GeneralTab: React.FC = () => {
   // Handle category change - also update KKS equipment code
   const handleCategoryChange = (value: SymbolCategory) => {
     setMetadata('category', value);
-    // Auto-set KKS equipment code based on category (only for KKS categories)
-    if (value !== 'terminals' && value !== 'corners') {
+    // Special categories don't have KKS codes
+    const specialCategories: SymbolCategory[] = ['terminals', 'corners', 'electrical', 'additional'];
+    if (!specialCategories.includes(value)) {
       setMetadata('kksEquipmentCode', value);
     } else {
       // Special categories don't have KKS codes

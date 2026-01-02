@@ -481,8 +481,8 @@ export const ToolPalette: React.FC<ToolPaletteProps> = ({ className = '', onEdit
               />
             ))}
 
-            {/* Special Categories (Terminals, Corners) */}
-            {(['terminals', 'corners'] as SymbolCategory[])
+            {/* Special Categories (Terminals, Corners, Electrical, Additional) */}
+            {(['terminals', 'corners', 'electrical', 'additional'] as SymbolCategory[])
               .filter((category) => getSymbolsByCategory(category).length > 0)
               .map((category) => (
                 <SubCategorySection

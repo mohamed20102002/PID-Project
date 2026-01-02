@@ -179,6 +179,8 @@ class SymbolRegistryClass {
       // Special categories
       'terminals': 'System Terminals',
       'corners': 'Pipe Corners & Bends',
+      'electrical': 'Electrical Components',
+      'additional': 'Additional Components',
     };
     return displayNames[category] || category;
   }
@@ -218,6 +220,8 @@ class SymbolRegistryClass {
       // Special categories
       'terminals': '⬚',  // System terminals
       'corners': '⌐',    // Pipe corners
+      'electrical': '⚡', // Electrical components
+      'additional': '➕', // Additional components
     };
     return icons[category] || '◇';
   }
@@ -270,6 +274,8 @@ export const CATEGORY_ORDER: SymbolCategory[] = [
   // Special categories
   'terminals',
   'corners',
+  'electrical',
+  'additional',
 ];
 
 // KKS Main Categories structure for hierarchical display
