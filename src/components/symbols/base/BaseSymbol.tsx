@@ -385,6 +385,7 @@ const renderLabel = (
 
   const fontSize = label.style?.fontSize || 10;
   const fontWeight = label.style?.fontWeight || 'normal';
+  const rotation = label.rotation || 0;
 
   // Calculate offset based on anchor
   let offsetX = 0;
@@ -392,6 +393,28 @@ const renderLabel = (
     offsetX = -text.length * fontSize * 0.3; // Approximate center
   } else if (label.anchor === 'end') {
     offsetX = -text.length * fontSize * 0.6;
+  }
+
+  // If there's rotation, wrap in a Group to rotate around the label's position
+  if (rotation !== 0) {
+    return (
+      <Group
+        key={`label-group-${label.id}-${index}`}
+        x={x}
+        y={y}
+        rotation={rotation}
+      >
+        <Text
+          x={offsetX}
+          y={-fontSize / 2}
+          text={text}
+          fontSize={fontSize}
+          fontStyle={fontWeight === 'bold' ? 'bold' : 'normal'}
+          fill={label.style?.color || COLORS.labelColor}
+          align={label.anchor || 'start'}
+        />
+      </Group>
+    );
   }
 
   return (

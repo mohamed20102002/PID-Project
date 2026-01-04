@@ -529,7 +529,8 @@ export const DesignerCanvas: React.FC<DesignerCanvasProps> = ({
     } else if (activeTool === 'port') {
       // Add port immediately
       const relativePos = pixelToRelative(pos, designAreaOffset);
-      const portId = `port-${Date.now()}`;
+      // Generate unique port ID with timestamp and random component
+      const portId = `port-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       addPort({
         id: portId,
         name: `port${ports.length + 1}`,
@@ -541,7 +542,8 @@ export const DesignerCanvas: React.FC<DesignerCanvasProps> = ({
     } else if (activeTool === 'label') {
       // Add label immediately
       const relativePos = pixelToRelative(pos, designAreaOffset);
-      const labelId = `label-${Date.now()}`;
+      // Generate unique label ID with timestamp and random component
+      const labelId = `label-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       addLabel({
         id: labelId,
         relativePosition: relativePos,

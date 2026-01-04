@@ -569,53 +569,86 @@ const PathsTab: React.FC = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Stroke</label>
+          {/* Stroke Color */}
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">Stroke Color</label>
+            <div className="flex gap-2">
               <input
                 type="color"
                 value={path.style.stroke === 'inherit' ? '#000000' : path.style.stroke}
                 onChange={(e) => updatePath(index, { style: { ...path.style, stroke: e.target.value } })}
-                className="w-full h-8 rounded border border-gray-300 cursor-pointer"
+                className="h-8 w-12 rounded border border-gray-300 cursor-pointer"
               />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Width</label>
               <input
-                type="number"
-                value={path.style.strokeWidth || 2}
-                onChange={(e) => updatePath(index, { style: { ...path.style, strokeWidth: Number(e.target.value) } })}
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-                min={1}
-                max={10}
+                type="text"
+                value={path.style.stroke === 'inherit' ? '#000000' : path.style.stroke}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^#[0-9A-Fa-f]{0,6}$/.test(value)) {
+                    updatePath(index, { style: { ...path.style, stroke: value } });
+                  }
+                }}
+                placeholder="#000000"
+                className="flex-1 px-2 py-1 text-xs font-mono border border-gray-300 rounded uppercase"
+                maxLength={7}
               />
             </div>
           </div>
 
+          {/* Stroke Width */}
+          <div className="mt-2">
+            <label className="block text-xs text-gray-600 mb-1">Stroke Width</label>
+            <input
+              type="number"
+              value={path.style.strokeWidth || 2}
+              onChange={(e) => updatePath(index, { style: { ...path.style, strokeWidth: Number(e.target.value) } })}
+              className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              min={1}
+              max={10}
+            />
+          </div>
+
+          {/* Fill Color (for filled shapes) */}
           {(path.type === 'rect' || path.type === 'circle' || path.type === 'polygon') && (
             <div className="mt-2">
-              <label className="block text-xs text-gray-600 mb-1">Fill</label>
-              <div className="flex items-center gap-2">
+              <label className="block text-xs text-gray-600 mb-1">Fill Color</label>
+              <div className="flex gap-2 mb-2">
                 <input
                   type="color"
                   value={path.style.fill === 'inherit' || path.style.fill === 'transparent' ? '#ffffff' : path.style.fill}
                   onChange={(e) => updatePath(index, { style: { ...path.style, fill: e.target.value } })}
-                  className="h-8 w-16 rounded border border-gray-300 cursor-pointer"
+                  className="h-8 w-12 rounded border border-gray-300 cursor-pointer"
+                  disabled={path.style.fill === 'transparent'}
                 />
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    updatePath(index, { style: { ...path.style, fill: 'transparent' } });
+                <input
+                  type="text"
+                  value={path.style.fill === 'transparent' ? '' : (path.style.fill === 'inherit' ? '#ffffff' : path.style.fill)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^#[0-9A-Fa-f]{0,6}$/.test(value)) {
+                      updatePath(index, { style: { ...path.style, fill: value } });
+                    }
                   }}
-                  className={`px-2 py-1 text-xs rounded border ${
-                    path.style.fill === 'transparent'
-                      ? 'bg-gray-200 border-gray-400'
-                      : 'border-gray-300 hover:bg-gray-100'
-                  }`}
-                >
-                  Transparent
-                </button>
+                  placeholder={path.style.fill === 'transparent' ? 'Transparent' : '#ffffff'}
+                  className="flex-1 px-2 py-1 text-xs font-mono border border-gray-300 rounded uppercase"
+                  maxLength={7}
+                  disabled={path.style.fill === 'transparent'}
+                />
               </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const newFill = path.style.fill === 'transparent' ? '#ffffff' : 'transparent';
+                  updatePath(index, { style: { ...path.style, fill: newFill } });
+                }}
+                className={`w-full px-2 py-1 text-xs rounded border transition-colors ${
+                  path.style.fill === 'transparent'
+                    ? 'bg-gray-200 border-gray-400 text-gray-700'
+                    : 'border-gray-300 hover:bg-gray-100 text-gray-600'
+                }`}
+              >
+                {path.style.fill === 'transparent' ? 'Set Fill Color' : 'Make Transparent'}
+              </button>
             </div>
           )}
         </div>
