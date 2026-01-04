@@ -1,0 +1,463 @@
+{
+  "kks": "DIA-JBWBXKY",
+  "name": "Diagram - 10JNB50",
+  "version": "1.0.0",
+  "systemKks": "10JNB50",
+  "metadata": {
+    "title": "Diagram - 10JNB50",
+    "author": "User",
+    "revision": "A",
+    "tags": []
+  },
+  "settings": {
+    "gridSize": 20,
+    "gridEnabled": true,
+    "snapToGrid": true,
+    "snapTolerance": 10,
+    "canvasWidth": 3000,
+    "canvasHeight": 2000,
+    "backgroundColor": "#ffffff",
+    "defaultPipeStyle": {
+      "strokeColor": "#000000",
+      "strokeWidth": 2,
+      "lineType": "solid"
+    },
+    "showLabels": true,
+    "showPorts": false
+  },
+  "components": {
+    "111": {
+      "type": "terminals:system-terminal",
+      "systemKks": "10JNB50",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 520,
+        "y": 320
+      },
+      "rotation": 270,
+      "size": {
+        "width": 140,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "left",
+          "name": "Left",
+          "position": {
+            "x": 0.05,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "right",
+          "name": "Right",
+          "position": {
+            "x": 0.95,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "top",
+          "name": "Top",
+          "position": {
+            "x": 0.5,
+            "y": 0.15
+          },
+          "direction": "bidirectional",
+          "angle": 270,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "bottom",
+          "name": "Bottom",
+          "position": {
+            "x": 0.5,
+            "y": 0.85
+          },
+          "direction": "bidirectional",
+          "angle": 90,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        }
+      ],
+      "properties": {
+        "rightPortDirection": "none",
+        "leftPortDirection": "in"
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "111"
+    },
+    "CMPVXYEK8IX": {
+      "type": "terminals:system-terminal",
+      "systemKks": "10JNB50",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 340,
+        "y": 740
+      },
+      "rotation": 0,
+      "size": {
+        "width": 140,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "left",
+          "name": "Left",
+          "position": {
+            "x": 0.05,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "right",
+          "name": "Right",
+          "position": {
+            "x": 0.95,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "top",
+          "name": "Top",
+          "position": {
+            "x": 0.5,
+            "y": 0.15
+          },
+          "direction": "bidirectional",
+          "angle": 270,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "bottom",
+          "name": "Bottom",
+          "position": {
+            "x": 0.5,
+            "y": 0.85
+          },
+          "direction": "bidirectional",
+          "angle": 90,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        }
+      ],
+      "properties": {
+        "topPortDirection": "none",
+        "rightPortDirection": "in"
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPVXYEK8IX"
+    },
+    "CMP1ZKNVDXD": {
+      "type": "valve:check",
+      "systemKks": "10JNB50",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 520,
+        "y": 500
+      },
+      "rotation": 270,
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "inlet",
+          "name": "Inlet",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "in",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "outlet",
+          "name": "Outlet",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "out",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMP1ZKNVDXD"
+    },
+    "CMP_9HHYHRQ": {
+      "type": "valve:check",
+      "systemKks": "10JNB50",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 520,
+        "y": 620
+      },
+      "rotation": 270,
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "inlet",
+          "name": "Inlet",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "in",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionId": "HUT5jsRyd028C5quupZmk"
+        },
+        {
+          "id": "outlet",
+          "name": "Outlet",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "out",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMP_9HHYHRQ"
+    },
+    "CMPEORLEP2N": {
+      "type": "piping:corner",
+      "systemKks": "10JNB50",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 520,
+        "y": 740
+      },
+      "rotation": 0,
+      "size": {
+        "width": 12,
+        "height": 12
+      },
+      "ports": [
+        {
+          "id": "port1",
+          "name": "Port 1",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port2",
+          "name": "Port 2",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionId": "x3H6f5s3LERuiBmzhlcA1"
+        },
+        {
+          "id": "port3",
+          "name": "Port 3",
+          "position": {
+            "x": 0.5,
+            "y": 0
+          },
+          "direction": "bidirectional",
+          "angle": 270,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port4",
+          "name": "Port 4",
+          "position": {
+            "x": 0.5,
+            "y": 1
+          },
+          "direction": "bidirectional",
+          "angle": 90,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPEORLEP2N"
+    },
+    "CMP4GRARQB0": {
+      "type": "valve:shut-off",
+      "systemKks": "10JNB50",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 680,
+        "y": 320
+      },
+      "rotation": 0,
+      "size": {
+        "width": 70,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "left",
+          "name": "Left",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "right",
+          "name": "Right",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {
+        "size": ""
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMP4GRARQB0"
+    }
+  },
+  "connections": {},
+  "buildings": {
+    "BLD2L-BMUA9": {
+      "fillColor": "rgba(248, 215, 218, 0.6)",
+      "strokeColor": "#64748b",
+      "strokeWidth": 1,
+      "labelVisible": true,
+      "name": "10UMA",
+      "polygon": [
+        {
+          "x": 1080,
+          "y": 200
+        },
+        {
+          "x": 120,
+          "y": 200
+        },
+        {
+          "x": 120,
+          "y": 1000
+        },
+        {
+          "x": 1080,
+          "y": 1000
+        }
+      ],
+      "labelPosition": {
+        "x": 190.96800308100268,
+        "y": 240.7515027060122
+      },
+      "containedItems": [],
+      "locked": false,
+      "visible": true,
+      "zIndex": 0,
+      "id": "BLD2L-BMUA9",
+      "strokeDash": [
+        5,
+        5
+      ]
+    }
+  },
+  "createdAt": "2025-12-29T12:48:22.397Z",
+  "modifiedAt": "2025-12-30T17:44:45.549Z"
+}
