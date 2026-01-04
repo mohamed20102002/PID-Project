@@ -1,0 +1,112 @@
+{
+  "kks": "DNPP",
+  "name": "El Dabaa Nuclear Power Plant",
+  "description": "Default power plant",
+  "units": {
+    "1": {
+      "kks": "1",
+      "name": "U1",
+      "systems": {
+        "JEG30": {
+          "kks": "JEG30",
+          "name": "EMERGENCY PRESSURE DISCHARGE SYSTEM",
+          "description": "Safety System for Depressurizing of the PRZ",
+          "unitKks": "1",
+          "code": {
+            "mainGroup": "J",
+            "subGroup1": "E",
+            "subGroup2": "G",
+            "number": "30"
+          },
+          "diagrams": [],
+          "safetyClass": "SC1",
+          "seismicClass": "S1",
+          "systemTypes": [
+            "SS"
+          ],
+          "connectedSystems": [
+            {
+              "targetSystemKks": "10JET"
+            },
+            {
+              "targetSystemKks": "10JEF"
+            }
+          ]
+        }
+      },
+      "buildings": {
+        "10UJA": {
+          "kks": "10UJA",
+          "name": "Reactor Building",
+          "abbreviation": "10UJA",
+          "floors": [
+            {
+              "id": "L0",
+              "name": "Level 0",
+              "elevation": 0
+            }
+          ]
+        },
+        "10UKA": {
+          "kks": "10UKA",
+          "name": "Auxiliary Building",
+          "abbreviation": "10UKA",
+          "floors": [
+            {
+              "id": "L0",
+              "name": "Level 0",
+              "elevation": 0
+            }
+          ]
+        },
+        "10UMA": {
+          "kks": "10UMA",
+          "name": "Turbine Building",
+          "abbreviation": "10UMA",
+          "floors": [
+            {
+              "id": "L0",
+              "name": "Level 0",
+              "elevation": 0
+            }
+          ]
+        }
+      }
+    },
+    "2": {
+      "kks": "2",
+      "name": "U2",
+      "description": "",
+      "systems": {},
+      "buildings": {
+        "20UJA": {
+          "kks": "20UJA",
+          "name": "Reactor Building",
+          "abbreviation": "20UJA",
+          "floors": [
+            {
+              "id": "L0",
+              "name": "Level 0",
+              "elevation": 0
+            }
+          ]
+        },
+        "20UMA": {
+          "kks": "20UMA",
+          "name": "Turbine Building",
+          "abbreviation": "20UMA",
+          "floors": [
+            {
+              "id": "L0",
+              "name": "Level 0",
+              "elevation": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "buildings": {},
+  "createdAt": "2025-12-28T10:52:12.175Z",
+  "modifiedAt": "2026-01-03T16:49:48.716Z"
+}

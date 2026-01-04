@@ -1,0 +1,454 @@
+{
+  "kks": "DIA3USYGXWS",
+  "name": "Diagram - JEG30",
+  "version": "1.0.0",
+  "systemKks": "JEG30",
+  "metadata": {
+    "title": "Diagram - JEG30",
+    "author": "User",
+    "revision": "A",
+    "tags": []
+  },
+  "settings": {
+    "gridSize": 20,
+    "gridEnabled": true,
+    "snapToGrid": true,
+    "snapTolerance": 10,
+    "canvasWidth": 3000,
+    "canvasHeight": 2000,
+    "backgroundColor": "#ffffff",
+    "defaultPipeStyle": {
+      "strokeColor": "#000000",
+      "strokeWidth": 2,
+      "lineType": "solid"
+    },
+    "showLabels": true,
+    "showPorts": false
+  },
+  "components": {
+    "CMPBPHCIIKB": {
+      "type": "Tank-1767459062321-copy-1767513128202",
+      "systemKks": "JEG30",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1340,
+        "y": 740
+      },
+      "rotation": 0,
+      "size": {
+        "width": 600,
+        "height": 600
+      },
+      "ports": [
+        {
+          "id": "port-1767515880340",
+          "name": "port1",
+          "position": {
+            "x": 0.4382122564417432,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515881727",
+          "name": "port2",
+          "position": {
+            "x": 0.5108915042944955,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515883220",
+          "name": "port3",
+          "position": {
+            "x": 0.5835707521472477,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515884323",
+          "name": "port4",
+          "position": {
+            "x": 0.65625,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515885517",
+          "name": "port5",
+          "position": {
+            "x": 0.7289292478527523,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515886331",
+          "name": "port6",
+          "position": {
+            "x": 0.8016084957055045,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515887533",
+          "name": "port7",
+          "position": {
+            "x": 0.8742877435582568,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515889902",
+          "name": "port8",
+          "position": {
+            "x": 0.655,
+            "y": 0.635
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515891267",
+          "name": "port9",
+          "position": {
+            "x": 0.1775,
+            "y": 0.3727665042944955
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515892812",
+          "name": "port10",
+          "position": {
+            "x": 0,
+            "y": 0.25
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515893517",
+          "name": "port11",
+          "position": {
+            "x": 0,
+            "y": 0.14356601717798212
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767515894979",
+          "name": "port12",
+          "position": {
+            "x": 0.18,
+            "y": 0
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPBPHCIIKB"
+    },
+    "CMPPTXLWMST": {
+      "type": "Tank-1767459062321",
+      "systemKks": "JEG30",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1980,
+        "y": 780
+      },
+      "rotation": 0,
+      "size": {
+        "width": 600,
+        "height": 600
+      },
+      "ports": [
+        {
+          "id": "port-1767510201826",
+          "name": "refgd",
+          "position": {
+            "x": 0.65625,
+            "y": 0.946966991411009
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510205771",
+          "name": "ertfgh",
+          "position": {
+            "x": 0.18,
+            "y": 0.435
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510211958",
+          "name": "erthbgf",
+          "position": {
+            "x": 0,
+            "y": 0.14356601717798212
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510213412",
+          "name": "yufkjdgfh",
+          "position": {
+            "x": 0,
+            "y": 0.25
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510216322",
+          "name": "tyuiky",
+          "position": {
+            "x": 0.18,
+            "y": 0
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510248102",
+          "name": "segdfhr",
+          "position": {
+            "x": 0.5108915042944955,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510251657",
+          "name": "yrtuitruyjk",
+          "position": {
+            "x": 0.5835707521472477,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510252925",
+          "name": "rythyurty",
+          "position": {
+            "x": 0.65625,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510253988",
+          "name": "dfghjghy",
+          "position": {
+            "x": 0.7289292478527523,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510255023",
+          "name": "tuyjrdtyser",
+          "position": {
+            "x": 0.8016084957055045,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510255938",
+          "name": "rytujtuk",
+          "position": {
+            "x": 0.8742877435582568,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767510256899",
+          "name": "syeertruyyj",
+          "position": {
+            "x": 0.4382122564417432,
+            "y": 0.053033008588991064
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPPTXLWMST"
+    },
+    "CMPEGRJP4JX": {
+      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "systemKks": "JEG30",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1140,
+        "y": 900
+      },
+      "rotation": 0,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767425436118",
+          "name": "Left",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767528627308",
+          "name": "port2",
+          "position": {
+            "x": 0.4990172926635955,
+            "y": 0.05903356647183102
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767528665821",
+          "name": "port3",
+          "position": {
+            "x": 0.49946501990926323,
+            "y": 0.9998835292467493
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPEGRJP4JX"
+    }
+  },
+  "connections": {},
+  "buildings": {},
+  "createdAt": "2026-01-03T16:49:49.690Z",
+  "modifiedAt": "2026-01-04T12:20:46.709Z"
+}

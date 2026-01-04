@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "WebSearch",
+      "Bash(npm create:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm exec:*)",
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(node:*)",
+      "Bash(npx vite build)",
+      "Bash(dir \"C:\\\\Users\\\\SaMa\\\\Desktop\\\\P&ID\")",
+      "Bash(npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(npx tsc:*)",
+      "Bash(if exist node_modules.vite rmdir /s /q node_modules.vite)",
+      "Bash(timeout:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(git add:*)",
+      "Bash(git init:*)",
+      "Bash(dir:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(npx vite)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c \"taskkill /PID 11000 /F\")",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git rebase:*)",
+      "Bash(git stash:*)",
+      "Bash(cmd //c \"dir /s /b \"\"E:\\\\Flowmark versions\\\\3-1-2026\\\\Flowmark\\\\data\\\\systems\\\\*.json\"\"\")",
+      "Bash(cmd //c \"dir /s /b \"E:Flowmark versions3-1-2026Flowmarkdatasystems*.json\"\")",
+      "Bash(git pull:*)"
+    ]
+  }
+}
