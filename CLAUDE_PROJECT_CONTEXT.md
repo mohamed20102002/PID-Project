@@ -4,7 +4,7 @@
 
 ---
 
-## Last Updated: 2026-01-02 02:30 AM
+## Last Updated: 2026-01-05 08:35 AM
 
 ## Project Overview
 
@@ -68,6 +68,13 @@ src/
     ├── commands/                  # Undo/redo command pattern
     └── grid/
         └── SnapEngine.ts          # Grid snapping logic
+
+data/                              # Project data storage (git-tracked)
+├── plant.json                     # Plant hierarchy data
+├── custom-symbols.json            # Custom symbols storage
+└── systems/
+    └── {systemKks}/
+        └── diagram.json           # System diagram data
 ```
 
 ---
@@ -136,6 +143,34 @@ Symbols can have a custom `centerPoint` property (relative 0-1 coordinates) that
 ---
 
 ## Recent Changes Log
+
+### 2026-01-05 08:35 AM - Custom Symbols File-Based Storage
+**Problem:** Custom symbols were stored only in localStorage, which doesn't sync via git. User lost all designed symbols when pulling code on another PC.
+
+**Files Modified:**
+- `vite-plugin-storage.ts` - Added `/api/storage/custom-symbols` endpoint (GET/POST)
+- `src/services/StorageService.ts` - Added `saveCustomSymbols()` and `loadCustomSymbols()` methods
+- `src/store/customSymbolStore.ts` - Added file sync: `loadFromFile()`, `saveToFile()`, `startAutoSync()`
+- `src/App.tsx` - Added symbol loading on startup with auto-sync
+
+**Files Created:**
+- `data/custom-symbols.json` - Custom symbols storage (auto-created, git-tracked)
+
+**Changes:**
+- Custom symbols now save to `data/custom-symbols.json` file (git-tracked)
+- Auto-save with 3-second debounce (matches diagram auto-save)
+- File wins merge strategy: git file is source of truth
+- On startup: loads from file, migrates localStorage if no file exists
+- localStorage kept as performance cache
+- Symbols now sync seamlessly between PCs via git
+
+**Storage Flow:**
+1. App startup → Load `data/custom-symbols.json` (or migrate localStorage)
+2. Create/modify symbol → Auto-save to file (3s debounce)
+3. Git push → Symbols sync to remote
+4. Another PC git pull → Symbols load automatically
+
+**Result:** No more lost symbols when switching between PCs!
 
 ### 2026-01-02 02:30 AM - Complete Legacy Cleanup
 **Files Modified:**

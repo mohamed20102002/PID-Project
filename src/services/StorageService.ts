@@ -15,6 +15,7 @@
 
 import type { Diagram } from '../types';
 import type { Plant } from '../types/kks.types';
+import type { SymbolDefinition } from '../types/symbol.types';
 
 export interface StorageStatus {
   isReady: boolean;
@@ -175,6 +176,47 @@ class StorageServiceClass {
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Load plant failed';
       console.error('[StorageService] Load plant error:', error);
+      return { success: false, error: errorMsg };
+    }
+  }
+
+  // ========== Custom Symbols Operations ==========
+
+  async saveCustomSymbols(symbols: SymbolDefinition[]): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await fetch('/api/storage/custom-symbols', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbols }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log(`[StorageService] Saved ${symbols.length} custom symbols`);
+      }
+
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Save custom symbols failed';
+      console.error('[StorageService] Save custom symbols error:', error);
+      return { success: false, error: errorMsg };
+    }
+  }
+
+  async loadCustomSymbols(): Promise<{ success: boolean; symbols?: SymbolDefinition[]; error?: string }> {
+    try {
+      const response = await fetch('/api/storage/custom-symbols');
+      const result = await response.json();
+
+      if (result.success) {
+        console.log(`[StorageService] Loaded ${result.symbols?.length || 0} custom symbols`);
+      }
+
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Load custom symbols failed';
+      console.error('[StorageService] Load custom symbols error:', error);
       return { success: false, error: errorMsg };
     }
   }

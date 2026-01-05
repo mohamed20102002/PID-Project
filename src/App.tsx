@@ -227,8 +227,25 @@ function App() {
     // Load plant from file on startup
     loadPlantFromFile();
 
-    // Initialize default symbols (only happens once)
+    // Initialize default symbols (only happens once if localStorage empty)
     initializeDefaultSymbols();
+
+    // Load custom symbols from file
+    const loadSymbols = async () => {
+      const symbolStore = useCustomSymbolStore.getState();
+      const result = await symbolStore.loadFromFile();
+
+      if (result.success) {
+        console.log(`[App] Loaded ${result.count} custom symbols from file`);
+
+        // Start auto-sync after initial load
+        symbolStore.startAutoSync();
+      } else {
+        console.error('[App] Failed to load custom symbols:', result.error);
+      }
+    };
+
+    loadSymbols();
   }, [loadPlantFromFile, initializeDefaultSymbols]);
 
   // Show loading state if plant is not loaded yet

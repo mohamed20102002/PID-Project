@@ -12,6 +12,7 @@ import path from 'path';
 const DATA_DIR = './data';
 const SYSTEMS_DIR = './data/systems';
 const PLANT_FILE = './data/plant.json';
+const CUSTOM_SYMBOLS_FILE = './data/custom-symbols.json';
 
 // Ensure directories exist
 function ensureDirectories() {
@@ -144,6 +145,54 @@ export function storagePlugin(): Plugin {
             }
           } catch (error) {
             console.error('[Storage] Load plant error:', error);
+            res.statusCode = 500;
+            res.end(JSON.stringify({ success: false, error: String(error) }));
+          }
+        } else {
+          next();
+        }
+      });
+
+      // Custom symbols
+      server.middlewares.use('/api/storage/custom-symbols', async (req, res, next) => {
+        if (req.method === 'POST') {
+          let body = '';
+          req.on('data', chunk => { body += chunk; });
+          req.on('end', () => {
+            try {
+              const { symbols } = JSON.parse(body);
+
+              if (!symbols || !Array.isArray(symbols)) {
+                res.statusCode = 400;
+                res.end(JSON.stringify({ success: false, error: 'Missing or invalid symbols array' }));
+                return;
+              }
+
+              fs.writeFileSync(CUSTOM_SYMBOLS_FILE, JSON.stringify(symbols, null, 2), 'utf-8');
+
+              console.log(`[Storage] Saved ${symbols.length} custom symbols`);
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true }));
+            } catch (error) {
+              console.error('[Storage] Save custom symbols error:', error);
+              res.statusCode = 500;
+              res.end(JSON.stringify({ success: false, error: String(error) }));
+            }
+          });
+        } else if (req.method === 'GET') {
+          try {
+            if (fs.existsSync(CUSTOM_SYMBOLS_FILE)) {
+              const data = fs.readFileSync(CUSTOM_SYMBOLS_FILE, 'utf-8');
+              const symbols = JSON.parse(data);
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, symbols }));
+            } else {
+              // Graceful fallback - return empty array for fresh installs
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, symbols: [] }));
+            }
+          } catch (error) {
+            console.error('[Storage] Load custom symbols error:', error);
             res.statusCode = 500;
             res.end(JSON.stringify({ success: false, error: String(error) }));
           }

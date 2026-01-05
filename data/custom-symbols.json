@@ -1,0 +1,6149 @@
+[
+  {
+    "id": "terminals:system-terminal",
+    "category": "terminals",
+    "name": "systemTerminal",
+    "displayName": "System Terminal",
+    "description": "Cross-reference connector to another system diagram",
+    "standard": "ISA",
+    "kksEquipmentCode": "XT",
+    "defaultSize": {
+      "width": 140,
+      "height": 40
+    },
+    "minSize": {
+      "width": 140,
+      "height": 40
+    },
+    "maxSize": {
+      "width": 140,
+      "height": 40
+    },
+    "resizable": true,
+    "aspectRatioLocked": false,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      270
+    ],
+    "freeRotation": true,
+    "paths": [
+      {
+        "type": "rect",
+        "data": {
+          "x": 0.05,
+          "y": 0.15,
+          "width": 0.9,
+          "height": 0.7,
+          "rx": 0.06,
+          "ry": 0.12
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2.5,
+          "fill": "#8ca8d9dc"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "left",
+        "name": "Left",
+        "relativePosition": {
+          "x": 0.05,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 180,
+        "allowedConnections": [
+          "pipe",
+          "signal"
+        ]
+      },
+      {
+        "id": "right",
+        "name": "Right",
+        "relativePosition": {
+          "x": 0.95,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe",
+          "signal"
+        ]
+      },
+      {
+        "id": "top",
+        "name": "Top",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.15
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 270,
+        "allowedConnections": [
+          "pipe",
+          "signal"
+        ]
+      },
+      {
+        "id": "bottom",
+        "name": "Bottom",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.85
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 90,
+        "allowedConnections": [
+          "pipe",
+          "signal"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "main-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 13,
+          "fontWeight": "bold"
+        }
+      },
+      {
+        "id": "target-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.12
+        },
+        "anchor": "middle",
+        "binding": "targetSystemKks",
+        "style": {
+          "fontSize": 9,
+          "fontWeight": "normal",
+          "fill": "#6366f1"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [
+        "targetSystemKks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "e.g., To Cooling System"
+        },
+        "targetSystemKks": {
+          "type": "string",
+          "label": "Target System KKS",
+          "placeholder": "e.g., 10KBC"
+        },
+        "targetTerminalKks": {
+          "type": "string",
+          "label": "Target Terminal KKS",
+          "placeholder": "e.g., 10KBC-XT001"
+        },
+        "leftPortDirection": {
+          "type": "select",
+          "label": "Left Port Direction",
+          "options": [
+            {
+              "value": "none",
+              "label": "Not Used"
+            },
+            {
+              "value": "in",
+              "label": "Input"
+            },
+            {
+              "value": "out",
+              "label": "Output"
+            },
+            {
+              "value": "both",
+              "label": "Bidirectional"
+            }
+          ],
+          "defaultValue": "none"
+        },
+        "rightPortDirection": {
+          "type": "select",
+          "label": "Right Port Direction",
+          "options": [
+            {
+              "value": "none",
+              "label": "Not Used"
+            },
+            {
+              "value": "in",
+              "label": "Input"
+            },
+            {
+              "value": "out",
+              "label": "Output"
+            },
+            {
+              "value": "both",
+              "label": "Bidirectional"
+            }
+          ],
+          "defaultValue": "none"
+        },
+        "topPortDirection": {
+          "type": "select",
+          "label": "Top Port Direction",
+          "options": [
+            {
+              "value": "none",
+              "label": "Not Used"
+            },
+            {
+              "value": "in",
+              "label": "Input"
+            },
+            {
+              "value": "out",
+              "label": "Output"
+            },
+            {
+              "value": "both",
+              "label": "Bidirectional"
+            }
+          ],
+          "defaultValue": "none"
+        },
+        "bottomPortDirection": {
+          "type": "select",
+          "label": "Bottom Port Direction",
+          "options": [
+            {
+              "value": "none",
+              "label": "Not Used"
+            },
+            {
+              "value": "in",
+              "label": "Input"
+            },
+            {
+              "value": "out",
+              "label": "Output"
+            },
+            {
+              "value": "both",
+              "label": "Bidirectional"
+            }
+          ],
+          "defaultValue": "none"
+        },
+        "lineNumber": {
+          "type": "string",
+          "label": "Line Number",
+          "placeholder": "e.g., 2\"-KBC-001"
+        },
+        "medium": {
+          "type": "string",
+          "label": "Medium",
+          "placeholder": "e.g., Steam, Water"
+        }
+      }
+    }
+  },
+  {
+    "id": "piping:corner",
+    "category": "additional",
+    "name": "pipeCorner",
+    "displayName": "Pipe Corner",
+    "description": "Routing waypoint for pipe direction changes",
+    "standard": "ISA",
+    "kksEquipmentCode": "",
+    "noKks": true,
+    "defaultSize": {
+      "width": 12,
+      "height": 12
+    },
+    "minSize": {
+      "width": 8,
+      "height": 8
+    },
+    "maxSize": {
+      "width": 20,
+      "height": 20
+    },
+    "resizable": false,
+    "aspectRatioLocked": true,
+    "rotatable": false,
+    "rotationSteps": [
+      0
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5,
+          "cy": 0.5,
+          "r": 0.4
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "inherit"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port1",
+        "name": "Port 1",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 180,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port2",
+        "name": "Port 2",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port3",
+        "name": "Port 3",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 270,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port4",
+        "name": "Port 4",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 90,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "main-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 2
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 0,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "manualValve1-1767425136723",
+    "category": "AA",
+    "name": "manualValve",
+    "displayName": "Manual Valve",
+    "description": "Manually Driven Valve",
+    "standard": "ISO",
+    "kksEquipmentCode": "AA",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.1875,
+              "y": 0.265625
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.1875,
+              "y": 0.734375
+            },
+            {
+              "x": 0.1875,
+              "y": 0.265625
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.8125,
+              "y": 0.265625
+            },
+            {
+              "x": 0.8125,
+              "y": 0.734375
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8125,
+          "y1": 0.5,
+          "x2": 1.000066654819027,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.1875,
+          "y1": 0.5,
+          "x2": -0.00026647730625398933,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767422976640",
+        "name": "Left",
+        "relativePosition": {
+          "x": -0.00026647730625398933,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767422978253",
+        "name": "Right",
+        "relativePosition": {
+          "x": 1.000066654819027,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767453268813",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.86
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      },
+      {
+        "id": "label-1767453279141",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.125
+        },
+        "anchor": "middle",
+        "binding": "description",
+        "visible": false,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "propertySchema": {
+      "required": [
+        "kks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        },
+        "actuationType": {
+          "type": "select",
+          "label": "Actuation Type",
+          "description": "How the valve is operated",
+          "options": [
+            {
+              "value": "manual",
+              "label": "Manual"
+            },
+            {
+              "value": "pneumatic",
+              "label": "Pneumatic"
+            },
+            {
+              "value": "electric",
+              "label": "Electric Motor"
+            },
+            {
+              "value": "hydraulic",
+              "label": "Hydraulic"
+            },
+            {
+              "value": "solenoid",
+              "label": "Solenoid"
+            }
+          ]
+        },
+        "power": {
+          "type": "unit-value",
+          "label": "Power",
+          "description": "Electrical power",
+          "units": [
+            "W",
+            "kW",
+            "MW",
+            "HP"
+          ],
+          "defaultUnit": "kW"
+        },
+        "valveType": {
+          "type": "select",
+          "label": "Valve Type",
+          "description": "Type of valve",
+          "options": [
+            {
+              "value": "gate",
+              "label": "Gate Valve"
+            },
+            {
+              "value": "globe",
+              "label": "Globe Valve"
+            },
+            {
+              "value": "ball",
+              "label": "Ball Valve"
+            },
+            {
+              "value": "butterfly",
+              "label": "Butterfly Valve"
+            },
+            {
+              "value": "check",
+              "label": "Check Valve"
+            },
+            {
+              "value": "plug",
+              "label": "Plug Valve"
+            },
+            {
+              "value": "diaphragm",
+              "label": "Diaphragm Valve"
+            },
+            {
+              "value": "needle",
+              "label": "Needle Valve"
+            },
+            {
+              "value": "safety",
+              "label": "Safety/Relief Valve"
+            },
+            {
+              "value": "control",
+              "label": "Control Valve"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "threewayvalve-1767425507210",
+    "category": "AA",
+    "name": "threewayvalve",
+    "displayName": "Three-Way Valve",
+    "description": "Three-Way Valve",
+    "standard": "ISA",
+    "kksEquipmentCode": "AA",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.19,
+              "y": 0.265
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.19,
+              "y": 0.735
+            },
+            {
+              "x": 0.19,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.815,
+              "y": 0.265
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.815,
+              "y": 0.735
+            },
+            {
+              "x": 0.815,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.2649468145291371,
+              "y": 0.185
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.735,
+              "y": 0.185
+            },
+            {
+              "x": 0.2649468145291371,
+              "y": 0.185
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.19,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.815,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.49997340726456857,
+          "y1": 0.185,
+          "x2": 0.49997340726456857,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767425436118",
+        "name": "Left",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767425438419",
+        "name": "Right",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767425440024",
+        "name": "Up",
+        "relativePosition": {
+          "x": 0.49997340726456857,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767425460814",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [
+        "kks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "shutoffvalve-1767428891387",
+    "category": "AA",
+    "name": "shutoffvalve",
+    "displayName": "Shut-Off Valve",
+    "description": "Shut-Off Valve ",
+    "standard": "ISA",
+    "kksEquipmentCode": "AA",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.19,
+              "y": 0.265
+            },
+            {
+              "x": 0.19,
+              "y": 0.735
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.19,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.815,
+              "y": 0.265
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.815,
+              "y": 0.735
+            },
+            {
+              "x": 0.815,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.815,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.19,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5025,
+          "cy": 0.19,
+          "r": 0.15734118977559566
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.5025,
+          "y2": 0.34734118977559547
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.44934192206258783,
+          "y1": 0.13684192206258786,
+          "x2": 0.38743459249652573,
+          "y2": 0.19
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5518789555377589,
+          "y1": 0.2393789555377589,
+          "x2": 0.6175654075034742,
+          "y2": 0.19
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.44934192206258783,
+          "y1": 0.13684192206258786,
+          "x2": 0.5518789555377589,
+          "y2": 0.2393789555377589
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767434407692",
+        "name": "Left",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767434409350",
+        "name": "Right",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767428886639",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2085
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "propertySchema": {
+      "required": [
+        "kks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "shutoffvalve-1767428891387-copy-1767434623733",
+    "category": "AA",
+    "name": "controlValve1",
+    "displayName": "Control Valve",
+    "description": "Control Valve",
+    "standard": "ISA",
+    "kksEquipmentCode": "AA",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.19,
+              "y": 0.265
+            },
+            {
+              "x": 0.19,
+              "y": 0.735
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.19,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.815,
+              "y": 0.265
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.815,
+              "y": 0.735
+            },
+            {
+              "x": 0.815,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.815,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.19,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5025,
+          "cy": 0.19,
+          "r": 0.15734118977559566
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.5025,
+          "y2": 0.34734118977559547
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.44934192206258783,
+          "y1": 0.13684192206258786,
+          "x2": 0.5518789555377589,
+          "y2": 0.2393789555377589
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.19,
+              "y": 0.5
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.19,
+              "y": 0.735
+            },
+            {
+              "x": 0.19,
+              "y": 0.5
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#000000"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.44934192206258783,
+          "y1": 0.13684192206258786,
+          "x2": 0.40537041252399775,
+          "y2": 0.18081343160117797
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5518789555377589,
+          "y1": 0.2393789555377589,
+          "x2": 0.5956334762764033,
+          "y2": 0.1956244347991145
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767434407692",
+        "name": "Left",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767434409350",
+        "name": "Right",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767428886639",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "propertySchema": {
+      "required": [
+        "kks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "manualValve1-1767425136723-copy-1767435119406",
+    "category": "AA",
+    "name": "CheckValve",
+    "displayName": "Check Valve",
+    "description": "Check Valve | non-return Valve",
+    "standard": "ISO",
+    "kksEquipmentCode": "AA",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.1875,
+              "y": 0.265625
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.1875,
+              "y": 0.734375
+            },
+            {
+              "x": 0.1875,
+              "y": 0.265625
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#000000"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.8125,
+              "y": 0.265625
+            },
+            {
+              "x": 0.8125,
+              "y": 0.734375
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8125,
+          "y1": 0.5,
+          "x2": 1.000066654819027,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.1875,
+          "y1": 0.5,
+          "x2": -0.00026647730625398933,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767422976640",
+        "name": "Left",
+        "relativePosition": {
+          "x": -0.00026647730625398933,
+          "y": 0.5
+        },
+        "direction": "out",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767422978253",
+        "name": "Right",
+        "relativePosition": {
+          "x": 1.000066654819027,
+          "y": 0.5
+        },
+        "direction": "in",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767424747067",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "propertySchema": {
+      "required": [
+        "kks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "SystemBoundary-1767437234740",
+    "category": "additional",
+    "name": "PartBoundary",
+    "displayName": "Part Section",
+    "description": "Set Part or Section Boundary",
+    "standard": "ISA",
+    "kksEquipmentCode": "",
+    "noKks": true,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.785,
+          "y2": 0.215
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.785,
+          "cy": 0.215,
+          "r": 0.08139410298049858
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#000000"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767437248466",
+        "name": "Port 1",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "main-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 10,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "SystemBoundary-1767437234740-copy-1767437277280",
+    "category": "additional",
+    "name": "Pipe Boundary",
+    "displayName": "Pipe Boundary",
+    "description": "Set Pipe Boundary",
+    "standard": "ISA",
+    "kksEquipmentCode": "",
+    "noKks": true,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.785,
+          "y2": 0.215
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.785,
+          "cy": 0.215,
+          "r": 0.08139410298049858
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#ffffff"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767437248466",
+        "name": "Port 1",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "main-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "style": {
+          "fontSize": 10,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "Tank-1767459062321",
+    "category": "BB",
+    "name": "Tank",
+    "displayName": "Tank",
+    "description": "Storage Tank",
+    "standard": "ISA",
+    "kksEquipmentCode": "BB",
+    "noKks": false,
+    "defaultSize": {
+      "width": 600,
+      "height": 600
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 1000,
+      "height": 1000
+    },
+    "resizable": true,
+    "aspectRatioLocked": false,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.3655330085889909,
+              "y": 0.053033008588991064
+            },
+            {
+              "x": 0.946966991411009,
+              "y": 0.053033008588991064
+            },
+            {
+              "x": 0.946966991411009,
+              "y": 0.946966991411009
+            },
+            {
+              "x": 0.3655330085889909,
+              "y": 0.946966991411009
+            },
+            {
+              "x": 0.3655330085889909,
+              "y": 0.053033008588991064
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#e3caca"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.41856601717798214,
+              "y": 0.10606601717798213
+            },
+            {
+              "x": 0.8939339828220179,
+              "y": 0.10606601717798213
+            },
+            {
+              "x": 0.8939339828220179,
+              "y": 0.8939339828220179
+            },
+            {
+              "x": 0.41856601717798214,
+              "y": 0.8939339828220179
+            },
+            {
+              "x": 0.41856601717798214,
+              "y": 0.10606601717798213
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#ffffff"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.4875,
+          "y1": 0.2575,
+          "x2": 0.5405330085889909,
+          "y2": 0.3105330085889909
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5405330085889909,
+          "y1": 0.3105330085889909,
+          "x2": 0.5935660171779819,
+          "y2": 0.25749999999999973
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5935660171779819,
+          "y1": 0.25749999999999973,
+          "x2": 0.895,
+          "y2": 0.25749999999999973
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.4875,
+          "y1": 0.2575,
+          "x2": 0.41856601717798214,
+          "y2": 0.2575
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5405330085889909,
+          "y1": 0.3105330085889909,
+          "x2": 0.5405330085889909,
+          "y2": 0.435
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5405330085889909,
+          "y1": 0.435,
+          "x2": 0.3675,
+          "y2": 0.435
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.41856601717798214,
+          "y1": 0.14356601717798212,
+          "x2": 0.255,
+          "y2": 0.14356601717798212
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.105,
+          "y1": 0.14356601717798212,
+          "x2": 0,
+          "y2": 0.14356601717798212
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.255,
+          "y1": 0.11856601717798214,
+          "x2": 0.105,
+          "y2": 0.11856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.255,
+          "y1": 0.11856601717798214,
+          "x2": 0.255,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.105,
+          "y1": 0.11856601717798214,
+          "x2": 0.105,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.1623223304703363,
+          "y2": 0.10088834764831844
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.1976776695296637,
+          "y2": 0.10088834764831844
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.105,
+          "y1": 0.16856601717798214,
+          "x2": 0.18,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.1425,
+          "y1": 0.16856601717798214,
+          "x2": 0.1425,
+          "y2": 0.1475
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.16856601717798214,
+          "x2": 0.255,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.2175,
+          "y1": 0.16856601717798214,
+          "x2": 0.2175,
+          "y2": 0.1475
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.16856601717798214,
+          "x2": 0.18,
+          "y2": 0.25
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.25,
+          "x2": 0,
+          "y2": 0.25
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.18,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3675,
+          "y1": 0.435,
+          "x2": 0.18,
+          "y2": 0.435
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3655330085889909,
+          "y1": 0.053033008588991064,
+          "x2": 0.65625,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.65625,
+          "y1": 0.053033008588991064,
+          "x2": 0.946966991411009,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3655330085889909,
+          "y1": 0.053033008588991064,
+          "x2": 0.5108915042944955,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5108915042944955,
+          "y1": 0.053033008588991064,
+          "x2": 0.65625,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.65625,
+          "y1": 0.053033008588991064,
+          "x2": 0.8016084957055045,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8016084957055045,
+          "y1": 0.053033008588991064,
+          "x2": 0.946966991411009,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.18,
+          "y2": 0.13106601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767510201826",
+        "name": "refgd",
+        "relativePosition": {
+          "x": 0.65625,
+          "y": 0.946966991411009
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510205771",
+        "name": "ertfgh",
+        "relativePosition": {
+          "x": 0.18,
+          "y": 0.435
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510211958",
+        "name": "erthbgf",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.14356601717798212
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510213412",
+        "name": "yufkjdgfh",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.25
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510216322",
+        "name": "tyuiky",
+        "relativePosition": {
+          "x": 0.18,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510248102",
+        "name": "segdfhr",
+        "relativePosition": {
+          "x": 0.5108915042944955,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510251657",
+        "name": "yrtuitruyjk",
+        "relativePosition": {
+          "x": 0.5835707521472477,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510252925",
+        "name": "rythyurty",
+        "relativePosition": {
+          "x": 0.65625,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510253988",
+        "name": "dfghjghy",
+        "relativePosition": {
+          "x": 0.7289292478527523,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510255023",
+        "name": "tuyjrdtyser",
+        "relativePosition": {
+          "x": 0.8016084957055045,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510255938",
+        "name": "rytujtuk",
+        "relativePosition": {
+          "x": 0.8742877435582568,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767510256899",
+        "name": "syeertruyyj",
+        "relativePosition": {
+          "x": 0.4382122564417432,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767510292361",
+        "relativePosition": {
+          "x": 0.655,
+          "y": 0.74
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 20,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "Tank-1767459062321-copy-1767513128202",
+    "category": "BB",
+    "name": "Tanksquare",
+    "displayName": "Tank Square",
+    "description": "Storage Tank (Square)",
+    "standard": "ISA",
+    "kksEquipmentCode": "BB",
+    "noKks": false,
+    "defaultSize": {
+      "width": 600,
+      "height": 600
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 1000,
+      "height": 1000
+    },
+    "resizable": true,
+    "aspectRatioLocked": false,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.4875,
+          "y1": 0.2575,
+          "x2": 0.5405330085889909,
+          "y2": 0.3105330085889909
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5405330085889909,
+          "y1": 0.3105330085889909,
+          "x2": 0.5935660171779819,
+          "y2": 0.25749999999999973
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5935660171779819,
+          "y1": 0.25749999999999973,
+          "x2": 0.895,
+          "y2": 0.25749999999999973
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.4875,
+          "y1": 0.2575,
+          "x2": 0.41856601717798214,
+          "y2": 0.2575
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.41856601717798214,
+          "y1": 0.14356601717798212,
+          "x2": 0.255,
+          "y2": 0.14356601717798212
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.105,
+          "y1": 0.14356601717798212,
+          "x2": 0,
+          "y2": 0.14356601717798212
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.255,
+          "y1": 0.11856601717798214,
+          "x2": 0.105,
+          "y2": 0.11856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.255,
+          "y1": 0.11856601717798214,
+          "x2": 0.255,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.105,
+          "y1": 0.11856601717798214,
+          "x2": 0.105,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.1623223304703363,
+          "y2": 0.10088834764831844
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.1976776695296637,
+          "y2": 0.10088834764831844
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.105,
+          "y1": 0.16856601717798214,
+          "x2": 0.18,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.1425,
+          "y1": 0.16856601717798214,
+          "x2": 0.1425,
+          "y2": 0.1475
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.16856601717798214,
+          "x2": 0.255,
+          "y2": 0.16856601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.2175,
+          "y1": 0.16856601717798214,
+          "x2": 0.2175,
+          "y2": 0.1475
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.16856601717798214,
+          "x2": 0.18,
+          "y2": 0.25
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.25,
+          "x2": 0,
+          "y2": 0.25
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.18,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3655330085889909,
+          "y1": 0.053033008588991064,
+          "x2": 0.65625,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.65625,
+          "y1": 0.053033008588991064,
+          "x2": 0.946966991411009,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3655330085889909,
+          "y1": 0.053033008588991064,
+          "x2": 0.5108915042944955,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5108915042944955,
+          "y1": 0.053033008588991064,
+          "x2": 0.65625,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.65625,
+          "y1": 0.053033008588991064,
+          "x2": 0.8016084957055045,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8016084957055045,
+          "y1": 0.053033008588991064,
+          "x2": 0.946966991411009,
+          "y2": 0.053033008588991064
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.3655330085889909,
+              "y": 0.053033008588991064
+            },
+            {
+              "x": 0.3625,
+              "y": 0.635
+            },
+            {
+              "x": 0.9475,
+              "y": 0.635
+            },
+            {
+              "x": 0.946966991411009,
+              "y": 0.053033008588991064
+            },
+            {
+              "x": 0.3655330085889909,
+              "y": 0.053033008588991064
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.41856601717798214,
+              "y": 0.10606601717798213
+            },
+            {
+              "x": 0.41553300858899095,
+              "y": 0.5819669914110088
+            },
+            {
+              "x": 0.894466991411009,
+              "y": 0.581966991411009
+            },
+            {
+              "x": 0.8939339828220179,
+              "y": 0.10606601717798213
+            },
+            {
+              "x": 0.41856601717798214,
+              "y": 0.10606601717798213
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5405330085889909,
+          "y1": 0.3727665042944955,
+          "x2": 0.1775,
+          "y2": 0.3727665042944955
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5405330085889909,
+          "y1": 0.3105330085889909,
+          "x2": 0.5405330085889909,
+          "y2": 0.3727665042944955
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.18,
+          "y1": 0.11856601717798214,
+          "x2": 0.18,
+          "y2": 0.13106601717798214
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767515880340",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.4382122564417432,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515881727",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5108915042944955,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515883220",
+        "name": "port3",
+        "relativePosition": {
+          "x": 0.5835707521472477,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515884323",
+        "name": "port4",
+        "relativePosition": {
+          "x": 0.65625,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515885517",
+        "name": "port5",
+        "relativePosition": {
+          "x": 0.7289292478527523,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515886331",
+        "name": "port6",
+        "relativePosition": {
+          "x": 0.8016084957055045,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515887533",
+        "name": "port7",
+        "relativePosition": {
+          "x": 0.8742877435582568,
+          "y": 0.053033008588991064
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515889902",
+        "name": "port8",
+        "relativePosition": {
+          "x": 0.655,
+          "y": 0.635
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515891267",
+        "name": "port9",
+        "relativePosition": {
+          "x": 0.1775,
+          "y": 0.3727665042944955
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515892812",
+        "name": "port10",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.25
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515893517",
+        "name": "port11",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.14356601717798212
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767515894979",
+        "name": "port12",
+        "relativePosition": {
+          "x": 0.18,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767513660742",
+        "relativePosition": {
+          "x": 0.65625,
+          "y": 0.485
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 20,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "pressuresensor-1767519721575",
+    "category": "CP",
+    "name": "pressuresensor",
+    "displayName": "Pressure Sensor",
+    "description": "Pressure Sensor",
+    "standard": "ISA",
+    "kksEquipmentCode": "CP",
+    "noKks": true,
+    "defaultSize": {
+      "width": 300,
+      "height": 300
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "arc",
+        "data": {
+          "x": 0.28125,
+          "y": 0.325,
+          "innerRadius": 0,
+          "outerRadius": 0.07375000000000001,
+          "startAngle": 90,
+          "endAngle": 270
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "arc",
+        "data": {
+          "x": 0.49375,
+          "y": 0.325,
+          "innerRadius": 0,
+          "outerRadius": 0.07374999999999998,
+          "startAngle": -90,
+          "endAngle": 90
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.28125,
+          "y1": 0.25125,
+          "x2": 0.49375,
+          "y2": 0.25125
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.28125,
+          "y1": 0.39875,
+          "x2": 0.49375,
+          "y2": 0.39875
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.2075,
+          "y1": 0.325,
+          "x2": 0.5675,
+          "y2": 0.325
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767525320412",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.25125
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767525322362",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5675,
+          "y": 0.325
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767525323614",
+        "name": "port3",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.39875
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767525325354",
+        "name": "port4",
+        "relativePosition": {
+          "x": 0.2075,
+          "y": 0.325
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767525242821",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.288125
+        },
+        "anchor": "middle",
+        "binding": "branchkks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      },
+      {
+        "id": "label-1767525243782",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.361875
+        },
+        "anchor": "middle",
+        "binding": "sensornumber",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.3875,
+      "y": 0.325
+    },
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "branchkks": {
+          "type": "string",
+          "label": "Branch",
+          "description": "The Branch or the line"
+        },
+        "sensornumber": {
+          "type": "string",
+          "label": "Sensor number",
+          "description": "The Sensor Number"
+        }
+      }
+    }
+  },
+  {
+    "id": "threewayvalve-1767425507210-copy-1767528115096",
+    "category": "AA",
+    "name": "SafetyValve",
+    "displayName": "Safety Valve",
+    "description": "Safety Valve",
+    "standard": "ISA",
+    "kksEquipmentCode": "AA",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.19,
+              "y": 0.265
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.19,
+              "y": 0.735
+            },
+            {
+              "x": 0.19,
+              "y": 0.265
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        },
+        "rotation": 0
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.19,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5
+            },
+            {
+              "x": 0.26432092089341697,
+              "y": 0.8094775786248058
+            },
+            {
+              "x": 0.7346091189251092,
+              "y": 0.8102894798686929
+            },
+            {
+              "x": 0.5,
+              "y": 0.5
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.5,
+          "y2": 0.375
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.375,
+          "x2": 0.664166882974393,
+          "y2": 0.3143845355171473
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.664166882974393,
+          "y1": 0.3143845355171473,
+          "x2": 0.3350700511883846,
+          "y2": 0.19524060865382908
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3350700511883846,
+          "y1": 0.19524060865382908,
+          "x2": 0.4990172926635955,
+          "y2": 0.134033566471831
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.4990172926635955,
+          "y1": 0.134033566471831,
+          "x2": 0.4990172926635955,
+          "y2": 0.05903356647183102
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.49946501990926323,
+          "y1": 0.8098835292467492,
+          "x2": 0.49946501990926323,
+          "y2": 0.9998835292467493
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.345,
+          "y1": 0.6175,
+          "x2": 0.345,
+          "y2": 0.3825
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.345,
+          "y1": 0.3825,
+          "x2": 0.345,
+          "y2": 0.3575
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.345,
+          "y1": 0.6175,
+          "x2": 0.345,
+          "y2": 0.6425
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767425436118",
+        "name": "Left",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767528627308",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.4990172926635955,
+          "y": 0.05903356647183102
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767528665821",
+        "name": "port3",
+        "relativePosition": {
+          "x": 0.49946501990926323,
+          "y": 0.9998835292467493
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767528839293",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2075
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [
+        "kks"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "label": "Description",
+          "placeholder": "Enter description"
+        }
+      }
+    }
+  },
+  {
+    "id": "buildingbreach-1767531232143",
+    "category": "additional",
+    "name": "buildingbreach",
+    "displayName": "Building Breach",
+    "description": "Building Connection to other Building",
+    "standard": "ISA",
+    "kksEquipmentCode": "",
+    "noKks": true,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0,
+          "x2": 0.5,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 6,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "rect",
+        "data": {
+          "x": 0.3125,
+          "y": 0,
+          "width": 0.375,
+          "height": 1
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 6,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.6875,
+          "y1": 0,
+          "x2": 1,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 6,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3125,
+          "y1": 0,
+          "x2": 0,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 6,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.6875,
+          "y1": 1,
+          "x2": 1,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 6,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3125,
+          "y1": 1,
+          "x2": 0,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 6,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.15625,
+          "y1": 0,
+          "x2": -0.0006362047791327541,
+          "y2": 0.1568862047791329
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3125,
+          "y1": 0,
+          "x2": 0,
+          "y2": 0.3125
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.6875,
+          "y1": 1,
+          "x2": 0.9987525100300396,
+          "y2": 0.68874748996996
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.84375,
+          "y1": 1,
+          "x2": 0.9968864791615636,
+          "y2": 0.8468635208384364
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": -0.000024999375031313776,
+          "y1": 0.5000249993750313,
+          "x2": 0.3125,
+          "y2": 0.1875
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.0012488615674288894,
+          "y1": 0.6862511384325711,
+          "x2": 0.3125,
+          "y2": 0.375
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": -0.0006529880631640594,
+          "y1": 0.8444029880631644,
+          "x2": 0.31312562245381687,
+          "y2": 0.5306243775461834
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0,
+          "y1": 1,
+          "x2": 0.3137724095582655,
+          "y2": 0.6862275904417342
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.3125,
+          "y1": 0.8425,
+          "x2": 0.15625,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.84375,
+          "y1": 0,
+          "x2": 0.6881137052291464,
+          "y2": 0.15563629477085356
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.6875,
+          "y1": 0.3125,
+          "x2": 1,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.9993770848751091,
+          "y1": 0.1568729151248904,
+          "x2": 0.6881243724947956,
+          "y2": 0.46812562750520414
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.9987602458251533,
+          "y1": 0.31373975417484645,
+          "x2": 0.6875,
+          "y2": 0.625
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.9987515664135802,
+          "y1": 0.5012484335864196,
+          "x2": 0.6875,
+          "y2": 0.8125
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 3,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767538906613",
+        "name": "portre",
+        "relativePosition": {
+          "x": -0.125,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767538917052",
+        "name": "portertg",
+        "relativePosition": {
+          "x": 1.125,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767538920441",
+        "name": "portedasrtgb",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767538922640",
+        "name": "portertgdf",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "main-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "custom",
+        "style": {
+          "fontSize": 10,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "centrifugalpump-1767540010585",
+    "category": "AP",
+    "name": "centrifugalpump",
+    "displayName": "Centrifugal Pump",
+    "description": "Centrifugal Pump",
+    "standard": "ISA",
+    "kksEquipmentCode": "AP",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5,
+          "cy": 0.5,
+          "r": 0.2987578450852797
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.5375,
+              "y": 0.325
+            },
+            {
+              "x": 0.5375,
+              "y": 0.675
+            },
+            {
+              "x": 0.7987578450852797,
+              "y": 0.5
+            },
+            {
+              "x": 0.5375,
+              "y": 0.325
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#000000"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.7987578450852797,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.20124215491472028,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767539865399-ptcjupuhl",
+        "name": "inport",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767539866756-f46eqrjx2",
+        "name": "outport",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767540148388-g3z60uf13",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.208
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "centrifugalpump-1767540010585-copy-1767540250815",
+    "category": "CF",
+    "name": "flowsensor",
+    "displayName": "Flow Sensor",
+    "description": "Flow Sensor",
+    "standard": "ISA",
+    "kksEquipmentCode": "CF",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5,
+          "cy": 0.5,
+          "r": 0.2987578450852797
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.7987578450852797,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.20124215491472028,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.7987578450852797,
+          "y1": 0.5,
+          "x2": 0.3506871027418546,
+          "y2": 0.24130623629202802
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.7987578450852797,
+          "y1": 0.5,
+          "x2": 0.3506871027418546,
+          "y2": 0.7586937637079717
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.20124215491472028,
+          "x2": 0.5,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767539865399-ptcjupuhl",
+        "name": "inport",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767539866756-f46eqrjx2",
+        "name": "outport",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767540352370-zpvn718td",
+        "name": "sensorport",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767540148388-g3z60uf13",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.208
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "pressuresensor-1767519721575-copy-1767540406190",
+    "category": "CF",
+    "name": "flowsensora",
+    "displayName": "Flow Sensor Electronic Part",
+    "description": "Flow Sensor Electronic Part",
+    "standard": "ISA",
+    "kksEquipmentCode": "CF",
+    "noKks": true,
+    "defaultSize": {
+      "width": 300,
+      "height": 300
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "arc",
+        "data": {
+          "x": 0.28125,
+          "y": 0.325,
+          "innerRadius": 0,
+          "outerRadius": 0.07375000000000001,
+          "startAngle": 90,
+          "endAngle": 270
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "arc",
+        "data": {
+          "x": 0.49375,
+          "y": 0.325,
+          "innerRadius": 0,
+          "outerRadius": 0.07374999999999998,
+          "startAngle": -90,
+          "endAngle": 90
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.28125,
+          "y1": 0.25125,
+          "x2": 0.49375,
+          "y2": 0.25125
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.28125,
+          "y1": 0.39875,
+          "x2": 0.49375,
+          "y2": 0.39875
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.2075,
+          "y1": 0.325,
+          "x2": 0.5675,
+          "y2": 0.325
+        },
+        "style": {
+          "stroke": "#148112",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767525320412",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.25125
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767525322362",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5675,
+          "y": 0.325
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767525323614",
+        "name": "port3",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.39875
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767525325354",
+        "name": "port4",
+        "relativePosition": {
+          "x": 0.2075,
+          "y": 0.325
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767525242821",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.288125
+        },
+        "anchor": "middle",
+        "binding": "branchkks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      },
+      {
+        "id": "label-1767525243782",
+        "relativePosition": {
+          "x": 0.3875,
+          "y": 0.361875
+        },
+        "anchor": "middle",
+        "binding": "sensornumber",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "centerPoint": {
+      "x": 0.3875,
+      "y": 0.325
+    },
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "branchkks": {
+          "type": "string",
+          "label": "Branch",
+          "description": "The Branch or the line"
+        },
+        "sensornumber": {
+          "type": "string",
+          "label": "Sensor number",
+          "description": "The Sensor Number"
+        }
+      }
+    }
+  },
+  {
+    "id": "heatexchangera-1767541344558",
+    "category": "AC",
+    "name": "heatexchangera",
+    "displayName": "Heat Exchanger",
+    "description": "Heat Exchanger",
+    "standard": "ISA",
+    "kksEquipmentCode": "AC",
+    "noKks": false,
+    "defaultSize": {
+      "width": 200,
+      "height": 200
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "rect",
+        "data": {
+          "x": 0.11490485194281405,
+          "y": 0.11490485194281391,
+          "width": 0.7701902961143718,
+          "height": 0.7701902961143721
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.8850951480571859,
+          "x2": 0.5,
+          "y2": 0.7225951480571859
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.11490485194281391,
+          "x2": 0.5,
+          "y2": 0.2774048519428139
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8850951480571859,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.11490485194281391,
+          "x2": 0.5,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.8850951480571859,
+          "x2": 0.5,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.11490485194281405,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.7225951480571859,
+          "x2": 0.2834936490538905,
+          "y2": 0.5975951480571859
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.2774048519428139,
+          "x2": 0.7165063509461098,
+          "y2": 0.4024048519428138
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.2834936490538905,
+          "y1": 0.5975951480571859,
+          "x2": 0.7165063509461098,
+          "y2": 0.4024048519428138
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767541440748-nhiwx14k0",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767541444101-1as4yw0mt",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767541446687-mmm3qp0ev",
+        "name": "port3",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767541449223-i6ntdw4xg",
+        "name": "port4",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767541415234-5sif8jg93",
+        "relativePosition": {
+          "x": 0.775,
+          "y": 1.0102
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "designTemperature": {
+          "type": "unit-value",
+          "label": "Design Temperature",
+          "description": "Maximum design temperature",
+          "units": [
+            "°C",
+            "°F",
+            "K"
+          ],
+          "defaultUnit": "°C"
+        },
+        "exchangerType": {
+          "type": "select",
+          "label": "Exchanger Type",
+          "description": "Type of heat exchanger",
+          "options": [
+            {
+              "value": "shell-tube",
+              "label": "Shell & Tube"
+            },
+            {
+              "value": "plate",
+              "label": "Plate Heat Exchanger"
+            },
+            {
+              "value": "air-cooled",
+              "label": "Air Cooled"
+            },
+            {
+              "value": "double-pipe",
+              "label": "Double Pipe"
+            },
+            {
+              "value": "spiral",
+              "label": "Spiral"
+            }
+          ]
+        },
+        "power": {
+          "type": "unit-value",
+          "label": "Power",
+          "description": "Electrical power",
+          "units": [
+            "W",
+            "kW",
+            "MW",
+            "HP"
+          ],
+          "defaultUnit": "kW"
+        }
+      }
+    }
+  },
+  {
+    "id": "throttledevice-1767541797918",
+    "category": "BP",
+    "name": "throttledevice",
+    "displayName": "Throttle device",
+    "description": "Throttle device",
+    "standard": "ISA",
+    "kksEquipmentCode": "BP",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.425,
+          "y1": 0.5,
+          "x2": 0.1651923788646684,
+          "y2": 0.35
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.425,
+          "y1": 0.5,
+          "x2": 0.1651923788646684,
+          "y2": 0.65
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.575,
+          "y1": 0.5,
+          "x2": 0.8348076211353316,
+          "y2": 0.35
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.575,
+          "y1": 0.5,
+          "x2": 0.8348076211353316,
+          "y2": 0.65
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767541749852-rw9aodwv6",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767541709307-lnzlqd3ch",
+        "relativePosition": {
+          "x": -0.765,
+          "y": 0.5002
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "heatexchangera-1767541344558-copy-1767546678193",
+    "category": "AC",
+    "name": "heatexchangerb",
+    "displayName": "Heat Exchanger",
+    "description": "Heat Exchanger",
+    "standard": "ISA",
+    "kksEquipmentCode": "AC",
+    "noKks": false,
+    "defaultSize": {
+      "width": 200,
+      "height": 200
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "rect",
+        "data": {
+          "x": 0.11490485194281405,
+          "y": 0.11490485194281391,
+          "width": 0.7701902961143718,
+          "height": 0.7701902961143721
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.11490485194281391,
+          "x2": 0.5,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.7225951480571859,
+          "x2": 1.000054828826095,
+          "y2": 0.7225951480571859
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.2774048519428139,
+          "x2": 1.0000259598598102,
+          "y2": 0.2774048519428139
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.2775,
+          "y2": 0.7225
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.5,
+          "x2": 0.27624650840713116,
+          "y2": 0.2762465084071313
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.27624650840713116,
+          "y1": 0.2762465084071313,
+          "x2": 0.5,
+          "y2": 0.2774048519428139
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.2775,
+          "y1": 0.7225,
+          "x2": 0.5,
+          "y2": 0.7225951480571859
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.8850951480571859,
+          "x2": 0.5,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767547026014-o0snpnm77",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547028895-5wczf1of7",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547032397-t9wav16tz",
+        "name": "port3",
+        "relativePosition": {
+          "x": 1.0000259598598102,
+          "y": 0.2774048519428139
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547034759-4fvodz6sm",
+        "name": "port4",
+        "relativePosition": {
+          "x": 1.000054828826095,
+          "y": 0.7225951480571859
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767541415234-5sif8jg93",
+        "relativePosition": {
+          "x": 0.775,
+          "y": 1.0121
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "designTemperature": {
+          "type": "unit-value",
+          "label": "Design Temperature",
+          "description": "Maximum design temperature",
+          "units": [
+            "°C",
+            "°F",
+            "K"
+          ],
+          "defaultUnit": "°C"
+        },
+        "exchangerType": {
+          "type": "select",
+          "label": "Exchanger Type",
+          "description": "Type of heat exchanger",
+          "options": [
+            {
+              "value": "shell-tube",
+              "label": "Shell & Tube"
+            },
+            {
+              "value": "plate",
+              "label": "Plate Heat Exchanger"
+            },
+            {
+              "value": "air-cooled",
+              "label": "Air Cooled"
+            },
+            {
+              "value": "double-pipe",
+              "label": "Double Pipe"
+            },
+            {
+              "value": "spiral",
+              "label": "Spiral"
+            }
+          ]
+        },
+        "power": {
+          "type": "unit-value",
+          "label": "Power",
+          "description": "Electrical power",
+          "units": [
+            "W",
+            "kW",
+            "MW",
+            "HP"
+          ],
+          "defaultUnit": "kW"
+        }
+      }
+    }
+  },
+  {
+    "id": "heatexchangera-1767541344558-copy-1767546678193-copy-1767547239175",
+    "category": "AC",
+    "name": "heatexchangerc",
+    "displayName": "Heat Exchanger",
+    "description": "Heat Exchanger",
+    "standard": "ISA",
+    "kksEquipmentCode": "AC",
+    "noKks": false,
+    "defaultSize": {
+      "width": 200,
+      "height": 200
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "rect",
+        "data": {
+          "x": 0.11490485194281405,
+          "y": 0.11490485194281391,
+          "width": 0.7701902961143718,
+          "height": 0.7701902961143721
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.11490485194281391,
+          "x2": 0.5,
+          "y2": 0
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.8850951480571859,
+          "x2": 0.5,
+          "y2": 1
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8850951480571859,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.11490485194281405,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.11490485194281405,
+          "y1": 0.11490485194281391,
+          "x2": 0.8850951480571859,
+          "y2": 0.8850951480571859
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767547026014-o0snpnm77",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547028895-5wczf1of7",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547311726-fskpclw0e",
+        "name": "port3",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547313096-2o6t30las",
+        "name": "port4",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767541415234-5sif8jg93",
+        "relativePosition": {
+          "x": 0.775,
+          "y": 1.0121
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        },
+        "rotation": 0
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "designTemperature": {
+          "type": "unit-value",
+          "label": "Design Temperature",
+          "description": "Maximum design temperature",
+          "units": [
+            "°C",
+            "°F",
+            "K"
+          ],
+          "defaultUnit": "°C"
+        },
+        "exchangerType": {
+          "type": "select",
+          "label": "Exchanger Type",
+          "description": "Type of heat exchanger",
+          "options": [
+            {
+              "value": "shell-tube",
+              "label": "Shell & Tube"
+            },
+            {
+              "value": "plate",
+              "label": "Plate Heat Exchanger"
+            },
+            {
+              "value": "air-cooled",
+              "label": "Air Cooled"
+            },
+            {
+              "value": "double-pipe",
+              "label": "Double Pipe"
+            },
+            {
+              "value": "spiral",
+              "label": "Spiral"
+            }
+          ]
+        },
+        "power": {
+          "type": "unit-value",
+          "label": "Power",
+          "description": "Electrical power",
+          "units": [
+            "W",
+            "kW",
+            "MW",
+            "HP"
+          ],
+          "defaultUnit": "kW"
+        }
+      }
+    }
+  },
+  {
+    "id": "deaeratorprimarycircuit-1767548140606",
+    "category": "BB",
+    "name": "deaeratorprimarycircuit",
+    "displayName": "Deaerator",
+    "description": "Primary Circuit Deaerator",
+    "standard": "ISA",
+    "kksEquipmentCode": "BB",
+    "noKks": false,
+    "defaultSize": {
+      "width": 400,
+      "height": 400
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.425,
+              "y": 0.2
+            },
+            {
+              "x": 0.575,
+              "y": 0.2
+            },
+            {
+              "x": 0.575,
+              "y": 0.5625
+            },
+            {
+              "x": 0.8,
+              "y": 0.5625
+            },
+            {
+              "x": 0.8,
+              "y": 0.8125
+            },
+            {
+              "x": 0.2,
+              "y": 0.8125
+            },
+            {
+              "x": 0.2,
+              "y": 0.5625
+            },
+            {
+              "x": 0.425,
+              "y": 0.5625
+            },
+            {
+              "x": 0.425,
+              "y": 0.2
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8,
+          "y1": 0.78125,
+          "x2": 0.55,
+          "y2": 0.78125
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.8,
+          "y1": 0.6875,
+          "x2": 0.5499875003124844,
+          "y2": 0.6875
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.55,
+          "y1": 0.78125,
+          "x2": 0.6300268509626613,
+          "y2": 0.7350464760543093
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5499875003124844,
+          "y1": 0.6875,
+          "x2": 0.6300268509626613,
+          "y2": 0.7350464760543093
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.225,
+          "y1": 0.6,
+          "x2": 0.275,
+          "y2": 0.6
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.275,
+          "y1": 0.6,
+          "x2": 0.29267766952966384,
+          "y2": 0.6176776695296635
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.29267766952966384,
+          "y1": 0.6176776695296635,
+          "x2": 0.31035533905932766,
+          "y2": 0.6
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.31035533905932766,
+          "y1": 0.6,
+          "x2": 0.36035533905932765,
+          "y2": 0.6
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.29267766952966384,
+          "y1": 0.6176776695296635,
+          "x2": 0.29267766952966384,
+          "y2": 0.77
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.29267766952966384,
+          "y1": 0.77,
+          "x2": 0.2,
+          "y2": 0.77
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.425,
+          "y1": 0.2,
+          "x2": 0.5,
+          "y2": 0.2
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.2,
+          "x2": 0.575,
+          "y2": 0.2
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5375,
+          "y1": 0.2,
+          "x2": 0.575,
+          "y2": 0.2
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.2,
+          "x2": 0.5375,
+          "y2": 0.2
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.4625,
+          "y1": 0.2,
+          "x2": 0.5,
+          "y2": 0.2
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.425,
+          "y1": 0.2,
+          "x2": 0.4625,
+          "y2": 0.2
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767547891587-070mgx5o4",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.575,
+          "y": 0.2
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547892140-7u8trv3bd",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.5375,
+          "y": 0.2
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547892628-q311veav6",
+        "name": "port3",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.2
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547893109-hqtc854ec",
+        "name": "port4",
+        "relativePosition": {
+          "x": 0.4625,
+          "y": 0.2
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547893602-2563caxf5",
+        "name": "port5",
+        "relativePosition": {
+          "x": 0.425,
+          "y": 0.2
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547899410-jh5sgqxuc",
+        "name": "port6",
+        "relativePosition": {
+          "x": 0.8,
+          "y": 0.6875
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547900310-jtxzj0al9",
+        "name": "port7",
+        "relativePosition": {
+          "x": 0.8,
+          "y": 0.78125
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547901960-pvkshm1n6",
+        "name": "port8",
+        "relativePosition": {
+          "x": 0.2,
+          "y": 0.77
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547914259-cp7pkx1ep",
+        "name": "port9",
+        "relativePosition": {
+          "x": 0.8,
+          "y": 0.6
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767547919466-bzciabkf6",
+        "name": "port10",
+        "relativePosition": {
+          "x": 0.2,
+          "y": 0.61
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767548076174-1o3lzbmi2",
+        "name": "port11",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.8125
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767548080224-n225pqjhj",
+        "name": "port12",
+        "relativePosition": {
+          "x": 0.36,
+          "y": 0.8125
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767548115221-al0ml514r",
+        "name": "port13",
+        "relativePosition": {
+          "x": 0.4225,
+          "y": 0.275
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767548117987-b6vcy65nc",
+        "name": "port14",
+        "relativePosition": {
+          "x": 0.575,
+          "y": 0.275
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767548122441-y6c7sqmdi",
+        "name": "port15",
+        "relativePosition": {
+          "x": 0.6875,
+          "y": 0.5625
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767547938756-a84voteky",
+        "relativePosition": {
+          "x": 0.675,
+          "y": 0.9
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 14,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {
+        "volume": {
+          "type": "unit-value",
+          "label": "Volume",
+          "description": "Total vessel volume",
+          "units": [
+            "m³",
+            "L",
+            "gal",
+            "bbl"
+          ],
+          "defaultUnit": "m³"
+        }
+      }
+    }
+  },
+  {
+    "id": "reducerdesign-1767548490471",
+    "category": "additional",
+    "name": "reducerdesign",
+    "displayName": "Reducer",
+    "description": "Reducer",
+    "standard": "ISA",
+    "kksEquipmentCode": "",
+    "noKks": true,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.2,
+              "y": 0.325
+            },
+            {
+              "x": 0.2,
+              "y": 0.675
+            },
+            {
+              "x": 0.775,
+              "y": 0.5
+            },
+            {
+              "x": 0.2,
+              "y": 0.325
+            }
+          ]
+        },
+        "style": {
+          "stroke": "#000000",
+          "strokeWidth": 2,
+          "fill": "#ffffff"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767548427472-56vnx9qzp",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.2,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767548428723-l4e7xtvoy",
+        "name": "port2",
+        "relativePosition": {
+          "x": 0.775,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "main-label",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.2
+        },
+        "anchor": "middle",
+        "binding": "custom",
+        "style": {
+          "fontSize": 10,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  }
+]

@@ -200,12 +200,73 @@ npm run build
 
 ---
 
+### 6. Custom Symbols File-Based Storage (2026-01-05)
+**Problem:** Custom symbols were stored only in browser localStorage, which doesn't sync via git. When pulling code on another PC, user lost all custom symbols they designed.
+
+**Solution:** Implemented file-based storage for custom symbols that syncs via git.
+
+**Implementation:**
+- Custom symbols now saved to `data/custom-symbols.json` file
+- Auto-save with 3-second debounce (matches diagram auto-save pattern)
+- File is git-tracked and syncs between machines
+- File wins merge strategy: git file is source of truth
+- Backward compatible: migrates localStorage symbols to file on first run
+- localStorage kept as performance cache
+
+**Storage Flow:**
+1. **On App Startup:**
+   - Load from `data/custom-symbols.json` if exists
+   - If no file, migrate localStorage symbols to file
+   - File symbols always override localStorage (git sync)
+
+2. **During Use:**
+   - Create/modify/delete symbol triggers auto-save
+   - 3-second debounce prevents excessive writes
+   - Console logs confirm save operations
+
+3. **Git Workflow:**
+   - Design symbols → auto-saved to file
+   - `git push` → file synced to remote
+   - Another PC: `git pull` → symbols load automatically
+
+**Files Created:**
+- `data/custom-symbols.json` - Custom symbols storage (auto-created on first run)
+
+**Files Modified:**
+- `vite-plugin-storage.ts`:
+  - Added `CUSTOM_SYMBOLS_FILE` constant
+  - Added `/api/storage/custom-symbols` endpoint (GET/POST)
+  - Handles file read/write with pretty-print JSON
+  - Returns empty array gracefully if file doesn't exist
+
+- `src/services/StorageService.ts`:
+  - Added `saveCustomSymbols(symbols)` method
+  - Added `loadCustomSymbols()` method
+  - Added import for `SymbolDefinition` type
+
+- `src/store/customSymbolStore.ts`:
+  - Added `isLoadedFromFile` state flag
+  - Added `loadFromFile()` action - loads from StorageService, file wins merge
+  - Added `saveToFile()` action - saves symbols array to file
+  - Added `startAutoSync()` action - subscribes to changes with 3s debounce
+  - Updated `partialize` to exclude runtime-only `isLoadedFromFile` flag
+
+- `src/App.tsx`:
+  - Updated initialization `useEffect` to call `loadFromFile()` on startup
+  - Starts auto-sync after successful load
+  - Console logs symbol load count
+
+**Result:** Custom symbols now sync seamlessly between PCs via git. No more lost symbols!
+
+---
+
 ## Session End State
 
 - All TypeScript compilation passes
 - Dev server running
 - Storage system implemented and integrated
 - Quick search working
+- Custom symbols file-based storage implemented and tested
 
 ---
 

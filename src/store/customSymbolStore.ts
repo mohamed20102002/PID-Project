@@ -9,6 +9,7 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { persist } from 'zustand/middleware';
 import { SymbolDefinition, SymbolCategory } from '../types/symbol.types';
+import { StorageService } from '../services/StorageService';
 
 // ============================================================================
 // Types
@@ -26,6 +27,9 @@ interface CustomSymbolState {
 
   /** Recently used symbols */
   recentlyUsed: string[];
+
+  /** Whether symbols have been loaded from file */
+  isLoadedFromFile: boolean;
 }
 
 interface CustomSymbolActions {
@@ -79,6 +83,15 @@ interface CustomSymbolActions {
 
   /** Remove symbols with legacy categories (not in KKS or special categories) */
   cleanupLegacySymbols: () => { removed: number };
+
+  /** Load symbols from file and merge with localStorage */
+  loadFromFile: () => Promise<{ success: boolean; count: number; error?: string }>;
+
+  /** Save current symbols to file */
+  saveToFile: () => Promise<{ success: boolean; error?: string }>;
+
+  /** Start watching for changes to auto-save to file */
+  startAutoSync: () => void;
 }
 
 // ============================================================================
@@ -97,6 +110,7 @@ const initialState: CustomSymbolState = {
   symbolOverrides: {},
   favorites: [],
   recentlyUsed: [],
+  isLoadedFromFile: false,
 };
 
 // ============================================================================
@@ -543,6 +557,93 @@ export const useCustomSymbolStore = create<CustomSymbolState & CustomSymbolActio
         console.log(`Cleanup complete: ${removed} legacy symbols removed`);
         return { removed };
       },
+
+      loadFromFile: async () => {
+        const result = await StorageService.loadCustomSymbols();
+
+        if (result.success && result.symbols) {
+          const state = get();
+          const hadLocalSymbols = Object.keys(state.customSymbols).length > 0;
+
+          // Warn if we're replacing local symbols
+          if (hadLocalSymbols && result.symbols.length > 0) {
+            console.warn('[customSymbolStore] Replacing localStorage symbols with file version. Local changes may be lost.');
+          }
+
+          set((state) => {
+            // File wins - replace localStorage symbols
+            state.customSymbols = {};
+
+            // Convert array to Record<string, SymbolDefinition>
+            result.symbols!.forEach(symbol => {
+              state.customSymbols[symbol.id] = symbol;
+            });
+
+            state.isLoadedFromFile = true;
+          });
+
+          console.log(`[customSymbolStore] Loaded ${result.symbols.length} symbols from file`);
+          return { success: true, count: result.symbols.length };
+        } else if (result.success && (!result.symbols || result.symbols.length === 0)) {
+          // File doesn't exist or is empty - migrate localStorage to file
+          const { customSymbols } = get();
+          const symbolsArray = Object.values(customSymbols);
+
+          if (symbolsArray.length > 0) {
+            console.log(`[customSymbolStore] Migrating ${symbolsArray.length} symbols from localStorage to file`);
+            await get().saveToFile();
+          }
+
+          set((state) => {
+            state.isLoadedFromFile = true;
+          });
+
+          return { success: true, count: symbolsArray.length };
+        } else {
+          console.error('[customSymbolStore] Failed to load from file:', result.error);
+          return { success: false, count: 0, error: result.error };
+        }
+      },
+
+      saveToFile: async () => {
+        const { customSymbols } = get();
+        const symbolsArray = Object.values(customSymbols);
+
+        const result = await StorageService.saveCustomSymbols(symbolsArray);
+
+        if (result.success) {
+          console.log(`[customSymbolStore] Saved ${symbolsArray.length} symbols to file`);
+        } else {
+          console.error('[customSymbolStore] Failed to save to file:', result.error);
+        }
+
+        return result;
+      },
+
+      startAutoSync: () => {
+        let saveTimeout: NodeJS.Timeout | null = null;
+        const DEBOUNCE_MS = 3000; // 3 seconds, matching diagram auto-save
+
+        // Subscribe to store changes
+        useCustomSymbolStore.subscribe((state, prevState) => {
+          // Only auto-save if loaded from file (prevents save on initial load)
+          if (!state.isLoadedFromFile) return;
+
+          // Check if customSymbols changed
+          if (state.customSymbols !== prevState.customSymbols) {
+            // Clear existing timeout
+            if (saveTimeout) {
+              clearTimeout(saveTimeout);
+            }
+
+            // Debounce save
+            saveTimeout = setTimeout(() => {
+              console.log('[customSymbolStore] Auto-saving symbols to file...');
+              get().saveToFile();
+            }, DEBOUNCE_MS);
+          }
+        });
+      },
     })),
     {
       name: STORAGE_KEY,
@@ -551,6 +652,7 @@ export const useCustomSymbolStore = create<CustomSymbolState & CustomSymbolActio
         symbolOverrides: state.symbolOverrides,
         favorites: state.favorites,
         recentlyUsed: state.recentlyUsed,
+        // Don't persist isLoadedFromFile - it's runtime only
       }),
     }
   )
