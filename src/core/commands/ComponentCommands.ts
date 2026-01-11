@@ -108,41 +108,41 @@ export class DeleteMultipleCommand extends BaseCommand {
   readonly type = 'deleteMultiple';
   readonly description: string;
 
-  private componentKks: string[];
+  private componentIds: string[];
   private connectionIds: string[];
   private deletedComponents: Component[] = [];
-  private deletedConnections: Array<{ id: string; data: unknown }> = [];
+  private deletedConnections: Array<{ kks: string; data: unknown }> = [];
 
-  constructor(componentKks: string[], connectionIds: string[] = []) {
+  constructor(componentIds: string[], connectionIds: string[] = []) {
     super();
-    this.componentKks = componentKks;
+    this.componentIds = componentIds;
     this.connectionIds = connectionIds;
-    this.description = `Delete ${componentKks.length} component(s)`;
+    this.description = `Delete ${componentIds.length} component(s)`;
   }
 
   execute(): boolean {
     const store = useDiagramStore.getState();
 
     // Store components for undo
-    this.deletedComponents = this.componentKks
+    this.deletedComponents = this.componentIds
       .map((kks) => store.getComponent(kks))
       .filter((c): c is Component => c !== undefined);
 
     // Store all affected connections
     const affectedConnections = new Set<string>(this.connectionIds);
-    this.componentKks.forEach((kks) => {
+    this.componentIds.forEach((kks) => {
       store.getConnectionsForComponent(kks).forEach((conn) => {
-        affectedConnections.add(conn.id);
+        affectedConnections.add(conn.kks);
       });
     });
 
     this.deletedConnections = Array.from(affectedConnections)
-      .map((id) => store.getConnection(id))
+      .map((kks) => store.getConnection(kks))
       .filter((c) => c !== undefined)
-      .map((conn) => ({ id: conn!.id, data: { ...conn } }));
+      .map((conn) => ({ kks: conn!.kks, data: { ...conn } }));
 
     // Delete
-    store.deleteMultiple(this.componentKks, this.connectionIds);
+    store.deleteMultiple(this.componentIds, this.connectionIds);
     return true;
   }
 

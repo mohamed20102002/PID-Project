@@ -94,10 +94,10 @@ export const useKeyboardShortcuts = () => {
   const deleteSelected = useCallback(() => {
     if (mode === 'view') return;
     // Allow deletion if any components OR connections are selected
-    if (selection.componentKks.length === 0 && selection.connectionIds.length === 0) return;
+    if (selection.componentKks.length === 0 && selection.connectionKks.length === 0) return;
 
     // Use command for undo/redo support
-    execute(new DeleteMultipleCommand(selection.componentKks, selection.connectionIds));
+    execute(new DeleteMultipleCommand(selection.componentKks, selection.connectionKks));
     clearSelection();
   }, [mode, selection, execute, clearSelection]);
 
@@ -109,8 +109,8 @@ export const useKeyboardShortcuts = () => {
       .map((kks) => getComponent(kks))
       .filter(Boolean);
 
-    const connections = selection.connectionIds
-      .map((id) => getConnection(id))
+    const connections = selection.connectionKks
+      .map((kks) => getConnection(kks))
       .filter(Boolean);
 
     copyToClipboard(components, connections);
@@ -119,13 +119,13 @@ export const useKeyboardShortcuts = () => {
   // Cut selected components (copy + delete) using commands for undo/redo
   const cutSelected = useCallback(() => {
     if (mode === 'view') return;
-    if (selection.componentKks.length === 0 && selection.connectionIds.length === 0) return;
+    if (selection.componentKks.length === 0 && selection.connectionKks.length === 0) return;
 
     // Copy first
     copySelected();
 
     // Then delete using command
-    execute(new DeleteMultipleCommand(selection.componentKks, selection.connectionIds));
+    execute(new DeleteMultipleCommand(selection.componentKks, selection.connectionKks));
     clearSelection();
   }, [mode, selection, copySelected, execute, clearSelection]);
 
@@ -155,7 +155,7 @@ export const useKeyboardShortcuts = () => {
           },
           ports: comp.ports.map((p: any) => ({
             ...p,
-            connectionId: undefined, // Clear connections, will recreate
+            connectionKks: undefined, // Clear connections, will recreate
           })),
         };
         // Remove the kks so a new one is generated
@@ -205,8 +205,13 @@ export const useKeyboardShortcuts = () => {
                     x: wp.x + offsetX,
                     y: wp.y + offsetY,
                   })) || [],
+                  routingType: conn.routingType || 'orthogonal',
+                  visible: true,
+                  locked: false,
+                  isCrossSystem: false,
+                  properties: { custom: {} },
+                  type: conn.type || 'pipe',
                   style: { ...conn.style },
-                  kks: conn.kks,
                   label: conn.label,
                 });
               }

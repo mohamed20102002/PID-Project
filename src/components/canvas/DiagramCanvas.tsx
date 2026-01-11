@@ -49,6 +49,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
   const axisLinesVisible = useUIStore((state) => state.axisLinesVisible);
   const diagramCanvasWidth = useUIStore((state) => state.canvasWidth);
   const diagramCanvasHeight = useUIStore((state) => state.canvasHeight);
+  const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
   const mode = useUIStore((state) => state.mode);
   const tool = useUIStore((state) => state.tool);
   const placingComponentType = useUIStore((state) => state.placingComponentType);
@@ -120,7 +121,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
             componentSet.has(conn.sourceComponentKks) &&
             componentSet.has(conn.targetComponentKks)
         )
-        .map((conn) => conn.id);
+        .map((conn) => conn.kks);
     },
     [connections]
   );
@@ -156,6 +157,10 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
   const [isPanning, setIsPanning] = useState(false);
   const [lastPointerPosition, setLastPointerPosition] = useState<{ x: number; y: number } | null>(null);
   const [guideLines, setGuideLines] = useState<GuideLine[]>([]);
+
+  // Throttle ref for mouse position updates (performance optimization)
+  const lastMouseUpdateRef = useRef<number>(0);
+  const MOUSE_UPDATE_THROTTLE = 32; // ~30fps for status bar updates
 
   // Handle wheel zoom
   const handleWheel = useCallback(
@@ -224,10 +229,6 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         angle: portDef.defaultAngle || 0,
         allowedConnectionTypes: portDef.allowedConnections || ['pipe'],
       })) || [];
-
-      console.log(`[DiagramCanvas] Placing component "${definition.displayName}" (${symbolId})`);
-      console.log(`[DiagramCanvas] Symbol definition has ${definition.ports?.length || 0} ports:`, definition.ports);
-      console.log(`[DiagramCanvas] Created ${ports.length} port instances:`, ports);
 
       // Use selected system or diagram's system
       const systemKks = selectedSystemKks || diagram?.systemKks || 'DEFAULT';
@@ -529,7 +530,13 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         x: (pointer.x - viewport.x) / viewport.scale,
         y: (pointer.y - viewport.y) / viewport.scale,
       };
-      setMousePosition(canvasPos);
+
+      // Throttle mouse position updates for status bar (performance optimization)
+      const now = Date.now();
+      if (now - lastMouseUpdateRef.current >= MOUSE_UPDATE_THROTTLE) {
+        setMousePosition(canvasPos);
+        lastMouseUpdateRef.current = now;
+      }
 
       // Handle panning
       if (isPanning && lastPointerPosition) {
@@ -644,11 +651,14 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         sourceSystemKks: sourceComponent.systemKks,
         targetSystemKks: targetComponent.systemKks,
         waypoints: userWaypoints, // User-defined waypoints from click-to-add
-        properties: {},
+        routingType: 'orthogonal',
+        visible: true,
+        locked: false,
+        properties: { custom: {} },
         style: {
           strokeColor: connectionType === 'signal' ? '#2563eb' : '#1a1a1a',
           strokeWidth: connectionType === 'signal' ? 1.5 : 2,
-          lineStyle: connectionType === 'signal' ? 'dashed' : 'solid',
+          lineType: connectionType === 'signal' ? 'dashed' : 'solid',
         },
       }));
     },
@@ -815,7 +825,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         width: '100%',
         height: '100%',
         overflow: 'hidden',
-        backgroundColor: '#f3f4f6',
+        backgroundColor: canvasDarkMode ? '#111827' : '#f3f4f6',
       }}
     >
       <Stage
@@ -839,6 +849,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
           height={diagramCanvasHeight}
           scale={viewport.scale}
           visible={true}
+          darkMode={canvasDarkMode}
         />
 
         {/* Grid Layer - only visible in edit mode */}
@@ -850,6 +861,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
           scale={viewport.scale}
           offsetX={viewport.x}
           offsetY={viewport.y}
+          darkMode={canvasDarkMode}
         />
 
         {/* Axis Reference Overlay (visual only, non-interactive) - only in edit mode */}

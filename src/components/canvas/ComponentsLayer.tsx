@@ -8,7 +8,7 @@
 import React, { useCallback, useRef, useState, useMemo } from 'react';
 import { Layer, Group, Rect, Line } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
-import { BaseSymbol } from '../symbols/base/BaseSymbol';
+import { MemoizedBaseSymbol } from '../symbols/base/BaseSymbol';
 import { useDiagramStore } from '../../store/diagramStore';
 import { useUIStore } from '../../store/uiStore';
 import { usePlantStore } from '../../store/plantStore';
@@ -81,7 +81,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
             componentSet.has(conn.sourceComponentKks) &&
             componentSet.has(conn.targetComponentKks)
         )
-        .map((conn) => conn.id);
+        .map((conn) => conn.kks);
     },
     [connections]
   );
@@ -94,6 +94,14 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   const isDrawingConnection = useUIStore((state) => state.isDrawingConnection);
   const snapToGrid = useUIStore((state) => state.snapToGrid);
   const highlightedComponentKks = useUIStore((state) => state.highlightedComponentKks);
+
+  // KKS Pipe Highlighting state
+  const kksHighlightEnabled = useUIStore((state) => state.kksHighlightEnabled);
+  const kksHighlightSegment = useUIStore((state) => state.kksHighlightSegment);
+  const kksHideNonMatching = useUIStore((state) => state.kksHideNonMatching);
+
+  // Dark mode
+  const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
 
   const select = useUIStore((state) => state.select);
   const addToSelection = useUIStore((state) => state.addToSelection);
@@ -122,6 +130,49 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
 
   // Alignment guides state
   const [alignmentGuides, setAlignmentGuides] = useState<AlignmentGuide[]>([]);
+
+  // Compute set of component KKS that match the KKS highlight segment
+  // Excludes "Additional Components" (category: additional) from KKS matching
+  const kksMatchingComponents = useMemo(() => {
+    if (!kksHighlightEnabled || !kksHighlightSegment.trim()) return new Set<string>();
+
+    const segment = kksHighlightSegment.trim().toUpperCase();
+    const matchingKks = new Set<string>();
+
+    components.forEach((comp) => {
+      // Skip "Additional Components" category (auto-generated KKS)
+      const isAdditionalComponent = comp.type.startsWith('additional:');
+
+      if (!isAdditionalComponent && comp.kks.toUpperCase().includes(segment)) {
+        matchingKks.add(comp.kks);
+      }
+    });
+
+    return matchingKks;
+  }, [kksHighlightEnabled, kksHighlightSegment, components]);
+
+  // Check if a component is connected to a matching component (for pipes through it)
+  const kksConnectedComponents = useMemo(() => {
+    if (!kksHighlightEnabled || !kksHideNonMatching || kksMatchingComponents.size === 0) {
+      return new Set<string>();
+    }
+
+    const connectedKks = new Set<string>();
+
+    // Find components that are connected to matching components via pipes
+    connections.forEach((conn) => {
+      const sourceMatches = kksMatchingComponents.has(conn.sourceComponentKks);
+      const targetMatches = kksMatchingComponents.has(conn.targetComponentKks);
+
+      if (sourceMatches || targetMatches) {
+        // Both ends of a highlighted pipe should remain visible
+        connectedKks.add(conn.sourceComponentKks);
+        connectedKks.add(conn.targetComponentKks);
+      }
+    });
+
+    return connectedKks;
+  }, [kksHighlightEnabled, kksHideNonMatching, kksMatchingComponents, connections]);
 
   // Helper: Get component bounding box
   // Note: Component position is at the centerPoint of the symbol (due to offsetX/offsetY in BaseSymbol)
@@ -290,7 +341,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
 
       return uniqueGuides;
     },
-    [components, selection.componentKks, getComponentBounds]
+    [components, selection.componentKks, getComponentBounds, customSymbols]
   );
 
   // Check if a component is selected
@@ -458,7 +509,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
               x: wp.x + deltaX,
               y: wp.y + deltaY,
             }));
-            executeCommand(new UpdateWaypointsCommand(conn.id, conn.waypoints, movedWaypoints));
+            executeCommand(new UpdateWaypointsCommand(conn.kks, conn.waypoints, movedWaypoints));
           }
         });
       } else {
@@ -545,7 +596,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         }
 
         if (targetComponent) {
-          // Select the target terminal
+          // Select the target terminal using KKS
           select([targetComponent.kks], []);
 
           // Highlight the target terminal with blinking animation (but don't change viewport)
@@ -632,8 +683,8 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
       if (selectedKks.length > 0) {
         // Find connections between selected components (including already selected ones)
         const allSelectedKks = [...new Set([...selection.componentKks, ...selectedKks])];
-        const connectionIds = findConnectionsBetweenComponents(allSelectedKks);
-        addToSelection(selectedKks, connectionIds);
+        const connectionKksList = findConnectionsBetweenComponents(allSelectedKks);
+        addToSelection(selectedKks, connectionKksList);
       }
     }
 
@@ -669,11 +720,19 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         const offsetX = isBeingDraggedWithSelection ? dragDelta.x : 0;
         const offsetY = isBeingDraggedWithSelection ? dragDelta.y : 0;
 
+        // KKS Highlight visibility: hide non-matching components when hide mode is on
+        const isKksMatching = kksMatchingComponents.has(component.kks);
+        const isKksConnected = kksConnectedComponents.has(component.kks);
+        const shouldHideForKks = kksHighlightEnabled && kksHideNonMatching && kksMatchingComponents.size > 0;
+        const isVisibleForKks = isKksMatching || isKksConnected || componentIsSelected;
+        const kksOpacity = shouldHideForKks && !isVisibleForKks ? 0.1 : 1;
+
         return (
           <Group
             key={component.kks}
             x={component.position.x + offsetX}
             y={component.position.y + offsetY}
+            opacity={kksOpacity}
             draggable={mode === 'draw' && tool === 'select'}
             onDragStart={(e) => handleDragStart(e, component)}
             onDragMove={handleDragMove}
@@ -685,7 +744,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
             onMouseEnter={() => setHoveredComponent(component.kks)}
             onMouseLeave={() => setHoveredComponent(null)}
           >
-            <BaseSymbol
+            <MemoizedBaseSymbol
               definition={definition}
               component={{...component, position: { x: 0, y: 0 }}}
               isSelected={componentIsSelected}
@@ -694,6 +753,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
               isHighlighted={componentIsHighlighted}
               showPorts={showPorts}
               mode={mode}
+              darkMode={canvasDarkMode}
               onPortClick={(portId) => handlePortClick(component.kks, portId)}
             />
           </Group>

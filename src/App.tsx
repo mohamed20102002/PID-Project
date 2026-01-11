@@ -13,6 +13,8 @@ import { WorkspaceStatus } from './components/panels/WorkspaceStatus';
 import { SystemTabs } from './components/tabs/DiagramTabs';
 import { HomePage } from './components/panels/HomePage';
 import { EditModeLogin } from './components/panels/EditModeLogin';
+import { SettingsModal } from './components/panels/SettingsModal';
+import { TechnicalPanel } from './components/panels/TechnicalPanel';
 import { ResizableDivider } from './components/common/ResizableDivider';
 import { useStorageService } from './hooks/useStorageService';
 import { useUIStore, selectZoomPercent } from './store/uiStore';
@@ -23,7 +25,79 @@ import { useCustomSymbolStore } from './store/customSymbolStore';
 import { useAutoSave } from './hooks/useAutoSave';
 import { saveToFile, loadFromFile, addRecentFile } from './utils/fileIO';
 
+// Simple Dropdown Component
+const Dropdown = ({
+  trigger,
+  children,
+  isOpen,
+  onToggle,
+  align = 'left'
+}: {
+  trigger: React.ReactNode;
+  children: React.ReactNode;
+  isOpen: boolean;
+  onToggle: () => void;
+  align?: 'left' | 'right';
+}) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        if (isOpen) onToggle();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, onToggle]);
+
+  return (
+    <div ref={dropdownRef} className="relative">
+      <div onClick={onToggle}>{trigger}</div>
+      {isOpen && (
+        <div className={`absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50 min-w-[160px] ${align === 'right' ? 'right-0' : 'left-0'}`}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const DropdownItem = ({
+  onClick,
+  icon,
+  label,
+  shortcut,
+  active,
+  disabled
+}: {
+  onClick: () => void;
+  icon?: React.ReactNode;
+  label: string;
+  shortcut?: string;
+  active?: boolean;
+  disabled?: boolean;
+}) => (
+  <button
+    className={`w-full px-3 py-1.5 text-left text-sm flex items-center gap-2 ${
+      disabled ? 'text-gray-300 cursor-not-allowed' :
+      active ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'
+    }`}
+    onClick={disabled ? undefined : onClick}
+    disabled={disabled}
+  >
+    {icon && <span className="w-4 h-4 flex items-center justify-center">{icon}</span>}
+    <span className="flex-1">{label}</span>
+    {shortcut && <span className="text-xs text-gray-400">{shortcut}</span>}
+  </button>
+);
+
+const DropdownDivider = () => <div className="h-px bg-gray-200 my-1" />;
+
 function App() {
+  // Dropdown states
+  const [openDropdown, setOpenDropdown] = useState<'file' | 'view' | null>(null);
+
   // UI Store
   const mode = useUIStore((state) => state.mode);
   const setMode = useUIStore((state) => state.setMode);
@@ -51,6 +125,8 @@ function App() {
   const zoomOut = useUIStore((state) => state.zoomOut);
   const resetZoom = useUIStore((state) => state.resetZoom);
   const mousePosition = useUIStore((state) => state.mousePosition);
+  const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
+  const toggleCanvasDarkMode = useUIStore((state) => state.toggleCanvasDarkMode);
 
   // Diagram Store
   const diagram = useDiagramStore((state) => state.diagram);
@@ -88,6 +164,9 @@ function App() {
   // Edit Mode Login state
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  // Settings Modal state
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   // Storage service hook (auto-save enabled)
   useStorageService({
     autoSaveInterval: 3000,
@@ -96,6 +175,9 @@ function App() {
 
   // Left panel tab state
   const [leftPanelTab, setLeftPanelTab] = useState<'symbols' | 'plant' | 'search'>('symbols');
+
+  // Right panel tab state
+  const [rightPanelTab, setRightPanelTab] = useState<'properties' | 'technical'>('properties');
 
   // Canvas container ref for measuring size
   const canvasContainerRef = useRef<HTMLDivElement>(null);
@@ -223,12 +305,20 @@ function App() {
   // Initialize symbol library with default symbols on first load
   const initializeDefaultSymbols = useCustomSymbolStore((state) => state.initializeDefaultSymbols);
 
+  // Get validateCache from diagramStore
+  const validateCache = useDiagramStore((state) => state.validateCache);
+
   useEffect(() => {
     // Load plant from file on startup
     loadPlantFromFile();
 
     // Initialize default symbols (only happens once if localStorage empty)
     initializeDefaultSymbols();
+
+    // Validate diagram cache against actual files (cleans up stale tabs)
+    validateCache().then(() => {
+      console.log('[App] Diagram cache validated');
+    });
 
     // Load custom symbols from file
     const loadSymbols = async () => {
@@ -246,7 +336,7 @@ function App() {
     };
 
     loadSymbols();
-  }, [loadPlantFromFile, initializeDefaultSymbols]);
+  }, [loadPlantFromFile, initializeDefaultSymbols, validateCache]);
 
   // Show loading state if plant is not loaded yet
   if (!plant) {
@@ -265,298 +355,260 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen bg-pid-background">
-      {/* Top Toolbar */}
-      <header className="h-12 bg-white border-b border-pid-border flex items-center px-4 shadow-sm flex-shrink-0">
-        <div className="flex items-center gap-4">
+      {/* Top Toolbar - Clean Professional Design with Dropdown Menus */}
+      <header className="h-11 bg-white border-b border-gray-200 flex items-center px-3 shadow-sm flex-shrink-0">
+        {/* Left Section: Logo + Menu Items */}
+        <div className="flex items-center gap-1">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <svg className="w-6 h-6 text-pid-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="flex items-center gap-1.5 pr-3 border-r border-gray-200 mr-1">
+            <svg className="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2L2 7l10 5 10-5-10-5z" />
               <path d="M2 17l10 5 10-5" />
               <path d="M2 12l10 5 10-5" />
             </svg>
-            <span className="font-semibold text-gray-800">FlowMark</span>
+            <span className="font-semibold text-sm text-gray-800">FlowMark</span>
           </div>
 
-          {/* Divider */}
-          <div className="h-6 w-px bg-pid-border" />
+          {/* File Menu */}
+          <Dropdown
+            isOpen={openDropdown === 'file'}
+            onToggle={() => setOpenDropdown(openDropdown === 'file' ? null : 'file')}
+            trigger={
+              <button className="px-2.5 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded flex items-center gap-1">
+                File
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+            }
+          >
+            <DropdownItem
+              onClick={() => { handleNew(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14,2 14,8 20,8" /><line x1="12" y1="18" x2="12" y2="12" /><line x1="9" y1="15" x2="15" y2="15" /></svg>}
+              label="New Diagram"
+              shortcut="Ctrl+N"
+            />
+            <DropdownItem
+              onClick={() => { handleOpen(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" /></svg>}
+              label="Open..."
+              shortcut="Ctrl+O"
+            />
+            <DropdownItem
+              onClick={() => { handleSave(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><polyline points="17,21 17,13 7,13 7,21" /><polyline points="7,3 7,8 15,8" /></svg>}
+              label={isDirty ? "Save *" : "Save"}
+              shortcut="Ctrl+S"
+            />
+          </Dropdown>
 
-          {/* File Actions */}
-          <div className="flex items-center gap-1">
-            <button
-              className="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded"
-              onClick={handleNew}
-              title="New Diagram (Ctrl+N)"
-            >
-              New
-            </button>
-            <button
-              className="px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded"
-              onClick={handleOpen}
-              title="Open Diagram (Ctrl+O)"
-            >
-              Open
-            </button>
-            <button
-              className={`px-3 py-1.5 text-sm rounded flex items-center gap-1 ${
-                saveStatus === 'saving'
-                  ? 'text-gray-400'
-                  : saveStatus === 'saved'
-                  ? 'text-green-600'
-                  : saveStatus === 'error'
-                  ? 'text-red-600'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={handleSave}
-              disabled={saveStatus === 'saving'}
-              title="Save Diagram (Ctrl+S)"
-            >
-              {saveStatus === 'saving' ? (
-                <>
-                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
-                  </svg>
-                  Saving...
-                </>
-              ) : saveStatus === 'saved' ? (
-                <>
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="20,6 9,17 4,12" />
-                  </svg>
-                  Saved
-                </>
-              ) : (
-                <>
-                  Save
-                  {isDirty && <span className="text-orange-500">*</span>}
-                </>
-              )}
-            </button>
-          </div>
+          {/* View Menu */}
+          <Dropdown
+            isOpen={openDropdown === 'view'}
+            onToggle={() => setOpenDropdown(openDropdown === 'view' ? null : 'view')}
+            trigger={
+              <button className="px-2.5 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded flex items-center gap-1">
+                View
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+            }
+          >
+            <DropdownItem
+              onClick={() => { setGridVisible(!gridVisible); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="3" y1="15" x2="21" y2="15" /><line x1="9" y1="3" x2="9" y2="21" /><line x1="15" y1="3" x2="15" y2="21" /></svg>}
+              label="Show Grid"
+              active={gridVisible}
+            />
+            <DropdownItem
+              onClick={() => { setSnapToGrid(!snapToGrid); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></svg>}
+              label="Snap to Grid"
+              active={snapToGrid}
+            />
+            <DropdownItem
+              onClick={() => { toggleAxisOverlay(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><text x="2" y="8" fontSize="7" fontWeight="bold" fill="currentColor" stroke="none">A</text><text x="2" y="18" fontSize="7" fontWeight="bold" fill="currentColor" stroke="none">1</text><line x1="10" y1="2" x2="10" y2="22" strokeDasharray="2,2" /></svg>}
+              label="Axis Labels"
+              active={axisOverlayVisible}
+            />
+            <DropdownDivider />
+            <DropdownItem
+              onClick={() => { zoomIn(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>}
+              label="Zoom In"
+              shortcut="Ctrl++"
+            />
+            <DropdownItem
+              onClick={() => { zoomOut(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /><line x1="8" y1="11" x2="14" y2="11" /></svg>}
+              label="Zoom Out"
+              shortcut="Ctrl+-"
+            />
+            <DropdownItem
+              onClick={() => { resetZoom(); setOpenDropdown(null); }}
+              icon={<svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 3H5a2 2 0 00-2 2v3" /><path d="M21 8V5a2 2 0 00-2-2h-3" /><path d="M3 16v3a2 2 0 002 2h3" /><path d="M16 21h3a2 2 0 002-2v-3" /></svg>}
+              label="Reset Zoom"
+              shortcut="Ctrl+0"
+            />
+          </Dropdown>
 
-          {/* Divider */}
-          <div className="h-6 w-px bg-pid-border" />
+          <div className="h-5 w-px bg-gray-200 mx-1" />
 
-          {/* Mode Toggle */}
-          <div className="flex items-center bg-gray-100 rounded-lg p-0.5">
+          {/* Mode Toggle - Sleek */}
+          <div className="flex items-center bg-gray-100 rounded p-0.5">
             <button
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              className={`px-2.5 py-1 text-xs font-medium rounded transition-all ${
                 mode === 'draw'
-                  ? 'bg-white text-pid-primary shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
+                  ? 'bg-white text-blue-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => mode !== 'draw' && setIsLoginModalOpen(true)}
-              title="Enter Edit Mode (requires admin password)"
+              title="Edit Mode"
             >
               Edit
             </button>
             <button
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              className={`px-2.5 py-1 text-xs font-medium rounded transition-all ${
                 mode === 'view'
-                  ? 'bg-white text-pid-primary shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
+                  ? 'bg-white text-blue-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setMode('view')}
+              title="View Mode"
             >
               View
             </button>
           </div>
-
-          {/* Exit Edit Mode Button (only shown in edit mode) */}
-          {mode === 'draw' && (
-            <>
-              <div className="h-6 w-px bg-pid-border" />
-              <button
-                className="px-3 py-1.5 text-sm text-white bg-green-600 hover:bg-green-700 rounded flex items-center gap-1"
-                onClick={() => setMode('view')}
-                title="Exit edit mode"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                Exit Edit
-              </button>
-            </>
-          )}
-
-          {/* Divider */}
-          <div className="h-6 w-px bg-pid-border" />
-
-          {/* Symbol Library */}
-          <button
-            className={`px-3 py-1.5 text-sm rounded flex items-center gap-1 ${
-              mode === 'view'
-                ? 'text-gray-300 cursor-not-allowed'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-            onClick={() => mode === 'draw' && setIsSymbolLibraryOpen(true)}
-            disabled={mode === 'view'}
-            title={mode === 'view' ? 'Enter Edit Mode to access Symbol Library' : 'Symbol Library'}
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="7" height="7" rx="1" />
-              <rect x="14" y="3" width="7" height="7" rx="1" />
-              <rect x="3" y="14" width="7" height="7" rx="1" />
-              <rect x="14" y="14" width="7" height="7" rx="1" />
-            </svg>
-            Library
-          </button>
-
-          {/* Component Designer */}
-          <button
-            className={`px-3 py-1.5 text-sm rounded flex items-center gap-1 ${
-              mode === 'view'
-                ? 'text-gray-300 cursor-not-allowed'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-            onClick={() => mode === 'draw' && setIsVisualDesignerOpen(true)}
-            disabled={mode === 'view'}
-            title={mode === 'view' ? 'Enter Edit Mode to create symbols' : 'Visual Component Designer'}
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <path d="M3 9h18M9 21V9" />
-            </svg>
-            Create Symbol
-          </button>
-
-          {/* Divider */}
-          <div className="h-6 w-px bg-pid-border" />
-
-          {/* Grid Controls */}
-          <div className="flex items-center gap-2">
-            <button
-              className={`px-2 py-1 text-sm rounded transition-colors ${
-                mode === 'view'
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : gridVisible ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => mode === 'draw' && setGridVisible(!gridVisible)}
-              disabled={mode === 'view'}
-              title={mode === 'view' ? 'Enter Edit Mode to toggle grid' : 'Toggle Grid'}
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <line x1="3" y1="9" x2="21" y2="9" />
-                <line x1="3" y1="15" x2="21" y2="15" />
-                <line x1="9" y1="3" x2="9" y2="21" />
-                <line x1="15" y1="3" x2="15" y2="21" />
-              </svg>
-            </button>
-            <button
-              className={`px-2 py-1 text-sm rounded transition-colors ${
-                mode === 'view'
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : snapToGrid ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => mode === 'draw' && setSnapToGrid(!snapToGrid)}
-              disabled={mode === 'view'}
-              title={mode === 'view' ? 'Enter Edit Mode to toggle snap' : 'Toggle Snap to Grid'}
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="2" />
-                <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
-              </svg>
-            </button>
-            <button
-              className={`px-2 py-1 text-sm rounded transition-colors ${
-                mode === 'view'
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : axisOverlayVisible ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              onClick={() => mode === 'draw' && toggleAxisOverlay()}
-              disabled={mode === 'view'}
-              title={mode === 'view' ? 'Enter Edit Mode to toggle axis' : 'Toggle Axis Reference (A-Z, 1-2-3)'}
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <text x="3" y="10" fontSize="8" fontWeight="bold" fill="currentColor" stroke="none">A</text>
-                <text x="14" y="10" fontSize="8" fontWeight="bold" fill="currentColor" stroke="none">B</text>
-                <text x="3" y="20" fontSize="8" fontWeight="bold" fill="currentColor" stroke="none">1</text>
-                <line x1="12" y1="2" x2="12" y2="22" strokeDasharray="2,2" />
-                <line x1="2" y1="12" x2="22" y2="12" strokeDasharray="2,2" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="h-6 w-px bg-pid-border" />
-
-          {/* Building Tool */}
-          <button
-            className={`px-2 py-1 text-sm rounded transition-colors flex items-center gap-1 ${
-              mode === 'view'
-                ? 'text-gray-300 cursor-not-allowed'
-                : tool === 'building' || isDrawingBuilding
-                  ? 'bg-green-100 text-green-700'
-                  : 'text-gray-600 hover:bg-gray-100'
-            }`}
-            onClick={() => mode === 'draw' && startBuildingDrawing()}
-            disabled={mode === 'view'}
-            title={mode === 'view' ? 'Enter Edit Mode to draw buildings' : 'Draw Building Area (click to place vertices, close near start point)'}
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polygon points="3,3 21,3 21,14 12,21 3,14" strokeLinejoin="round" />
-              <line x1="3" y1="14" x2="21" y2="14" />
-            </svg>
-            Building
-          </button>
-
-          {/* Divider */}
-          <div className="h-6 w-px bg-pid-border" />
-
-          {/* Quick System Search */}
-          <button
-            className="px-2 py-1 text-sm rounded transition-colors flex items-center gap-2 text-gray-600 hover:bg-gray-100"
-            onClick={() => setIsQuickSearchOpen(true)}
-            title="Quick System Search (Ctrl+K)"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35" />
-            </svg>
-            <span>Search Systems</span>
-            <kbd className="px-1.5 py-0.5 text-xs bg-gray-100 text-gray-500 rounded border border-gray-200">Ctrl+K</kbd>
-          </button>
         </div>
 
-        {/* Right side actions */}
-        <div className="ml-auto flex items-center gap-2">
-          {/* Undo/Redo */}
-          <div className="flex items-center gap-1">
+        {/* Center Section: Edit Tools (only in edit mode) */}
+        {mode === 'draw' && (
+          <div className="flex items-center gap-1 ml-4 pl-4 border-l border-gray-200">
+            {/* Quick Actions */}
             <button
-              className={`p-1.5 rounded transition-colors ${
-                mode === 'view' || !canUndo
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-              }`}
-              title={mode === 'view' ? 'Enter Edit Mode to undo' : undoDescription ? `Undo: ${undoDescription} (Ctrl+Z)` : 'Undo (Ctrl+Z)'}
-              onClick={() => mode === 'draw' && canUndo && undo()}
-              disabled={mode === 'view' || !canUndo}
+              className="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded flex items-center gap-1"
+              onClick={() => setIsSymbolLibraryOpen(true)}
+              title="Symbol Library"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 7v6h6" />
-                <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
               </svg>
+              Symbols
             </button>
             <button
-              className={`p-1.5 rounded transition-colors ${
-                mode === 'view' || !canRedo
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-              }`}
-              title={mode === 'view' ? 'Enter Edit Mode to redo' : redoDescription ? `Redo: ${redoDescription} (Ctrl+Y)` : 'Redo (Ctrl+Y)'}
-              onClick={() => mode === 'draw' && canRedo && redo()}
-              disabled={mode === 'view' || !canRedo}
+              className="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded flex items-center gap-1"
+              onClick={() => setIsVisualDesignerOpen(true)}
+              title="Create Symbol"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 7v6h-6" />
-                <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
               </svg>
+              Create
+            </button>
+            <button
+              className={`px-2 py-1 text-xs rounded flex items-center gap-1 ${
+                tool === 'building' || isDrawingBuilding
+                  ? 'bg-green-100 text-green-700'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={() => startBuildingDrawing()}
+              title="Draw Building Area"
+            >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+              </svg>
+              Area
             </button>
           </div>
+        )}
 
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Center: Search */}
+        <button
+          className="px-3 py-1 text-xs text-gray-500 bg-gray-50 hover:bg-gray-100 rounded border border-gray-200 flex items-center gap-2"
+          onClick={() => setIsQuickSearchOpen(true)}
+          title="Quick Search (Ctrl+K)"
+        >
+          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <span>Search...</span>
+          <kbd className="px-1 py-0.5 text-[10px] bg-white text-gray-400 rounded border border-gray-200">⌘K</kbd>
+        </button>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Right Section: Undo/Redo + Settings */}
+        <div className="flex items-center gap-1">
+          {mode === 'draw' && (
+            <>
+              <button
+                className={`p-1.5 rounded ${!canUndo ? 'text-gray-300' : 'text-gray-500 hover:bg-gray-100'}`}
+                onClick={() => canUndo && undo()}
+                disabled={!canUndo}
+                title={undoDescription ? `Undo: ${undoDescription}` : 'Undo (Ctrl+Z)'}
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 7v6h6" />
+                  <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+                </svg>
+              </button>
+              <button
+                className={`p-1.5 rounded ${!canRedo ? 'text-gray-300' : 'text-gray-500 hover:bg-gray-100'}`}
+                onClick={() => canRedo && redo()}
+                disabled={!canRedo}
+                title={redoDescription ? `Redo: ${redoDescription}` : 'Redo (Ctrl+Y)'}
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 7v6h-6" />
+                  <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7" />
+                </svg>
+              </button>
+              <div className="h-4 w-px bg-gray-200 mx-1" />
+            </>
+          )}
+          {/* Dark Mode Toggle */}
+          <button
+            className={`p-1.5 rounded transition-colors ${
+              canvasDarkMode
+                ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600'
+                : 'text-gray-500 hover:bg-gray-100'
+            }`}
+            onClick={toggleCanvasDarkMode}
+            title={canvasDarkMode ? "Light Mode" : "Dark Mode"}
+          >
+            {canvasDarkMode ? (
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+              </svg>
+            )}
+          </button>
+          <button
+            className="p-1.5 text-gray-500 hover:bg-gray-100 rounded"
+            onClick={() => setIsSettingsOpen(true)}
+            title="Settings"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -720,14 +772,33 @@ function App() {
           />
         )}
 
-        {/* Right Sidebar - Properties Panel */}
+        {/* Right Sidebar - Properties Panel / Technical Panel */}
         {rightPanelOpen && mode === 'draw' && (
           <aside className="bg-white flex flex-col flex-shrink-0" style={{ width: `${rightPanelWidth}px` }}>
-            {/* Header */}
-            <div className="h-10 px-3 flex items-center justify-between border-b border-pid-border">
-              <span className="text-sm font-medium text-gray-700">Properties</span>
+            {/* Tab Header */}
+            <div className="flex items-center border-b border-pid-border">
               <button
-                className="p-1 text-gray-400 hover:text-gray-600 rounded"
+                className={`flex-1 px-3 py-2 text-sm font-medium transition-colors ${
+                  rightPanelTab === 'properties'
+                    ? 'text-pid-primary border-b-2 border-pid-primary'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+                onClick={() => setRightPanelTab('properties')}
+              >
+                Properties
+              </button>
+              <button
+                className={`flex-1 px-3 py-2 text-sm font-medium transition-colors ${
+                  rightPanelTab === 'technical'
+                    ? 'text-pid-primary border-b-2 border-pid-primary'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+                onClick={() => setRightPanelTab('technical')}
+              >
+                Technical
+              </button>
+              <button
+                className="p-2 text-gray-400 hover:text-gray-600"
                 onClick={() => setRightPanelOpen(false)}
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -736,8 +807,12 @@ function App() {
               </button>
             </div>
 
-            {/* Properties Content */}
-            <PropertiesPanel className="flex-1 p-3 overflow-y-auto" />
+            {/* Tab Content */}
+            {rightPanelTab === 'properties' ? (
+              <PropertiesPanel className="flex-1 p-3 overflow-y-auto" />
+            ) : (
+              <TechnicalPanel className="flex-1 overflow-y-auto" />
+            )}
           </aside>
         )}
 
@@ -848,6 +923,12 @@ function App() {
       <EditModeLogin
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
+      />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </div>
   );

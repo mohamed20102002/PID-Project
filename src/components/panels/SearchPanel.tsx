@@ -115,9 +115,9 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
         // After switching, we need to find the component in the new diagram
         // Use a short delay to let the diagram load
         setTimeout(() => {
-          // Select the component or connection
+          // Select the component or connection using ID
           if (result.type === 'component') {
-            select([result.kks], []);
+            select([result.id], []);
           } else {
             // For connections, use the ID field
             select([], [result.id!]);
@@ -126,7 +126,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
           // Get the diagram from cache to find the component position
           const targetDiagram = diagramCache[result.systemKks!];
           if (result.type === 'component' && targetDiagram) {
-            const component = targetDiagram.components[result.kks];
+            const component = targetDiagram.components[result.id];
             if (component) {
               const targetScale = Math.max(viewport.scale, 0.8);
               setViewport({
@@ -139,9 +139,9 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
         }, 50);
       } else {
         // Same system - immediate navigation
-        // Select the component or connection
+        // Select the component or connection using ID
         if (result.type === 'component') {
-          select([result.kks], []);
+          select([result.id], []);
         } else {
           // For connections, use the ID field
           select([], [result.id!]);
@@ -149,7 +149,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
 
         // Get component position and center viewport on it
         if (result.type === 'component' && diagram) {
-          const component = diagram.components[result.kks];
+          const component = diagram.components[result.id];
           if (component) {
             const targetScale = Math.max(viewport.scale, 0.8);
             setViewport({

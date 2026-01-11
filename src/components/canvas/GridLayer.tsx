@@ -16,7 +16,23 @@ interface GridLayerProps {
   scale: number;
   offsetX: number;
   offsetY: number;
+  darkMode?: boolean;
 }
+
+// Color schemes for light and dark modes
+const LIGHT_COLORS = {
+  background: '#ffffff',
+  minorGrid: '#e5e7eb',
+  majorGrid: '#d1d5db',
+  originMarker: '#94a3b8',
+};
+
+const DARK_COLORS = {
+  background: '#1f2937',
+  minorGrid: '#374151',
+  majorGrid: '#4b5563',
+  originMarker: '#9ca3af',
+};
 
 export const GridLayer: React.FC<GridLayerProps> = ({
   width,
@@ -26,7 +42,10 @@ export const GridLayer: React.FC<GridLayerProps> = ({
   scale,
   offsetX,
   offsetY,
+  darkMode = false,
 }) => {
+  // Select color scheme based on mode
+  const colors = darkMode ? DARK_COLORS : LIGHT_COLORS;
   // Calculate grid lines based on viewport
   const gridLines = useMemo(() => {
     if (!visible) return { vertical: [], horizontal: [] };
@@ -82,7 +101,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
           y={-offsetY / scale}
           width={width / scale}
           height={height / scale}
-          fill="#ffffff"
+          fill={colors.background}
         />
       </Layer>
     );
@@ -96,7 +115,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
         y={-10000}
         width={20000}
         height={20000}
-        fill="#ffffff"
+        fill={colors.background}
       />
 
       {/* Minor grid lines */}
@@ -107,7 +126,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
           <Line
             key={`v-${i}`}
             points={[x, -10000, x, 10000]}
-            stroke="#e5e7eb"
+            stroke={colors.minorGrid}
             strokeWidth={1 / scale}
             listening={false}
           />
@@ -121,7 +140,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
           <Line
             key={`h-${i}`}
             points={[-10000, y, 10000, y]}
-            stroke="#e5e7eb"
+            stroke={colors.minorGrid}
             strokeWidth={1 / scale}
             listening={false}
           />
@@ -136,7 +155,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
           <Line
             key={`v-major-${i}`}
             points={[x, -10000, x, 10000]}
-            stroke="#d1d5db"
+            stroke={colors.majorGrid}
             strokeWidth={1 / scale}
             listening={false}
           />
@@ -150,7 +169,7 @@ export const GridLayer: React.FC<GridLayerProps> = ({
           <Line
             key={`h-major-${i}`}
             points={[-10000, y, 10000, y]}
-            stroke="#d1d5db"
+            stroke={colors.majorGrid}
             strokeWidth={1 / scale}
             listening={false}
           />
@@ -160,13 +179,13 @@ export const GridLayer: React.FC<GridLayerProps> = ({
       {/* Origin marker */}
       <Line
         points={[-50, 0, 50, 0]}
-        stroke="#94a3b8"
+        stroke={colors.originMarker}
         strokeWidth={2 / scale}
         listening={false}
       />
       <Line
         points={[0, -50, 0, 50]}
-        stroke="#94a3b8"
+        stroke={colors.originMarker}
         strokeWidth={2 / scale}
         listening={false}
       />

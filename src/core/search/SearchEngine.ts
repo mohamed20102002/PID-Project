@@ -17,7 +17,7 @@ import { SymbolRegistry } from '../../data/symbols/SymbolRegistry';
 export interface SearchResult {
   type: 'component' | 'connection';
   kks: string;                     // For components: KKS code; For connections: KKS (display only)
-  id?: string;                     // For connections: unique ID (used for selection)
+  id: string;                      // Unique ID (used for selection) - component ID or connection ID
   label: string;
   description: string;
   matchType: SearchMatchType;
@@ -182,6 +182,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
+          id: component.id,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType,
@@ -214,6 +215,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
+          id: component.id,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(
@@ -258,6 +260,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
+          id: component.id,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(normalizeText(props.tagNumber), query),
@@ -276,6 +279,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
+          id: component.id,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(normalizeText(props.description), query),
@@ -294,6 +298,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
+          id: component.id,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(normalizeText(props.manufacturer), query),
@@ -313,6 +318,7 @@ export class SearchEngine {
           results.push({
             type: 'component',
             kks: component.kks,
+            id: component.id,
             label: component.kks,
             description: this.getComponentDescription(component),
             matchType: this.getMatchType(normalizeText(value.value), query),

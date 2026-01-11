@@ -39,6 +39,7 @@ export const SymbolPreview: React.FC = () => {
     standard: metadata.standard,
     kksEquipmentCode: metadata.kksEquipmentCode,
     noKks: metadata.noKks,
+    allowDuplicateKks: metadata.allowDuplicateKks,
     defaultSize: sizing.defaultSize,
     minSize: sizing.minSize,
     maxSize: sizing.maxSize,

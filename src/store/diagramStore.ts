@@ -8,9 +8,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { persist } from 'zustand/middleware';
-import { nanoid } from 'nanoid';
 import { StorageService } from '../services/StorageService';
-import { migrateIfNeeded, needsMigration } from '../utils/migrateDiagrams';
 import {
   Diagram,
   Component,
@@ -25,8 +23,97 @@ import {
   DEFAULT_BUILDING_POLYGON_STYLE,
   ComponentRotation,
 } from '../types';
-import { SymbolRegistry } from '../data/symbols/SymbolRegistry';
-import { useCustomSymbolStore } from './customSymbolStore';
+
+// ============================================================================
+// Migration Utility - Convert old ID-based diagrams to KKS-based
+// ============================================================================
+
+/**
+ * Check if a diagram needs migration from ID-based to KKS-based
+ */
+function needsMigration(diagram: any): boolean {
+  if (!diagram || !diagram.components) return false;
+
+  // Check if any component has an 'id' field (old format)
+  const components = Object.values(diagram.components) as any[];
+  return components.some((c: any) => c && typeof c.id === 'string' && c.id !== c.kks);
+}
+
+/**
+ * Migrate a diagram from ID-based to KKS-based storage
+ */
+function migrateToKksBased(diagram: any): Diagram {
+  if (!diagram) return diagram;
+  if (!needsMigration(diagram)) return diagram;
+
+  console.log('[Migration] Converting diagram from ID-based to KKS-based...');
+
+  // Build ID-to-KKS mapping
+  const idToKks = new Map<string, string>();
+  const oldComponents = diagram.components as Record<string, any>;
+
+  Object.entries(oldComponents).forEach(([key, comp]) => {
+    if (comp && comp.id && comp.kks) {
+      idToKks.set(comp.id, comp.kks);
+    } else if (comp && comp.kks) {
+      // Key might already be the KKS in some hybrid cases
+      idToKks.set(key, comp.kks);
+    }
+  });
+
+  // Re-key components by KKS and remove id field
+  const newComponents: Record<string, Component> = {};
+  Object.values(oldComponents).forEach((comp: any) => {
+    if (comp && comp.kks) {
+      const { id, ...rest } = comp;
+      newComponents[comp.kks] = rest as Component;
+
+      // Also update port connectionId to connectionKks
+      if (rest.ports) {
+        rest.ports = rest.ports.map((p: any) => {
+          if (p.connectionId) {
+            return { ...p, connectionKks: p.connectionId, connectionId: undefined };
+          }
+          return p;
+        });
+      }
+    }
+  });
+
+  // Update connections to use KKS references
+  const newConnections: Record<string, Connection> = {};
+  const oldConnections = diagram.connections as Record<string, any>;
+
+  Object.entries(oldConnections).forEach(([key, conn]) => {
+    if (!conn) return;
+
+    // Determine the KKS for this connection
+    const connKks = conn.kks || key;
+
+    // Get component KKS from the mapping
+    const sourceKks = conn.sourceComponentKks || idToKks.get(conn.sourceComponentId) || conn.sourceComponentId;
+    const targetKks = conn.targetComponentKks || idToKks.get(conn.targetComponentId) || conn.targetComponentId;
+
+    newConnections[connKks] = {
+      ...conn,
+      kks: connKks,
+      sourceComponentKks: sourceKks,
+      targetComponentKks: targetKks,
+      // Remove old ID-based fields
+      sourceComponentId: undefined,
+      targetComponentId: undefined,
+      id: undefined,
+    } as Connection;
+  });
+
+  console.log(`[Migration] Migrated ${Object.keys(newComponents).length} components, ${Object.keys(newConnections).length} connections`);
+
+  return {
+    ...diagram,
+    components: newComponents,
+    connections: newConnections,
+  };
+}
 
 // ============================================================================
 // Types
@@ -58,11 +145,15 @@ export interface DiagramActions {
   switchToSystem: (systemKks: string) => Promise<void>;
   saveCurrentDiagram: () => Promise<{ success: boolean; error?: string }>;
 
+  // Cache management
+  validateCache: () => Promise<void>;
+  removeFromCache: (systemKks: string) => void;
+
   // Metadata
   updateMetadata: (metadata: Partial<DiagramMetadata>) => void;
   updateSettings: (settings: Partial<DiagramSettings>) => void;
 
-  // Components
+  // Components (use component KKS for all operations)
   addComponent: (component: Omit<Component, 'kks'> & { kks?: string }) => string;
   updateComponent: (kks: string, updates: Partial<Component>) => void;
   renameComponent: (oldKks: string, newKks: string) => boolean;
@@ -71,17 +162,17 @@ export interface DiagramActions {
   rotateComponent: (kks: string, rotation: ComponentRotation) => void;
 
   // Connections
-  addConnection: (connection: Omit<Connection, 'id' | 'kks'> & { kks?: string }) => string;
-  updateConnection: (id: string, updates: Partial<Connection>) => void;
-  deleteConnection: (id: string) => void;
-  updateConnectionWaypoints: (id: string, waypoints: Point[]) => void;
+  addConnection: (connection: Omit<Connection, 'kks'> & { kks?: string }) => string;
+  updateConnection: (kks: string, updates: Partial<Connection>) => void;
+  deleteConnection: (kks: string) => void;
+  updateConnectionWaypoints: (kks: string, waypoints: Point[]) => void;
 
   // Batch operations
-  deleteMultiple: (componentKks: string[], connectionIds: string[]) => void;
+  deleteMultiple: (componentKks: string[], connectionKks: string[]) => void;
 
   // Helpers
   getComponent: (kks: string) => Component | undefined;
-  getConnection: (id: string) => Connection | undefined;
+  getConnection: (kks: string) => Connection | undefined;
   getAllComponents: () => Component[];
   getAllConnections: () => Connection[];
   getComponentsInSystem: (systemKks: string) => Component[];
@@ -117,7 +208,7 @@ const initialState: DiagramState = {
 // ============================================================================
 
 const generateKks = (prefix: string = 'TEMP'): string => {
-  return `${prefix}${nanoid(8).toUpperCase()}`;
+  return `${prefix}${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 };
 
 const createEmptyDiagram = (systemKks: string, name: string): Diagram => ({
@@ -178,9 +269,8 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     },
 
     loadDiagram: (diagram) => set((state) => {
-      // Migrate diagram if needed (old format -> new format with connection IDs)
-      const migratedDiagram = migrateIfNeeded(diagram);
-
+      // Migrate if needed
+      const migratedDiagram = needsMigration(diagram) ? migrateToKksBased(diagram) : diagram;
       state.diagram = migratedDiagram;
       if (migratedDiagram.systemKks) {
         state.diagramCache[migratedDiagram.systemKks] = { ...migratedDiagram };
@@ -247,12 +337,11 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       // Check cache first
       const cached = get().diagramCache[systemKks];
       if (cached) {
-        // Migrate cached diagram if needed (in case cache has old format)
-        const migratedCached = migrateIfNeeded(cached);
-
+        // Migrate if needed
+        const migratedCached = needsMigration(cached) ? migrateToKksBased(cached) : cached;
         set((state) => {
           state.diagram = { ...migratedCached };
-          state.diagramCache[systemKks] = { ...migratedCached }; // Update cache with migrated version
+          state.diagramCache[systemKks] = { ...migratedCached };
           state.isDirty = false;
           state.error = null;
         });
@@ -266,26 +355,16 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       const loadResult = await StorageService.loadDiagram(systemKks);
 
       if (loadResult.success && loadResult.diagram) {
-        // Migrate diagram if needed (old format -> new format with connection IDs)
-        const wasMigrated = needsMigration(loadResult.diagram);
-        const migratedDiagram = migrateIfNeeded(loadResult.diagram);
-
+        // Migrate if needed
+        const migratedDiagram = needsMigration(loadResult.diagram) ? migrateToKksBased(loadResult.diagram) : loadResult.diagram;
         set((state) => {
           state.diagram = migratedDiagram;
           state.diagramCache[systemKks] = { ...migratedDiagram };
-          state.isDirty = wasMigrated; // Mark as dirty if migrated so it gets saved
+          state.isDirty = false;
           state.isLoading = false;
           state.error = null;
         });
         console.log(`[diagramStore] Loaded from file: ${systemKks}`);
-
-        // Auto-save if diagram was migrated
-        if (wasMigrated) {
-          console.log(`[diagramStore] Auto-saving migrated diagram: ${systemKks}`);
-          setTimeout(() => {
-            get().saveDiagram();
-          }, 100);
-        }
       } else {
         // Create new diagram for this system
         const newDiagram = createEmptyDiagram(systemKks, `Diagram - ${systemKks}`);
@@ -329,6 +408,53 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       return result;
     },
 
+    // ========== Cache Management ==========
+
+    validateCache: async () => {
+      // Get list of existing systems from file storage
+      const result = await StorageService.listSystems();
+      if (!result.success || !result.systems) {
+        console.warn('[diagramStore] Failed to list systems for cache validation');
+        return;
+      }
+
+      const existingSystems = new Set(result.systems);
+      const currentState = get();
+      const cachedSystems = Object.keys(currentState.diagramCache);
+
+      // Find cached systems that no longer exist in files
+      const staleSystems = cachedSystems.filter(kks => !existingSystems.has(kks));
+
+      if (staleSystems.length > 0) {
+        console.log(`[diagramStore] Removing ${staleSystems.length} stale cache entries:`, staleSystems);
+
+        set((state) => {
+          for (const kks of staleSystems) {
+            delete state.diagramCache[kks];
+          }
+
+          // If current diagram is stale, close it
+          if (state.diagram && staleSystems.includes(state.diagram.systemKks)) {
+            state.diagram = null;
+            state.isDirty = false;
+          }
+        });
+      }
+    },
+
+    removeFromCache: (systemKks) => {
+      set((state) => {
+        delete state.diagramCache[systemKks];
+
+        // If this is the current diagram, close it
+        if (state.diagram?.systemKks === systemKks) {
+          state.diagram = null;
+          state.isDirty = false;
+        }
+      });
+      console.log(`[diagramStore] Removed ${systemKks} from cache`);
+    },
+
     // ========== Metadata ==========
 
     updateMetadata: (metadata) => set((state) => {
@@ -348,29 +474,14 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     // ========== Components ==========
 
     addComponent: (component) => {
-      let kks = component.kks || generateKks('CMP');
+      const kks = component.kks || generateKks('CMP');
 
       // Check if KKS already exists in the current diagram
       const state = get();
       if (state.diagram && state.diagram.components[kks]) {
-        // Get symbol definition to check if noKks is enabled
-        const customSymbols = useCustomSymbolStore.getState().customSymbols;
-        const definition = customSymbols[component.type] || SymbolRegistry.getSymbol(component.type);
-
-        if (!definition?.noKks) {
-          // Enforce uniqueness for normal symbols
-          console.error(`KKS "${kks}" already exists in this diagram. Component not added.`);
-          alert(`Error: KKS code "${kks}" already exists in this diagram.\nEach component must have a unique KKS identifier.`);
-          return '';
-        } else {
-          // For noKks symbols, auto-generate a unique suffix
-          let suffix = 1;
-          const baseKks = kks;
-          while (state.diagram.components[kks]) {
-            kks = `${baseKks}_${suffix}`;
-            suffix++;
-          }
-        }
+        console.error(`KKS "${kks}" already exists in this diagram. Component not added.`);
+        alert(`Error: KKS code "${kks}" already exists in this diagram.\nEach component must have a unique KKS identifier.`);
+        return '';
       }
 
       set((state) => {
@@ -399,36 +510,22 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
       // Check if the new KKS already exists
       if (state.diagram.components[newKks]) {
-        // Get symbol definition to check if noKks is enabled
-        const component = state.diagram.components[oldKks];
-        const customSymbols = useCustomSymbolStore.getState().customSymbols;
-        const definition = customSymbols[component.type] || SymbolRegistry.getSymbol(component.type);
-
-        if (!definition?.noKks) {
-          // Enforce uniqueness for normal symbols
-          alert(`Error: KKS code "${newKks}" already exists.\nPlease choose a different KKS identifier.`);
-          return false;
-        } else {
-          // For noKks symbols, auto-generate a unique suffix
-          let suffix = 1;
-          const baseKks = newKks;
-          while (state.diagram.components[newKks]) {
-            newKks = `${baseKks}_${suffix}`;
-            suffix++;
-          }
-          // Inform user about the auto-generated KKS
-          alert(`KKS "${baseKks}" already exists. Auto-generated unique KKS: "${newKks}"`);
-        }
+        alert(`Error: KKS code "${newKks}" already exists.\nPlease choose a different KKS identifier.`);
+        return false;
       }
 
       set((s) => {
         if (!s.diagram) return;
+
+        // Get the component and update its KKS
         const component = s.diagram.components[oldKks];
         component.kks = newKks;
-        s.diagram.components[newKks] = component;
-        delete s.diagram.components[oldKks];
 
-        // Update connections
+        // Re-key the component in the components object
+        delete s.diagram.components[oldKks];
+        s.diagram.components[newKks] = component;
+
+        // Update connections that reference this component
         Object.values(s.diagram.connections).forEach((conn) => {
           if (conn.sourceComponentKks === oldKks) conn.sourceComponentKks = newKks;
           if (conn.targetComponentKks === oldKks) conn.targetComponentKks = newKks;
@@ -442,11 +539,11 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     deleteComponent: (kks) => set((state) => {
       if (state.diagram && state.diagram.components[kks]) {
         // Delete connections attached to this component
-        const connectionsToDelete = Object.values(state.diagram.connections).filter(
-          (conn) => conn.sourceComponentKks === kks || conn.targetComponentKks === kks
+        const connectionsToDelete = Object.entries(state.diagram.connections).filter(
+          ([, conn]) => conn.sourceComponentKks === kks || conn.targetComponentKks === kks
         );
-        connectionsToDelete.forEach((conn) => {
-          delete state.diagram!.connections[conn.kks];
+        connectionsToDelete.forEach(([connKks]) => {
+          delete state.diagram!.connections[connKks];
         });
 
         delete state.diagram.components[kks];
@@ -471,13 +568,19 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     // ========== Connections ==========
 
     addConnection: (connection) => {
-      const id = nanoid();
-      const kks = connection.kks || '';
+      const kks = connection.kks || generateKks('CONN');
+
+      // Check if connection KKS already exists
+      const state = get();
+      if (state.diagram && state.diagram.connections[kks]) {
+        console.error(`Connection KKS "${kks}" already exists.`);
+        return '';
+      }
+
       set((state) => {
         if (state.diagram) {
-          state.diagram.connections[id] = {
+          state.diagram.connections[kks] = {
             ...connection,
-            id,
             kks,
             style: connection.style || { ...DEFAULT_CONNECTION_STYLE },
           } as Connection;
@@ -486,88 +589,88 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
           const sourceComponent = state.diagram.components[connection.sourceComponentKks];
           if (sourceComponent) {
             const sourcePort = sourceComponent.ports.find((p) => p.id === connection.sourcePortId);
-            if (sourcePort) sourcePort.connectionId = id;
+            if (sourcePort) sourcePort.connectionKks = kks;
           }
 
           const targetComponent = state.diagram.components[connection.targetComponentKks];
           if (targetComponent) {
             const targetPort = targetComponent.ports.find((p) => p.id === connection.targetPortId);
-            if (targetPort) targetPort.connectionId = id;
+            if (targetPort) targetPort.connectionKks = kks;
           }
 
           state.isDirty = true;
         }
       });
-      return id;
+      return kks;
     },
 
-    updateConnection: (id, updates) => set((state) => {
-      if (state.diagram && state.diagram.connections[id]) {
-        Object.assign(state.diagram.connections[id], updates);
+    updateConnection: (kks, updates) => set((state) => {
+      if (state.diagram && state.diagram.connections[kks]) {
+        Object.assign(state.diagram.connections[kks], updates);
         state.isDirty = true;
       }
     }),
 
-    deleteConnection: (id) => set((state) => {
-      if (state.diagram && state.diagram.connections[id]) {
-        const connection = state.diagram.connections[id];
+    deleteConnection: (kks) => set((state) => {
+      if (state.diagram && state.diagram.connections[kks]) {
+        const connection = state.diagram.connections[kks];
 
         // Clear ports
         const sourceComponent = state.diagram.components[connection.sourceComponentKks];
         if (sourceComponent) {
           const sourcePort = sourceComponent.ports.find((p) => p.id === connection.sourcePortId);
-          if (sourcePort) sourcePort.connectionId = undefined;
+          if (sourcePort) sourcePort.connectionKks = undefined;
         }
 
         const targetComponent = state.diagram.components[connection.targetComponentKks];
         if (targetComponent) {
           const targetPort = targetComponent.ports.find((p) => p.id === connection.targetPortId);
-          if (targetPort) targetPort.connectionId = undefined;
+          if (targetPort) targetPort.connectionKks = undefined;
         }
 
-        delete state.diagram.connections[id];
+        delete state.diagram.connections[kks];
         state.isDirty = true;
       }
     }),
 
-    updateConnectionWaypoints: (id, waypoints) => set((state) => {
-      if (state.diagram && state.diagram.connections[id]) {
-        state.diagram.connections[id].waypoints = waypoints;
+    updateConnectionWaypoints: (kks, waypoints) => set((state) => {
+      if (state.diagram && state.diagram.connections[kks]) {
+        state.diagram.connections[kks].waypoints = waypoints;
         state.isDirty = true;
       }
     }),
 
     // ========== Batch Operations ==========
 
-    deleteMultiple: (componentKks, connectionIds) => set((state) => {
+    deleteMultiple: (componentKksList, connectionKksList) => set((state) => {
       if (!state.diagram) return;
 
       // Delete connections first
-      connectionIds.forEach((id) => {
-        const connection = state.diagram!.connections[id];
+      connectionKksList.forEach((connKks) => {
+        const connection = state.diagram!.connections[connKks];
         if (connection) {
           // Clear ports
           const sourceComponent = state.diagram!.components[connection.sourceComponentKks];
           if (sourceComponent) {
             const sourcePort = sourceComponent.ports.find((p) => p.id === connection.sourcePortId);
-            if (sourcePort) sourcePort.connectionId = undefined;
+            if (sourcePort) sourcePort.connectionKks = undefined;
           }
           const targetComponent = state.diagram!.components[connection.targetComponentKks];
           if (targetComponent) {
             const targetPort = targetComponent.ports.find((p) => p.id === connection.targetPortId);
-            if (targetPort) targetPort.connectionId = undefined;
+            if (targetPort) targetPort.connectionKks = undefined;
           }
-          delete state.diagram!.connections[id];
+          delete state.diagram!.connections[connKks];
         }
       });
 
       // Delete components
-      componentKks.forEach((kks) => {
+      componentKksList.forEach((kks) => {
         if (state.diagram!.components[kks]) {
           // Delete attached connections
-          Object.values(state.diagram!.connections).forEach((conn) => {
+          Object.entries(state.diagram!.connections).forEach(([connKks, conn]) => {
             if (conn.sourceComponentKks === kks || conn.targetComponentKks === kks) {
-              delete state.diagram!.connections[conn.id];
+              delete state.diagram!.connections[connKks];
             }
           });
           delete state.diagram!.components[kks];
@@ -580,7 +683,7 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     // ========== Helpers ==========
 
     getComponent: (kks) => get().diagram?.components[kks],
-    getConnection: (id) => get().diagram?.connections[id],
+    getConnection: (kks) => get().diagram?.connections[kks],
     getAllComponents: () => get().diagram ? Object.values(get().diagram!.components) : [],
     getAllConnections: () => get().diagram ? Object.values(get().diagram!.connections) : [],
     getComponentsInSystem: (systemKks) => {
@@ -643,6 +746,37 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       diagramCache: state.diagramCache,
       diagram: state.diagram,
     }),
+    merge: (persistedState, currentState) => {
+      // Migrate diagrams during hydration from localStorage
+      const persisted = persistedState as Partial<DiagramState>;
+      console.log('[diagramStore] Merging persisted state, checking for migration...');
+
+      // Migrate current diagram if needed
+      let migratedDiagram = persisted.diagram;
+      if (migratedDiagram && needsMigration(migratedDiagram)) {
+        console.log('[diagramStore] Migrating current diagram...');
+        migratedDiagram = migrateToKksBased(migratedDiagram);
+      }
+
+      // Migrate all cached diagrams if needed
+      const migratedCache: Record<string, Diagram> = {};
+      if (persisted.diagramCache) {
+        Object.entries(persisted.diagramCache).forEach(([systemKks, cached]) => {
+          if (cached && needsMigration(cached)) {
+            console.log(`[diagramStore] Migrating cached diagram: ${systemKks}`);
+            migratedCache[systemKks] = migrateToKksBased(cached);
+          } else if (cached) {
+            migratedCache[systemKks] = cached;
+          }
+        });
+      }
+
+      return {
+        ...currentState,
+        diagram: migratedDiagram || currentState.diagram,
+        diagramCache: Object.keys(migratedCache).length > 0 ? migratedCache : currentState.diagramCache,
+      };
+    },
   }
 ));
 

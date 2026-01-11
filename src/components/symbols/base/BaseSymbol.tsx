@@ -20,12 +20,13 @@ interface BaseSymbolProps {
   isHighlighted?: boolean;
   showPorts?: boolean;
   mode?: AppMode;
+  darkMode?: boolean;
   onPortClick?: (portId: string) => void;
   onPortHover?: (portId: string | null) => void;
 }
 
-// Default colors
-const COLORS = {
+// Light mode colors
+const LIGHT_COLORS = {
   stroke: '#1a1a1a',
   fill: '#ffffff',
   selectedStroke: '#2563eb',
@@ -37,6 +38,23 @@ const COLORS = {
   portHoverFill: '#34d399',
   labelColor: '#374151',
 };
+
+// Dark mode colors
+const DARK_COLORS = {
+  stroke: '#e5e7eb',
+  fill: '#374151',
+  selectedStroke: '#60a5fa',
+  hoveredStroke: '#93c5fd',
+  highlightStroke: '#fbbf24',
+  highlightFill: 'rgba(251, 191, 36, 0.3)',
+  portStroke: '#10b981',
+  portFill: '#34d399',
+  portHoverFill: '#6ee7b7',
+  labelColor: '#e5e7eb',
+};
+
+// Default colors (for backward compatibility)
+const COLORS = LIGHT_COLORS;
 
 /**
  * Render a single path element
@@ -319,7 +337,8 @@ const renderPort = (
   onPortClick?: (portId: string) => void,
   onPortHover?: (portId: string | null) => void,
   portDirection?: 'in' | 'out' | 'both' | 'none',
-  isTerminal?: boolean
+  isTerminal?: boolean,
+  colors: typeof LIGHT_COLORS = LIGHT_COLORS
 ): React.ReactNode => {
   if (!showPorts && !isTerminal) return null;
 
@@ -341,9 +360,9 @@ const renderPort = (
           x={x}
           y={y}
           radius={radius}
-          stroke={COLORS.portStroke}
+          stroke={colors.portStroke}
           strokeWidth={2}
-          fill={isHovered ? COLORS.portHoverFill : COLORS.portFill}
+          fill={isHovered ? colors.portHoverFill : colors.portFill}
           opacity={0.9}
           onClick={() => onPortClick?.(port.id)}
           onTap={() => onPortClick?.(port.id)}
@@ -359,14 +378,35 @@ const renderPort = (
 };
 
 /**
+ * Helper to wrap KKS text - splits after 7 characters
+ * Example: "10KBA10AA001" -> "10KBA10\nAA001"
+ */
+const wrapKksText = (text: string, splitPosition: number = 7): string => {
+  if (text.length <= splitPosition) {
+    return text;
+  }
+  const firstLine = text.substring(0, splitPosition);
+  const secondLine = text.substring(splitPosition);
+  return `${firstLine}\n${secondLine}`;
+};
+
+/**
  * Render a label
+ * - Counter-flips text to keep it readable when symbol is flipped (not mirrored)
+ * - Text rotates WITH the symbol at 90° and 270°
+ * - Text is counter-rotated at 180° to stay readable (not upside down)
+ * - Supports automatic KKS wrapping with component.wrapLabel (splits after 7 chars)
  */
 const renderLabel = (
   label: LabelDefinition,
   index: number,
   width: number,
   height: number,
-  component: Component
+  component: Component,
+  flipX: boolean = false,
+  flipY: boolean = false,
+  componentRotation: number = 0,
+  colors: typeof LIGHT_COLORS = LIGHT_COLORS
 ): React.ReactNode => {
   const x = label.relativePosition.x * width;
   const y = label.relativePosition.y * height;
@@ -385,33 +425,74 @@ const renderLabel = (
 
   const fontSize = label.style?.fontSize || 10;
   const fontWeight = label.style?.fontWeight || 'normal';
-  const rotation = label.rotation || 0;
+  const labelRotation = label.rotation || 0;
 
-  // Calculate offset based on anchor
+  // Check if component has wrapLabel enabled (per-component setting)
+  const shouldWrapKks = component.wrapLabel === true && label.binding === 'kks';
+
+  // Apply KKS wrapping if enabled on the component (splits after 7 characters)
+  const displayText = shouldWrapKks ? wrapKksText(text, 7) : text;
+
+  // Count lines for vertical positioning
+  const lineCount = displayText.split('\n').length;
+  const lineHeight = fontSize * 1.2;
+  const totalTextHeight = lineCount * lineHeight;
+
+  // Calculate offset based on anchor (for single-line text)
   let offsetX = 0;
-  if (label.anchor === 'middle') {
-    offsetX = -text.length * fontSize * 0.3; // Approximate center
-  } else if (label.anchor === 'end') {
-    offsetX = -text.length * fontSize * 0.6;
+  if (!shouldWrapKks) {
+    if (label.anchor === 'middle') {
+      offsetX = -text.length * fontSize * 0.3; // Approximate center
+    } else if (label.anchor === 'end') {
+      offsetX = -text.length * fontSize * 0.6;
+    }
   }
 
-  // If there's rotation, wrap in a Group to rotate around the label's position
-  if (rotation !== 0) {
+  // Counter-flip the text so it remains readable (not mirrored) when the symbol is flipped
+  const counterScaleX = flipX ? -1 : 1;
+  const counterScaleY = flipY ? -1 : 1;
+
+  // Normalize rotation to 0-360 range
+  const normalizedRotation = ((componentRotation % 360) + 360) % 360;
+
+  // Counter-rotate text by 180° when symbol is at 180° to keep text readable (not upside down)
+  // At 90° and 270°, text rotates with symbol (sideways is acceptable)
+  const isUpsideDown = normalizedRotation > 135 && normalizedRotation < 225;
+  const textCounterRotation = isUpsideDown ? 180 : 0;
+
+  // Final rotation combines label's own rotation with counter-rotation for readability
+  const finalRotation = labelRotation + textCounterRotation;
+
+  // Check if we need any transformation
+  const needsTransform = flipX || flipY || finalRotation !== 0;
+
+  // Common text props
+  const textProps = {
+    text: displayText,
+    fontSize,
+    fontStyle: fontWeight === 'bold' ? 'bold' as const : 'normal' as const,
+    fill: label.style?.color || colors.labelColor,
+    align: shouldWrapKks ? 'center' as const : (label.anchor || 'start' as const),
+    lineHeight: 1.2,
+  };
+
+  // For wrapped KKS, estimate width based on first line
+  const wrappedWidth = shouldWrapKks ? Math.max(7, text.length - 7) * fontSize * 0.6 : 0;
+
+  if (needsTransform) {
     return (
       <Group
         key={`label-group-${label.id}-${index}`}
         x={x}
         y={y}
-        rotation={rotation}
+        rotation={finalRotation}
+        scaleX={counterScaleX}
+        scaleY={counterScaleY}
       >
         <Text
-          x={offsetX}
-          y={-fontSize / 2}
-          text={text}
-          fontSize={fontSize}
-          fontStyle={fontWeight === 'bold' ? 'bold' : 'normal'}
-          fill={label.style?.color || COLORS.labelColor}
-          align={label.anchor || 'start'}
+          x={shouldWrapKks ? -wrappedWidth / 2 : offsetX}
+          y={-totalTextHeight / 2}
+          {...textProps}
         />
       </Group>
     );
@@ -420,13 +501,9 @@ const renderLabel = (
   return (
     <Text
       key={`label-${label.id}-${index}`}
-      x={x + offsetX}
-      y={y - fontSize / 2}
-      text={text}
-      fontSize={fontSize}
-      fontStyle={fontWeight === 'bold' ? 'bold' : 'normal'}
-      fill={label.style?.color || COLORS.labelColor}
-      align={label.anchor || 'start'}
+      x={shouldWrapKks ? x - wrappedWidth / 2 : x + offsetX}
+      y={y - totalTextHeight / 2}
+      {...textProps}
     />
   );
 };
@@ -443,11 +520,15 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
   isHighlighted = false,
   showPorts = false,
   mode = 'draw',
+  darkMode = false,
   onPortClick,
   onPortHover,
 }) => {
   const [hoveredPort, setHoveredPort] = React.useState<string | null>(null);
   const [blinkOpacity, setBlinkOpacity] = useState(1);
+
+  // Select color scheme based on mode
+  const colors = darkMode ? DARK_COLORS : LIGHT_COLORS;
 
   // Blinking animation for highlighted components
   useEffect(() => {
@@ -472,13 +553,23 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
 
   // Determine colors based on state
   const strokeColor = useMemo(() => {
-    if (isHighlighted) return COLORS.highlightStroke;
-    if (isSelected) return COLORS.selectedStroke;
-    if (isHovered) return COLORS.hoveredStroke;
-    return component.style?.strokeColor || COLORS.stroke;
-  }, [isSelected, isHovered, isHighlighted, component.style?.strokeColor]);
+    if (isHighlighted) return colors.highlightStroke;
+    if (isSelected) return colors.selectedStroke;
+    if (isHovered) return colors.hoveredStroke;
+    // In dark mode, override component stroke color with light color for visibility
+    if (darkMode && (!component.style?.strokeColor || component.style?.strokeColor === '#1a1a1a')) {
+      return colors.stroke;
+    }
+    return component.style?.strokeColor || colors.stroke;
+  }, [isSelected, isHovered, isHighlighted, component.style?.strokeColor, darkMode, colors]);
 
-  const fillColor = component.style?.fillColor || COLORS.fill;
+  // In dark mode, override white fills with dark fill for visibility
+  const fillColor = useMemo(() => {
+    if (darkMode && (!component.style?.fillColor || component.style?.fillColor === '#ffffff')) {
+      return colors.fill;
+    }
+    return component.style?.fillColor || colors.fill;
+  }, [component.style?.fillColor, darkMode, colors]);
 
   // Handle port hover
   const handlePortHover = (portId: string | null) => {
@@ -496,6 +587,10 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
   const offsetX = centerX * width;
   const offsetY = centerY * height;
 
+  // Calculate flip transformations
+  const scaleX = component.flipX ? -1 : 1;
+  const scaleY = component.flipY ? -1 : 1;
+
   return (
     <Group
       x={component.position.x}
@@ -505,79 +600,113 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
       offsetY={offsetY}
       opacity={isDragging ? 0.7 : (isHighlighted ? blinkOpacity : 1)}
     >
-      {/* Highlight glow effect */}
-      {isHighlighted && (
-        <Rect
-          x={offsetX - width / 2 - 8}
-          y={offsetY - height / 2 - 8}
-          width={width + 16}
-          height={height + 16}
-          stroke={COLORS.highlightStroke}
-          strokeWidth={4}
-          fill={COLORS.highlightFill}
-          cornerRadius={8}
-          shadowColor="#f59e0b"
-          shadowBlur={20}
-          shadowOpacity={0.8}
-        />
-      )}
+      {/* Inner group for flip transformations - flip around center */}
+      <Group
+        x={offsetX}
+        y={offsetY}
+        scaleX={scaleX}
+        scaleY={scaleY}
+        offsetX={offsetX}
+        offsetY={offsetY}
+      >
+        {/* Highlight glow effect */}
+        {isHighlighted && (
+          <Rect
+            x={offsetX - width / 2 - 8}
+            y={offsetY - height / 2 - 8}
+            width={width + 16}
+            height={height + 16}
+            stroke={colors.highlightStroke}
+            strokeWidth={4}
+            fill={colors.highlightFill}
+            cornerRadius={8}
+            shadowColor={colors.highlightStroke}
+            shadowBlur={20}
+            shadowOpacity={0.8}
+          />
+        )}
 
-      {/* Selection/hover outline */}
-      {(isSelected || isHovered) && !isHighlighted && (
-        <Rect
-          x={offsetX - width / 2 - 4}
-          y={offsetY - height / 2 - 4}
-          width={width + 8}
-          height={height + 8}
-          stroke={isSelected ? COLORS.selectedStroke : COLORS.hoveredStroke}
-          strokeWidth={isSelected ? 2 : 1}
-          dash={isSelected ? undefined : [5, 5]}
-          fill="transparent"
-          cornerRadius={4}
-        />
-      )}
+        {/* Selection/hover outline */}
+        {(isSelected || isHovered) && !isHighlighted && (
+          <Rect
+            x={offsetX - width / 2 - 4}
+            y={offsetY - height / 2 - 4}
+            width={width + 8}
+            height={height + 8}
+            stroke={isSelected ? colors.selectedStroke : colors.hoveredStroke}
+            strokeWidth={isSelected ? 2 : 1}
+            dash={isSelected ? undefined : [5, 5]}
+            fill="transparent"
+            cornerRadius={4}
+          />
+        )}
 
-      {/* Render all paths */}
-      {definition.paths.map((path, index) =>
-        renderPath(path, index, width, height, strokeColor, fillColor)
-      )}
+        {/* Render all paths */}
+        {definition.paths.map((path, index) =>
+          renderPath(path, index, width, height, strokeColor, fillColor)
+        )}
 
-      {/* Render ports when in connection mode or hovering (only in draw mode) */}
-      {definition.ports?.map((port, index) => {
-        // Check if this is a terminal component
-        const isTerminal = definition.id.startsWith('terminals:');
+        {/* Render ports when in connection mode or hovering (only in draw mode) */}
+        {definition.ports?.map((port, index) => {
+          // Check if this is a terminal component
+          const isTerminal = definition.id.startsWith('terminals:');
 
-        // Get port direction from component properties
-        let portDirection: 'in' | 'out' | 'both' | 'none' = 'none';
-        if (isTerminal) {
-          const directionProp = `${port.id}PortDirection`;
-          portDirection = (component.properties as Record<string, string>)[directionProp] as typeof portDirection || 'none';
-        }
+          // Get port direction from component properties
+          let portDirection: 'in' | 'out' | 'both' | 'none' = 'none';
+          if (isTerminal) {
+            const directionProp = `${port.id}PortDirection`;
+            portDirection = (component.properties as Record<string, string>)[directionProp] as typeof portDirection || 'none';
+          }
 
-        // Only show ports on hover when in draw mode
-        const shouldShowPorts = showPorts || (isHovered && mode === 'draw');
+          // Only show ports on hover when in draw mode
+          const shouldShowPorts = showPorts || (isHovered && mode === 'draw');
 
-        return renderPort(
-          port,
-          index,
-          width,
-          height,
-          shouldShowPorts,
-          hoveredPort,
-          onPortClick,
-          handlePortHover,
-          portDirection,
-          isTerminal
-        );
-      })}
+          return renderPort(
+            port,
+            index,
+            width,
+            height,
+            shouldShowPorts,
+            hoveredPort,
+            onPortClick,
+            handlePortHover,
+            portDirection,
+            isTerminal,
+            colors
+          );
+        })}
 
-      {/* Render labels */}
-      {definition.labels?.map((label, index) =>
-        renderLabel(label, index, width, height, component)
-      )}
+        {/* Render labels (skip if hideLabel is true) */}
+        {/* Labels rotate with symbol, counter-flipped to prevent mirroring, counter-rotated at 180° */}
+        {!definition.hideLabel && definition.labels?.map((label, index) =>
+          renderLabel(label, index, width, height, component, component.flipX, component.flipY, rotation, colors)
+        )}
+      </Group>
     </Group>
   );
 };
+
+// Memoize BaseSymbol to prevent unnecessary re-renders
+export const MemoizedBaseSymbol = React.memo(BaseSymbol, (prevProps, nextProps) => {
+  // Only re-render if these key props change
+  return (
+    prevProps.component.kks === nextProps.component.kks &&
+    prevProps.component.position.x === nextProps.component.position.x &&
+    prevProps.component.position.y === nextProps.component.position.y &&
+    prevProps.component.rotation === nextProps.component.rotation &&
+    prevProps.component.flipX === nextProps.component.flipX &&
+    prevProps.component.flipY === nextProps.component.flipY &&
+    prevProps.component.wrapLabel === nextProps.component.wrapLabel &&
+    prevProps.isSelected === nextProps.isSelected &&
+    prevProps.isHovered === nextProps.isHovered &&
+    prevProps.isDragging === nextProps.isDragging &&
+    prevProps.isHighlighted === nextProps.isHighlighted &&
+    prevProps.showPorts === nextProps.showPorts &&
+    prevProps.mode === nextProps.mode &&
+    prevProps.darkMode === nextProps.darkMode &&
+    prevProps.definition === nextProps.definition
+  );
+});
 
 /**
  * Preview version of BaseSymbol for tool palette

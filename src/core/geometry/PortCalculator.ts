@@ -112,11 +112,7 @@ export function getPortWorldAngle(component: Component, baseAngle: number): numb
  * Find a port on a component by ID
  */
 export function findPort(component: Component, portId: string): Port | undefined {
-  console.log(`[PortCalculator] Finding port "${portId}" on component ${component.kks}`);
-  console.log(`[PortCalculator] Component has ${component.ports?.length || 0} ports:`, component.ports?.map(p => p.id));
-  const found = component.ports?.find(p => p.id === portId);
-  console.log(`[PortCalculator] Port found:`, found ? 'YES' : 'NO', found);
-  return found;
+  return component.ports?.find(p => p.id === portId);
 }
 
 /**

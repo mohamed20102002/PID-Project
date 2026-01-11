@@ -17,30 +17,48 @@ interface CanvasBoundaryProps {
   scale: number;
   /** Whether to show the boundary */
   visible?: boolean;
+  /** Dark mode enabled */
+  darkMode?: boolean;
 }
+
+// Color schemes for light and dark modes
+const LIGHT_COLORS = {
+  background: '#ffffff',
+  border: '#94a3b8',
+  corner: '#64748b',
+};
+
+const DARK_COLORS = {
+  background: '#111827',
+  border: '#6b7280',
+  corner: '#9ca3af',
+};
 
 export const CanvasBoundary: React.FC<CanvasBoundaryProps> = ({
   width,
   height,
   scale,
   visible = true,
+  darkMode = false,
 }) => {
   if (!visible) {
     return null;
   }
 
+  // Select color scheme based on mode
+  const colors = darkMode ? DARK_COLORS : LIGHT_COLORS;
   const borderWidth = 2 / scale;
   const cornerSize = 20 / scale;
 
   return (
     <Layer listening={false}>
-      {/* White canvas background */}
+      {/* Canvas background */}
       <Rect
         x={0}
         y={0}
         width={width}
         height={height}
-        fill="#ffffff"
+        fill={colors.background}
         listening={false}
       />
 
@@ -50,7 +68,7 @@ export const CanvasBoundary: React.FC<CanvasBoundaryProps> = ({
         y={0}
         width={width}
         height={height}
-        stroke="#94a3b8"
+        stroke={colors.border}
         strokeWidth={borderWidth}
         dash={[10 / scale, 5 / scale]}
         listening={false}
@@ -60,7 +78,7 @@ export const CanvasBoundary: React.FC<CanvasBoundaryProps> = ({
       {/* Top-left corner */}
       <Line
         points={[0, cornerSize, 0, 0, cornerSize, 0]}
-        stroke="#64748b"
+        stroke={colors.corner}
         strokeWidth={borderWidth * 1.5}
         listening={false}
       />
@@ -68,7 +86,7 @@ export const CanvasBoundary: React.FC<CanvasBoundaryProps> = ({
       {/* Top-right corner */}
       <Line
         points={[width - cornerSize, 0, width, 0, width, cornerSize]}
-        stroke="#64748b"
+        stroke={colors.corner}
         strokeWidth={borderWidth * 1.5}
         listening={false}
       />
@@ -76,7 +94,7 @@ export const CanvasBoundary: React.FC<CanvasBoundaryProps> = ({
       {/* Bottom-left corner */}
       <Line
         points={[0, height - cornerSize, 0, height, cornerSize, height]}
-        stroke="#64748b"
+        stroke={colors.corner}
         strokeWidth={borderWidth * 1.5}
         listening={false}
       />
@@ -84,7 +102,7 @@ export const CanvasBoundary: React.FC<CanvasBoundaryProps> = ({
       {/* Bottom-right corner */}
       <Line
         points={[width - cornerSize, height, width, height, width, height - cornerSize]}
-        stroke="#64748b"
+        stroke={colors.corner}
         strokeWidth={borderWidth * 1.5}
         listening={false}
       />

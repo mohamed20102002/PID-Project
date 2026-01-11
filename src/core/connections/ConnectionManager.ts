@@ -22,7 +22,7 @@ import { SymbolRegistry } from '../../data/symbols/SymbolRegistry';
 // ============================================================================
 
 export interface ConnectionCandidate {
-  componentKks: string;
+  componentId: string;
   portId: string;
   portPosition: Point;
   portDefinition: PortDefinition;
@@ -197,7 +197,7 @@ export const findNearestPort = (
   if (!portDef) return null;
 
   return {
-    componentKks: result.component.kks,
+    componentId: result.component.kks,
     portId: result.port.id,
     portPosition: result.position,
     portDefinition: portDef,
@@ -251,8 +251,8 @@ export class ConnectionManager {
   /**
    * Get exact world position of a port
    */
-  getPortPosition(componentKks: string, portId: string): Point | null {
-    const component = this.components[componentKks];
+  getPortPosition(componentId: string, portId: string): Point | null {
+    const component = this.components[componentId];
     if (!component) return null;
 
     const port = findPort(component, portId);
@@ -270,33 +270,20 @@ export class ConnectionManager {
     targetKks: string,
     targetPortId: string
   ): ConnectionValidation {
-    console.log(`[ConnectionManager] Validating connection:`);
-    console.log(`  Source: ${sourceKks}, Port: ${sourcePortId}`);
-    console.log(`  Target: ${targetKks}, Port: ${targetPortId}`);
-
     const source = this.components[sourceKks];
     const target = this.components[targetKks];
 
     if (!source || !target) {
-      console.error('[ConnectionManager] Component not found!');
-      console.log('  Available components:', Object.keys(this.components));
       return { valid: false, reason: 'Component not found' };
     }
-
-    console.log(`[ConnectionManager] Source component type: ${source.type}`);
-    console.log(`[ConnectionManager] Target component type: ${target.type}`);
 
     const sourcePort = findPort(source, sourcePortId);
     const targetPort = findPort(target, targetPortId);
 
     if (!sourcePort || !targetPort) {
-      console.error('[ConnectionManager] Port not found!');
-      if (!sourcePort) console.error(`  Source port "${sourcePortId}" not found`);
-      if (!targetPort) console.error(`  Target port "${targetPortId}" not found`);
       return { valid: false, reason: 'Port not found' };
     }
 
-    console.log('[ConnectionManager] Both ports found, validating connection...');
     return validateConnection(source, sourcePort, target, targetPort, this.customSymbols);
   }
 

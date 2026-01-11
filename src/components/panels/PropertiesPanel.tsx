@@ -379,6 +379,49 @@ const RotationControls: React.FC<{
 };
 
 /**
+ * Flip Controls
+ */
+const FlipControls: React.FC<{
+  flipX: boolean;
+  flipY: boolean;
+  onFlipChange: (flip: { flipX?: boolean; flipY?: boolean }) => void;
+}> = ({ flipX, flipY, onFlipChange }) => {
+  return (
+    <div className="mb-3">
+      <label className="block text-xs font-medium text-gray-600 mb-2">Flip</label>
+      <div className="flex gap-2">
+        <button
+          onClick={() => onFlipChange({ flipX: !flipX })}
+          className={`flex-1 px-3 py-1.5 text-xs rounded transition-colors flex items-center justify-center gap-1 ${
+            flipX
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 3v18M7 8l-4 4 4 4M17 8l4 4-4 4" />
+          </svg>
+          Flip X
+        </button>
+        <button
+          onClick={() => onFlipChange({ flipY: !flipY })}
+          className={`flex-1 px-3 py-1.5 text-xs rounded transition-colors flex items-center justify-center gap-1 ${
+            flipY
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 12h18M8 7l4-4 4 4M8 17l4 4 4-4" />
+          </svg>
+          Flip Y
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/**
  * Style Controls
  */
 const StyleControls: React.FC<{
@@ -697,6 +740,28 @@ const ConnectionProperties: React.FC<{
           className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         <p className="text-xs text-gray-400 mt-1">Shown below the pipe if set</p>
+      </div>
+
+      {/* Label Rotation */}
+      <div>
+        <label className="block text-xs font-medium text-gray-600 mb-1">
+          Label Rotation
+        </label>
+        <div className="flex gap-1">
+          {[0, 45, 90, -45, -90].map((angle) => (
+            <button
+              key={angle}
+              onClick={() => onUpdate({ labelRotation: angle })}
+              className={`flex-1 px-2 py-1.5 text-xs rounded transition-colors ${
+                (connection.labelRotation || 0) === angle
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {angle}°
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Style Section */}
@@ -1131,17 +1196,12 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
   const deleteMultiple = useDiagramStore((state) => state.deleteMultiple);
   const addComponent = useDiagramStore((state) => state.addComponent);
   const switchToSystem = useDiagramStore((state) => state.switchToSystem);
-  const saveCurrentDiagramToCache = useDiagramStore((state) => state.saveCurrentDiagramToCache);
   const updateConnection = useDiagramStore((state) => state.updateConnection);
   const updateBuilding = useDiagramStore((state) => state.updateBuilding);
   const deleteBuilding = useDiagramStore((state) => state.deleteBuilding);
 
   // Plant store
   const plant = usePlantStore((state) => state.plant);
-  const selectSystem = usePlantStore((state) => state.selectSystem);
-
-  // State for matching terminal creation
-  const [isCreatingMatching, setIsCreatingMatching] = useState(false);
 
   // Custom symbols store - contains all symbols (built-in + custom)
   const customSymbols = useCustomSymbolStore((state) => state.customSymbols);
@@ -1156,11 +1216,11 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
 
   // Get selected connection (if single selection)
   const selectedConnection = useMemo(() => {
-    if (selection.connectionIds.length === 1 && selection.componentKks.length === 0 && diagram) {
-      return diagram.connections[selection.connectionIds[0]];
+    if (selection.connectionKks.length === 1 && selection.componentKks.length === 0 && diagram) {
+      return diagram.connections[selection.connectionKks[0]];
     }
     return undefined;
-  }, [selection.connectionIds, selection.componentKks, diagram]);
+  }, [selection.connectionKks, selection.componentKks, diagram]);
 
   // Get selected building
   const selectedBuilding = useMemo(() => {
@@ -1204,9 +1264,10 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
       if (!selectedComponent || !newKks.trim()) return;
       const trimmedKks = newKks.trim().toUpperCase();
       if (trimmedKks === selectedComponent.kks) return;
-      const success = renameComponent(selectedComponent.kks, trimmedKks);
+      const oldKks = selectedComponent.kks;
+      const success = renameComponent(oldKks, trimmedKks);
+      // Update selection to use new KKS
       if (success) {
-        // Update selection to new KKS
         select([trimmedKks], []);
       }
     },
@@ -1234,6 +1295,15 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
     [selectedComponent, rotateComponent]
   );
 
+  // Handle flip change
+  const handleFlipChange = useCallback(
+    (flip: { flipX?: boolean; flipY?: boolean }) => {
+      if (!selectedComponent) return;
+      updateComponent(selectedComponent.kks, flip);
+    },
+    [selectedComponent, updateComponent]
+  );
+
   // Handle style change
   const handleStyleChange = useCallback(
     (style: { strokeColor?: string; fillColor?: string }) => {
@@ -1250,7 +1320,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
 
   // Handle delete selected
   const handleDeleteSelected = useCallback(() => {
-    deleteMultiple(selection.componentKks, selection.connectionIds);
+    deleteMultiple(selection.componentKks, selection.connectionKks);
     clearSelection();
   }, [selection, deleteMultiple, clearSelection]);
 
@@ -1258,7 +1328,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
   const handleConnectionUpdate = useCallback(
     (updates: Partial<Connection>) => {
       if (!selectedConnection) return;
-      updateConnection(selectedConnection.id, updates);
+      updateConnection(selectedConnection.kks, updates);
     },
     [selectedConnection, updateConnection]
   );
@@ -1266,7 +1336,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
   // Handle connection delete
   const handleDeleteConnection = useCallback(() => {
     if (!selectedConnection) return;
-    deleteMultiple([], [selectedConnection.id]);
+    deleteMultiple([], [selectedConnection.kks]);
     clearSelection();
   }, [selectedConnection, deleteMultiple, clearSelection]);
 
@@ -1286,103 +1356,6 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
     selectBuilding(null);
   }, [selectedBuildingId, deleteBuilding, selectBuilding]);
 
-  // Handle creating matching terminal in target system
-  const handleCreateMatchingTerminal = useCallback(async () => {
-    if (!selectedComponent || !diagram) return;
-
-    const props = selectedComponent.properties as Record<string, string>;
-    const targetSystemKks = props.targetSystemKks;
-
-    if (!targetSystemKks) {
-      alert('Please set a Target System KKS first');
-      return;
-    }
-
-    // Check if target system exists
-    let targetSystemExists = false;
-    if (plant) {
-      for (const unit of Object.values(plant.units)) {
-        if (unit.systems[targetSystemKks]) {
-          targetSystemExists = true;
-          break;
-        }
-      }
-    }
-
-    if (!targetSystemExists) {
-      alert(`System "${targetSystemKks}" not found. Please create it first.`);
-      return;
-    }
-
-    setIsCreatingMatching(true);
-
-    try {
-      // Save current diagram to cache first
-      saveCurrentDiagramToCache();
-
-      // Generate KKS for new terminal
-      const newTerminalKks = `${targetSystemKks}-XT${nanoid(4).toUpperCase()}`;
-
-      // Determine reverse port directions
-      const reverseDirection = (dir: string) => {
-        if (dir === 'in') return 'out';
-        if (dir === 'out') return 'in';
-        return dir; // 'both' or 'none' stays same
-      };
-
-      // Switch to target system
-      selectSystem(targetSystemKks);
-      switchToSystem(targetSystemKks);
-
-      // Wait for switch to complete
-      await new Promise(resolve => setTimeout(resolve, 150));
-
-      // Create matching terminal in target system
-      addComponent({
-        type: selectedComponent.type,
-        systemKks: targetSystemKks,
-        buildingKks: selectedComponent.buildingKks,
-        position: { x: 200, y: 200 }, // Default position
-        properties: {
-          targetSystemKks: diagram.systemKks,
-          targetTerminalKks: selectedComponent.kks,
-          description: `Link from ${diagram.systemKks}`,
-          // Reverse port directions
-          leftPortDirection: reverseDirection(props.rightPortDirection || 'none'),
-          rightPortDirection: reverseDirection(props.leftPortDirection || 'none'),
-          topPortDirection: reverseDirection(props.bottomPortDirection || 'none'),
-          bottomPortDirection: reverseDirection(props.topPortDirection || 'none'),
-          lineNumber: props.lineNumber,
-          medium: props.medium,
-        },
-      });
-
-      // Wait for component to be added
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Switch back to original system
-      selectSystem(diagram.systemKks);
-      switchToSystem(diagram.systemKks);
-
-      // Wait for switch
-      await new Promise(resolve => setTimeout(resolve, 150));
-
-      // Update original terminal with link to new terminal
-      updateComponent(selectedComponent.kks, {
-        properties: {
-          ...selectedComponent.properties,
-          targetTerminalKks: newTerminalKks,
-        },
-      });
-
-      alert(`Matching terminal "${newTerminalKks}" created in system "${targetSystemKks}"`);
-    } catch (error) {
-      console.error('Failed to create matching terminal:', error);
-      alert('Failed to create matching terminal');
-    } finally {
-      setIsCreatingMatching(false);
-    }
-  }, [selectedComponent, diagram, plant, saveCurrentDiagramToCache, selectSystem, switchToSystem, addComponent, updateComponent]);
 
   // Check if component is a terminal
   const isTerminal = selectedComponent?.type.startsWith('terminals:');
@@ -1414,7 +1387,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
     );
   }
 
-  if (selection.componentKks.length === 0 && selection.connectionIds.length === 0) {
+  if (selection.componentKks.length === 0 && selection.connectionKks.length === 0) {
     return (
       <div className={`flex flex-col h-full ${className}`}>
         <NoSelection />
@@ -1463,6 +1436,28 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
         />
       )}
 
+      {/* Flip Controls */}
+      <FlipControls
+        flipX={selectedComponent.flipX || false}
+        flipY={selectedComponent.flipY || false}
+        onFlipChange={handleFlipChange}
+      />
+
+      {/* Label Settings */}
+      <div className="mb-3">
+        <label className="block text-xs font-medium text-gray-600 mb-2">Label Display</label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={selectedComponent.wrapLabel || false}
+            onChange={(e) => updateComponent(selectedComponent.kks, { wrapLabel: e.target.checked })}
+            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
+          <span className="text-sm text-gray-700">Wrap KKS to 2 lines</span>
+        </label>
+        <p className="text-xs text-gray-400 mt-1">Splits KKS after 7 characters (e.g., 10KBA10 / AA001)</p>
+      </div>
+
       {/* Terminal Link Settings - only for terminals */}
       {isTerminal && diagram && (
         <TerminalSettings
@@ -1487,49 +1482,6 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
                 onChange={(value) => handlePropertyChange(name, value)}
               />
             ))}
-        </div>
-      )}
-
-      {/* Terminal Actions - only show for terminal components */}
-      {isTerminal && (
-        <div className="border-t border-gray-200 pt-3 mt-3">
-          <h4 className="text-xs font-medium text-gray-600 mb-2">Terminal Actions</h4>
-          <div className="space-y-2">
-            <button
-              onClick={handleCreateMatchingTerminal}
-              disabled={isCreatingMatching}
-              className="w-full px-3 py-2 text-sm bg-indigo-50 text-indigo-700 rounded hover:bg-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {isCreatingMatching ? (
-                <>
-                  <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
-                  </svg>
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <path d="M12 8v8m-4-4h8" />
-                  </svg>
-                  Create Matching Terminal
-                </>
-              )}
-            </button>
-            <p className="text-xs text-gray-400">
-              Creates a linked terminal in the target system that points back to this one.
-            </p>
-            {(selectedComponent.properties as Record<string, string>).targetTerminalKks && (
-              <div className="text-xs bg-green-50 text-green-700 p-2 rounded">
-                <span className="font-medium">Linked to:</span>{' '}
-                <span className="font-mono">
-                  {(selectedComponent.properties as Record<string, string>).targetTerminalKks}
-                </span>
-                <p className="mt-1 text-green-600">Double-click terminal to navigate</p>
-              </div>
-            )}
-          </div>
         </div>
       )}
 

@@ -355,21 +355,7 @@
         ]
       }
     ],
-    "labels": [
-      {
-        "id": "main-label",
-        "relativePosition": {
-          "x": 0.5,
-          "y": 2
-        },
-        "anchor": "middle",
-        "binding": "kks",
-        "style": {
-          "fontSize": 0,
-          "fontWeight": "normal"
-        }
-      }
-    ],
+    "labels": [],
     "propertySchema": {
       "required": [],
       "properties": {
@@ -379,7 +365,8 @@
           "placeholder": "Enter description"
         }
       }
-    }
+    },
+    "hideLabel": true
   },
   {
     "id": "manualValve1-1767425136723",
@@ -531,7 +518,7 @@
         "id": "label-1767453268813",
         "relativePosition": {
           "x": 0.5,
-          "y": 0.86
+          "y": 1
         },
         "anchor": "middle",
         "binding": "kks",
@@ -657,7 +644,8 @@
           ]
         }
       }
-    }
+    },
+    "hideLabel": false
   },
   {
     "id": "threewayvalve-1767425507210",
@@ -1106,7 +1094,7 @@
         "id": "label-1767428886639",
         "relativePosition": {
           "x": 0.5,
-          "y": 1.2085
+          "y": 1
         },
         "anchor": "middle",
         "binding": "kks",
@@ -1131,7 +1119,8 @@
           "placeholder": "Enter description"
         }
       }
-    }
+    },
+    "hideLabel": false
   },
   {
     "id": "shutoffvalve-1767428891387-copy-1767434623733",
@@ -1557,7 +1546,7 @@
         "id": "label-1767424747067",
         "relativePosition": {
           "x": 0.5,
-          "y": 1.2
+          "y": 1
         },
         "anchor": "middle",
         "binding": "kks",
@@ -1582,7 +1571,8 @@
           "placeholder": "Enter description"
         }
       }
-    }
+    },
+    "hideLabel": false
   },
   {
     "id": "SystemBoundary-1767437234740",
@@ -1659,21 +1649,7 @@
         ]
       }
     ],
-    "labels": [
-      {
-        "id": "main-label",
-        "relativePosition": {
-          "x": 0.5,
-          "y": 1.2
-        },
-        "anchor": "middle",
-        "binding": "kks",
-        "style": {
-          "fontSize": 10,
-          "fontWeight": "normal"
-        }
-      }
-    ],
+    "labels": [],
     "centerPoint": {
       "x": 0.5,
       "y": 0.5
@@ -1681,7 +1657,8 @@
     "propertySchema": {
       "required": [],
       "properties": {}
-    }
+    },
+    "hideLabel": true
   },
   {
     "id": "SystemBoundary-1767437234740-copy-1767437277280",
@@ -1758,21 +1735,7 @@
         ]
       }
     ],
-    "labels": [
-      {
-        "id": "main-label",
-        "relativePosition": {
-          "x": 0.5,
-          "y": 1.2
-        },
-        "anchor": "middle",
-        "binding": "kks",
-        "style": {
-          "fontSize": 10,
-          "fontWeight": "normal"
-        }
-      }
-    ],
+    "labels": [],
     "centerPoint": {
       "x": 0.5,
       "y": 0.5
@@ -1786,7 +1749,8 @@
           "placeholder": "Enter description"
         }
       }
-    }
+    },
+    "hideLabel": true
   },
   {
     "id": "Tank-1767459062321",
@@ -3596,8 +3560,8 @@
       {
         "id": "label-1767528839293",
         "relativePosition": {
-          "x": 0.5,
-          "y": 1.2075
+          "x": 1,
+          "y": 0.5
         },
         "anchor": "middle",
         "binding": "kks",
@@ -3605,7 +3569,8 @@
         "style": {
           "fontSize": 12,
           "fontWeight": "normal"
-        }
+        },
+        "rotation": 90
       }
     ],
     "propertySchema": {
@@ -3619,7 +3584,8 @@
           "placeholder": "Enter description"
         }
       }
-    }
+    },
+    "hideLabel": false
   },
   {
     "id": "buildingbreach-1767531232143",
@@ -6141,6 +6107,315 @@
         }
       }
     ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    }
+  },
+  {
+    "id": "centrifugalpump-1767540010585-copy-1767918102908",
+    "category": "AP",
+    "name": "centrifugalpumpelectricactuator",
+    "displayName": "Centrifugal Pump with Actuator",
+    "description": "Centrifugal Pump",
+    "standard": "ISA",
+    "kksEquipmentCode": "AP",
+    "noKks": false,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5,
+          "cy": 0.5,
+          "r": 0.2987578450852797
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "polygon",
+        "data": {
+          "points": [
+            {
+              "x": 0.5375,
+              "y": 0.325
+            },
+            {
+              "x": 0.5375,
+              "y": 0.675
+            },
+            {
+              "x": 0.7987578450852797,
+              "y": 0.5
+            },
+            {
+              "x": 0.5375,
+              "y": 0.325
+            }
+          ]
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "#000000"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.7987578450852797,
+          "y1": 0.5,
+          "x2": 1,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.20124215491472028,
+          "y1": 0.5,
+          "x2": 0,
+          "y2": 0.5
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "circle",
+        "data": {
+          "cx": 0.5,
+          "cy": -0.175,
+          "r": 0.205
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "arc",
+        "data": {
+          "x": 0.4325,
+          "y": -0.175,
+          "innerRadius": 0,
+          "outerRadius": 0.06499999999999999,
+          "startAngle": 0,
+          "endAngle": 180
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "arc",
+        "data": {
+          "x": 0.57,
+          "y": -0.175,
+          "innerRadius": 0,
+          "outerRadius": 0.07267220926874317,
+          "startAngle": -176.05481377096243,
+          "endAngle": 3.94518622903756
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.03,
+          "x2": 0.5,
+          "y2": 0.20124215491472028
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767539865399-ptcjupuhl",
+        "name": "inport",
+        "relativePosition": {
+          "x": 0,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      },
+      {
+        "id": "port-1767539866756-f46eqrjx2",
+        "name": "outport",
+        "relativePosition": {
+          "x": 1,
+          "y": 0.5
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [
+      {
+        "id": "label-1767540148388-g3z60uf13",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 1.208
+        },
+        "anchor": "middle",
+        "binding": "kks",
+        "visible": true,
+        "style": {
+          "fontSize": 12,
+          "fontWeight": "normal"
+        }
+      }
+    ],
+    "propertySchema": {
+      "required": [],
+      "properties": {}
+    },
+    "hideLabel": false
+  },
+  {
+    "id": "flowdirection-1767926358918",
+    "category": "additional",
+    "name": "flowdirection",
+    "displayName": "Direction",
+    "description": "Define Flow Direction",
+    "standard": "ISA",
+    "kksEquipmentCode": "",
+    "noKks": true,
+    "allowDuplicateKks": false,
+    "hideLabel": true,
+    "defaultSize": {
+      "width": 60,
+      "height": 60
+    },
+    "minSize": {
+      "width": 30,
+      "height": 30
+    },
+    "maxSize": {
+      "width": 200,
+      "height": 200
+    },
+    "resizable": true,
+    "aspectRatioLocked": true,
+    "rotatable": true,
+    "rotationSteps": [
+      0,
+      90,
+      180,
+      270
+    ],
+    "freeRotation": false,
+    "paths": [
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.65,
+          "x2": 0.5,
+          "y2": 0.3
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.3,
+          "x2": 0.3763952873066728,
+          "y2": 0.5140896424397968
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      },
+      {
+        "type": "line",
+        "data": {
+          "x1": 0.5,
+          "y1": 0.3,
+          "x2": 0.6231107225224514,
+          "y2": 0.5132340263653998
+        },
+        "style": {
+          "stroke": "inherit",
+          "strokeWidth": 2,
+          "fill": "transparent"
+        }
+      }
+    ],
+    "ports": [
+      {
+        "id": "port-1767926273505-hrwypw6mw",
+        "name": "port1",
+        "relativePosition": {
+          "x": 0.5,
+          "y": 0.3
+        },
+        "direction": "bidirectional",
+        "defaultAngle": 0,
+        "allowedConnections": [
+          "pipe"
+        ]
+      }
+    ],
+    "labels": [],
     "propertySchema": {
       "required": [],
       "properties": {}

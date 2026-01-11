@@ -107,6 +107,23 @@ export interface UIState {
   isDraggingSelection: boolean;
   dragSelectionDelta: Point;
   draggedSelectionKks: string[];
+
+  // KKS Pipe Highlighting (Technical Panel feature)
+  kksHighlightEnabled: boolean;
+  kksHighlightSegment: string;
+  kksHighlightColor: string;
+  kksHighlightStrokeWidth: number;
+  kksHighlightGlowIntensity: number;
+  kksHideNonMatching: boolean;
+
+  // Canvas Dark Mode
+  canvasDarkMode: boolean;
+
+  // Dark Mode Pipe Settings
+  darkModePipeColor: string;
+  darkModePipeStrokeWidth: number;
+  darkModePipeGlowBlur: number;
+  darkModePipeGlowOpacity: number;
 }
 
 export interface UIActions {
@@ -127,9 +144,9 @@ export interface UIActions {
   panTo: (position: Point) => void;
 
   // Selection
-  select: (componentKks: string[], connectionIds?: string[]) => void;
-  addToSelection: (componentKks: string[], connectionIds?: string[]) => void;
-  removeFromSelection: (componentKks: string[], connectionIds?: string[]) => void;
+  select: (componentIds: string[], connectionIds?: string[]) => void;
+  addToSelection: (componentIds: string[], connectionIds?: string[]) => void;
+  removeFromSelection: (componentIds: string[], connectionIds?: string[]) => void;
   clearSelection: () => void;
 
   // Panels
@@ -161,7 +178,7 @@ export interface UIActions {
   setHoveredPort: (portId: string | null) => void;
 
   // Connection drawing
-  startConnectionDrawing: (componentKks: string, portId: string) => void;
+  startConnectionDrawing: (componentIds: string, portId: string) => void;
   updateConnectionPreview: (points: Point[]) => void;
   addConnectionWaypoint: (point: Point) => void;
   removeLastWaypoint: () => void;
@@ -199,9 +216,27 @@ export interface UIActions {
   clearClipboard: () => void;
 
   // Multi-drag state
-  startDraggingSelection: (componentKks: string[]) => void;
+  startDraggingSelection: (componentIds: string[]) => void;
   updateDragSelectionDelta: (delta: Point) => void;
   endDraggingSelection: () => void;
+
+  // KKS Pipe Highlighting
+  setKksHighlightEnabled: (enabled: boolean) => void;
+  setKksHighlightSegment: (segment: string) => void;
+  setKksHighlightColor: (color: string) => void;
+  setKksHighlightStrokeWidth: (width: number) => void;
+  setKksHighlightGlowIntensity: (intensity: number) => void;
+  setKksHideNonMatching: (hide: boolean) => void;
+
+  // Canvas Dark Mode
+  setCanvasDarkMode: (enabled: boolean) => void;
+  toggleCanvasDarkMode: () => void;
+
+  // Dark Mode Pipe Settings
+  setDarkModePipeColor: (color: string) => void;
+  setDarkModePipeStrokeWidth: (width: number) => void;
+  setDarkModePipeGlowBlur: (blur: number) => void;
+  setDarkModePipeGlowOpacity: (opacity: number) => void;
 }
 
 // ============================================================================
@@ -219,7 +254,7 @@ const initialState: UIState = {
   },
   selection: {
     componentKks: [],
-    connectionIds: [],
+    connectionKks: [],
     type: 'none',
   },
   leftPanelOpen: true,
@@ -255,6 +290,18 @@ const initialState: UIState = {
   isDraggingSelection: false,
   dragSelectionDelta: { x: 0, y: 0 },
   draggedSelectionKks: [],
+  kksHighlightEnabled: false,
+  kksHighlightSegment: '',
+  kksHighlightColor: '#00ffff',
+  kksHighlightStrokeWidth: 4,
+  kksHighlightGlowIntensity: 50,
+  kksHideNonMatching: false,
+  canvasDarkMode: false,
+  // Dark Mode Pipe Settings
+  darkModePipeColor: '#ffffff',
+  darkModePipeStrokeWidth: 2.5,
+  darkModePipeGlowBlur: 15,
+  darkModePipeGlowOpacity: 1,
 };
 
 // ============================================================================
@@ -350,36 +397,36 @@ export const useUIStore = create<UIState & UIActions>()(
     }),
 
     // Selection
-    select: (componentKks, connectionIds = []) => set((state) => {
+    select: (componentKks, connectionKks = []) => set((state) => {
       state.selection.componentKks = componentKks;
-      state.selection.connectionIds = connectionIds;
-      const total = componentKks.length + connectionIds.length;
+      state.selection.connectionKks = connectionKks;
+      const total = componentKks.length + connectionKks.length;
       state.selection.type = total === 0 ? 'none' : total === 1 ? 'single' : 'multiple';
     }),
 
-    addToSelection: (componentKks, connectionIds = []) => set((state) => {
+    addToSelection: (componentKks, connectionKks = []) => set((state) => {
       const newComponents = [...new Set([...state.selection.componentKks, ...componentKks])];
-      const newConnections = [...new Set([...state.selection.connectionIds, ...connectionIds])];
+      const newConnections = [...new Set([...state.selection.connectionKks, ...connectionKks])];
       state.selection.componentKks = newComponents;
-      state.selection.connectionIds = newConnections;
+      state.selection.connectionKks = newConnections;
       const total = newComponents.length + newConnections.length;
       state.selection.type = total === 0 ? 'none' : total === 1 ? 'single' : 'multiple';
     }),
 
-    removeFromSelection: (componentKks, connectionIds = []) => set((state) => {
+    removeFromSelection: (componentKks, connectionKks = []) => set((state) => {
       state.selection.componentKks = state.selection.componentKks.filter(
         (kks) => !componentKks.includes(kks)
       );
-      state.selection.connectionIds = state.selection.connectionIds.filter(
-        (id) => !connectionIds.includes(id)
+      state.selection.connectionKks = state.selection.connectionKks.filter(
+        (kks) => !connectionKks.includes(kks)
       );
-      const total = state.selection.componentKks.length + state.selection.connectionIds.length;
+      const total = state.selection.componentKks.length + state.selection.connectionKks.length;
       state.selection.type = total === 0 ? 'none' : total === 1 ? 'single' : 'multiple';
     }),
 
     clearSelection: () => set((state) => {
       state.selection.componentKks = [];
-      state.selection.connectionIds = [];
+      state.selection.connectionKks = [];
       state.selection.type = 'none';
     }),
 
@@ -457,9 +504,9 @@ export const useUIStore = create<UIState & UIActions>()(
     }),
 
     // Connection drawing
-    startConnectionDrawing: (componentKks, portId) => set((state) => {
+    startConnectionDrawing: (componentIds, portId) => set((state) => {
       state.isDrawingConnection = true;
-      state.connectionSourceKks = componentKks;
+      state.connectionSourceKks = componentIds;
       state.connectionSourcePortId = portId;
       state.connectionPreviewPoints = [];
       state.connectionWaypoints = [];
@@ -633,9 +680,9 @@ export const useUIStore = create<UIState & UIActions>()(
     }),
 
     // Multi-drag state
-    startDraggingSelection: (componentKks) => set((state) => {
+    startDraggingSelection: (componentIds) => set((state) => {
       state.isDraggingSelection = true;
-      state.draggedSelectionKks = componentKks;
+      state.draggedSelectionKks = componentIds;
       state.dragSelectionDelta = { x: 0, y: 0 };
     }),
 
@@ -647,6 +694,57 @@ export const useUIStore = create<UIState & UIActions>()(
       state.isDraggingSelection = false;
       state.draggedSelectionKks = [];
       state.dragSelectionDelta = { x: 0, y: 0 };
+    }),
+
+    // KKS Pipe Highlighting
+    setKksHighlightEnabled: (enabled) => set((state) => {
+      state.kksHighlightEnabled = enabled;
+    }),
+
+    setKksHighlightSegment: (segment) => set((state) => {
+      state.kksHighlightSegment = segment;
+    }),
+
+    setKksHighlightColor: (color) => set((state) => {
+      state.kksHighlightColor = color;
+    }),
+
+    setKksHighlightStrokeWidth: (width) => set((state) => {
+      state.kksHighlightStrokeWidth = Math.max(1, Math.min(10, width));
+    }),
+
+    setKksHighlightGlowIntensity: (intensity) => set((state) => {
+      state.kksHighlightGlowIntensity = Math.max(0, Math.min(100, intensity));
+    }),
+
+    setKksHideNonMatching: (hide) => set((state) => {
+      state.kksHideNonMatching = hide;
+    }),
+
+    // Canvas Dark Mode
+    setCanvasDarkMode: (enabled) => set((state) => {
+      state.canvasDarkMode = enabled;
+    }),
+
+    toggleCanvasDarkMode: () => set((state) => {
+      state.canvasDarkMode = !state.canvasDarkMode;
+    }),
+
+    // Dark Mode Pipe Settings
+    setDarkModePipeColor: (color) => set((state) => {
+      state.darkModePipeColor = color;
+    }),
+
+    setDarkModePipeStrokeWidth: (width) => set((state) => {
+      state.darkModePipeStrokeWidth = Math.max(1, Math.min(5, width));
+    }),
+
+    setDarkModePipeGlowBlur: (blur) => set((state) => {
+      state.darkModePipeGlowBlur = Math.max(0, Math.min(30, blur));
+    }),
+
+    setDarkModePipeGlowOpacity: (opacity) => set((state) => {
+      state.darkModePipeGlowOpacity = Math.max(0, Math.min(1, opacity));
     }),
   })),
   {
@@ -663,6 +761,12 @@ export const useUIStore = create<UIState & UIActions>()(
       axisLinesVisible: state.axisLinesVisible,
       leftPanelOpen: state.leftPanelOpen,
       rightPanelOpen: state.rightPanelOpen,
+      canvasDarkMode: state.canvasDarkMode,  // Persist dark mode
+      // Dark Mode Pipe Settings
+      darkModePipeColor: state.darkModePipeColor,
+      darkModePipeStrokeWidth: state.darkModePipeStrokeWidth,
+      darkModePipeGlowBlur: state.darkModePipeGlowBlur,
+      darkModePipeGlowOpacity: state.darkModePipeGlowOpacity,
     }),
   }
 ));
@@ -674,5 +778,5 @@ export const useUIStore = create<UIState & UIActions>()(
 export const selectViewport = (state: UIState) => state.viewport;
 export const selectZoomPercent = (state: UIState) => Math.round(state.viewport.scale * 100);
 export const selectIsSelected = (kks: string) => (state: UIState) =>
-  state.selection.componentKks.includes(kks) || state.selection.connectionIds.includes(kks);
+  state.selection.componentKks.includes(kks) || state.selection.connectionKks.includes(kks);
 export const selectHasSelection = (state: UIState) => state.selection.type !== 'none';

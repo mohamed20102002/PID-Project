@@ -265,8 +265,8 @@ export function getKksDescription(code: string | KksCode): string {
 /**
  * Extract the system KKS from a full component KKS
  */
-export function extractSystemKks(componentKks: string): string | null {
-  const result = parseKksCode(componentKks);
+export function extractSystemKks(componentId: string): string | null {
+  const result = parseKksCode(componentId);
   if (!result.valid) return null;
   return `${result.code!.system}${result.code!.systemNumber}`;
 }
@@ -274,8 +274,8 @@ export function extractSystemKks(componentKks: string): string | null {
 /**
  * Extract the unit KKS from a full component KKS
  */
-export function extractUnitKks(componentKks: string): string | null {
-  const result = parseKksCode(componentKks);
+export function extractUnitKks(componentId: string): string | null {
+  const result = parseKksCode(componentId);
   if (!result.valid) return null;
   return result.code!.unit;
 }

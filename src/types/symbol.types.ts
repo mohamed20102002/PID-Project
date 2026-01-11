@@ -25,6 +25,10 @@ export interface SymbolDefinition {
 
   // KKS behavior
   noKks?: boolean;                    // If true, component auto-generates ID, no KKS required (e.g., corners)
+  allowDuplicateKks?: boolean;        // If true, allows duplicate KKS codes (e.g., terminals)
+
+  // Label behavior
+  hideLabel?: boolean;                // If true, no label is shown for this symbol (e.g., piping elements)
 
   // Sizing
   defaultSize: Size;
@@ -222,6 +226,10 @@ export interface LabelDefinition {
   style: LabelStyle;
   rotation?: number;                  // Rotation in degrees (default: 0)
   visible?: boolean;                  // Show label on symbol (default: true)
+  wrapText?: boolean;                 // Enable text wrapping (default: false)
+  maxWidth?: number;                  // Max width in pixels before wrapping (default: 60)
+  maxLines?: number;                  // Max number of lines (default: 2)
+  lineBreakChar?: string;             // Character to break on (e.g., "-" for KKS codes)
 }
 
 export type TextAnchor = 'start' | 'middle' | 'end';

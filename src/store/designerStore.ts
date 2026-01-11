@@ -36,6 +36,8 @@ export interface DesignerMetadata {
   standard: SymbolStandard;
   kksEquipmentCode: string;
   noKks: boolean;
+  allowDuplicateKks: boolean;
+  hideLabel: boolean;
 }
 
 export interface DesignerSizing {
@@ -180,6 +182,8 @@ const DEFAULT_METADATA: DesignerMetadata = {
   standard: 'ISA',
   kksEquipmentCode: 'AA',  // Match category
   noKks: false,
+  allowDuplicateKks: false,
+  hideLabel: false,
 };
 
 const DEFAULT_SIZING: DesignerSizing = {
@@ -666,6 +670,8 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
         standard: definition.standard,
         kksEquipmentCode: definition.kksEquipmentCode,
         noKks: definition.noKks || false,
+        allowDuplicateKks: definition.allowDuplicateKks || false,
+        hideLabel: definition.hideLabel || false,
       },
       sizing: {
         defaultSize: { ...definition.defaultSize },
@@ -698,6 +704,27 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
     // Generate ID if not set
     const id = state.metadata.id || `${state.metadata.name || 'symbol'}-${Date.now()}`;
 
+    // Determine labels: if hideLabel is true, use empty array; otherwise use existing or default
+    let labels: typeof state.labels;
+    if (state.metadata.hideLabel) {
+      // No labels when hideLabel is enabled
+      labels = [];
+    } else if (state.labels.length > 0) {
+      // Use user-defined labels
+      labels = [...state.labels];
+    } else {
+      // Default label if none specified and hideLabel is false
+      labels = [
+        {
+          id: 'main-label',
+          relativePosition: { x: 0.5, y: 1.2 },
+          anchor: 'middle' as const,
+          binding: 'kks',
+          style: { fontSize: 10, fontWeight: 'normal' as const },
+        },
+      ];
+    }
+
     const definition: SymbolDefinition = {
       id,
       category: state.metadata.category,
@@ -707,6 +734,8 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
       standard: state.metadata.standard,
       kksEquipmentCode: state.metadata.kksEquipmentCode,
       noKks: state.metadata.noKks,
+      allowDuplicateKks: state.metadata.allowDuplicateKks,
+      hideLabel: state.metadata.hideLabel,
 
       defaultSize: { ...state.sizing.defaultSize },
       minSize: { ...state.sizing.minSize },
@@ -720,16 +749,7 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
 
       paths: [...state.paths],
       ports: [...state.ports],
-      labels: state.labels.length > 0 ? [...state.labels] : [
-        // Default label if none specified
-        {
-          id: 'main-label',
-          relativePosition: { x: 0.5, y: 1.2 },
-          anchor: 'middle',
-          binding: 'kks',
-          style: { fontSize: 10, fontWeight: 'normal' },
-        },
-      ],
+      labels,
 
       // Center point for alignment (optional) - already in relative coordinates (0-1)
       centerPoint: state.centerPoint ? { ...state.centerPoint } : undefined,

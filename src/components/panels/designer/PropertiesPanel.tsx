@@ -319,6 +319,32 @@ const GeneralTab: React.FC = () => {
           No KKS required (auto-generate simple IDs)
         </label>
       </div>
+
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="allowDuplicateKks"
+          checked={metadata.allowDuplicateKks}
+          onChange={(e) => setMetadata('allowDuplicateKks', e.target.checked)}
+          className="w-4 h-4 text-pid-primary border-gray-300 rounded focus:ring-2 focus:ring-pid-primary"
+        />
+        <label htmlFor="allowDuplicateKks" className="text-sm text-gray-700 cursor-pointer">
+          Allow duplicate KKS codes (e.g., terminals)
+        </label>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="hideLabel"
+          checked={metadata.hideLabel}
+          onChange={(e) => setMetadata('hideLabel', e.target.checked)}
+          className="w-4 h-4 text-pid-primary border-gray-300 rounded focus:ring-2 focus:ring-pid-primary"
+        />
+        <label htmlFor="hideLabel" className="text-sm text-gray-700 cursor-pointer">
+          Hide label (no text label on canvas)
+        </label>
+      </div>
     </div>
   );
 };

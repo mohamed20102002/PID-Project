@@ -88,7 +88,7 @@ export interface DiagramSettings {
  * P&ID Component (equipment, instrument, etc.)
  */
 export interface Component {
-  kks: string;                        // Full KKS code
+  kks: string;                        // Full KKS code (unique identifier)
   type: ComponentType;                // Component type identifier
   systemKks: string;                  // System this component belongs to
   buildingKks: string;                // Building/location code
@@ -96,12 +96,15 @@ export interface Component {
   rotation: ComponentRotation;        // Rotation angle
   scale: Point;                       // Scale factor (default 1,1)
   size: Size;                         // Component dimensions
+  flipX?: boolean;                    // Flip horizontally
+  flipY?: boolean;                    // Flip vertically
   ports: Port[];                      // Connection ports
   properties: ComponentProperties;    // Component metadata
   style: ComponentStyle;              // Visual styling
   locked: boolean;                    // Prevent editing
   visible: boolean;                   // Visibility toggle
   layerId?: string;                   // Layer assignment
+  wrapLabel?: boolean;                // Wrap KKS label to 2 lines (split after 7 chars)
 }
 
 /**
@@ -124,7 +127,7 @@ export interface Port {
   position: Point;                    // Position relative to component origin
   direction: PortDirection;           // Flow direction
   angle: number;                      // Normal angle for pipe routing
-  connectionId?: string;              // Connected pipe ID (if connected)
+  connectionKks?: string;             // Connected pipe KKS (if connected)
   allowedConnectionTypes: ConnectionType[];
 }
 
@@ -192,17 +195,17 @@ export type LabelPosition = 'top' | 'bottom' | 'left' | 'right' | 'center';
  * Connection between components (pipe, signal line, etc.)
  */
 export interface Connection {
-  id: string;                         // Unique internal ID (auto-generated)
-  kks: string;                        // Connection KKS code (can be duplicate, used for display/search)
+  kks: string;                        // Connection KKS code (unique identifier)
   type: ConnectionType;               // Connection type
   label?: string;                     // Display label (e.g., "PL-101")
+  labelRotation?: number;             // Label rotation angle in degrees (default: 0)
 
   // Source endpoint
-  sourceComponentKks: string;
+  sourceComponentKks: string;         // Source component KKS
   sourcePortId: string;
 
   // Target endpoint
-  targetComponentKks: string;
+  targetComponentKks: string;         // Target component KKS
   targetPortId: string;
 
   // Cross-system connection info
@@ -333,8 +336,8 @@ export interface Layer {
  * Current selection state
  */
 export interface Selection {
-  componentKks: string[];
-  connectionIds: string[];  // Changed from connectionKks to connectionIds
+  componentKks: string[];             // Selected component KKS codes
+  connectionKks: string[];            // Selected connection KKS codes
   type: SelectionType;
 }
 

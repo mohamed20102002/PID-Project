@@ -35,7 +35,9 @@
       "Bash(git stash:*)",
       "Bash(cmd //c \"dir /s /b \"\"E:\\\\Flowmark versions\\\\3-1-2026\\\\Flowmark\\\\data\\\\systems\\\\*.json\"\"\")",
       "Bash(cmd //c \"dir /s /b \"E:Flowmark versions3-1-2026Flowmarkdatasystems*.json\"\")",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)"
     ]
   }
 }
