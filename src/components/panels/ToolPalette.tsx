@@ -28,36 +28,51 @@ interface SymbolItemProps {
 }
 
 /**
- * Symbol Item Component
+ * Symbol Item Component - Memoized for performance
+ * Uses CSS for hover states to avoid re-renders
  */
-const SymbolItem: React.FC<SymbolItemProps> = ({ symbol, onDragStart, onClick, onEdit }) => {
-  const [isHovered, setIsHovered] = useState(false);
+const SymbolItem: React.FC<SymbolItemProps> = React.memo(({ symbol, onDragStart, onClick, onEdit }) => {
   const previewSize = 40;
 
-  const handleEditClick = (e: React.MouseEvent) => {
+  const handleEditClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     onEdit?.(symbol);
-  };
+  }, [onEdit, symbol]);
+
+  const handleDragStart = useCallback((e: React.DragEvent) => {
+    onDragStart(symbol, e);
+  }, [onDragStart, symbol]);
+
+  const handleClick = useCallback(() => {
+    onClick(symbol);
+  }, [onClick, symbol]);
+
+  // Memoize the Stage to prevent recreation on parent re-renders
+  const preview = useMemo(() => (
+    <Stage width={previewSize} height={previewSize}>
+      <Layer>
+        <SymbolPreview
+          definition={symbol}
+          size={previewSize - 4}
+          strokeColor="#1a1a1a"
+        />
+      </Layer>
+    </Stage>
+  ), [symbol]);
 
   return (
     <div
-      className={`
-        relative flex flex-col items-center p-2 rounded cursor-grab
-        transition-colors duration-150
-        ${isHovered ? 'bg-gray-200' : 'bg-white hover:bg-gray-100'}
-      `}
+      className="symbol-item relative flex flex-col items-center p-2 rounded cursor-grab bg-white hover:bg-gray-100 transition-colors duration-150"
       draggable
-      onDragStart={(e) => onDragStart(symbol, e)}
-      onClick={() => onClick(symbol)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onDragStart={handleDragStart}
+      onClick={handleClick}
       title={symbol.description}
     >
-      {/* Edit Button (visible on hover) */}
-      {onEdit && isHovered && (
+      {/* Edit Button (visible on hover via CSS) */}
+      {onEdit && (
         <button
           onClick={handleEditClick}
-          className="absolute top-1 right-1 p-1 bg-white rounded shadow-md hover:bg-blue-50 transition-colors z-10"
+          className="symbol-edit-btn absolute top-1 right-1 p-1 bg-white rounded shadow-md hover:bg-blue-50 transition-colors z-10 opacity-0"
           title="Edit symbol"
         >
           <svg className="w-3 h-3 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -67,17 +82,9 @@ const SymbolItem: React.FC<SymbolItemProps> = ({ symbol, onDragStart, onClick, o
         </button>
       )}
 
-      {/* Symbol Preview */}
+      {/* Symbol Preview - Memoized */}
       <div className="w-10 h-10 flex items-center justify-center">
-        <Stage width={previewSize} height={previewSize}>
-          <Layer>
-            <SymbolPreview
-              definition={symbol}
-              size={previewSize - 4}
-              strokeColor={isHovered ? '#2563eb' : '#1a1a1a'}
-            />
-          </Layer>
-        </Stage>
+        {preview}
       </div>
 
       {/* Symbol Name */}
@@ -86,7 +93,10 @@ const SymbolItem: React.FC<SymbolItemProps> = ({ symbol, onDragStart, onClick, o
       </span>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison - only re-render if symbol changes
+  return prevProps.symbol.id === nextProps.symbol.id;
+});
 
 /**
  * Sub-Category Section Component (for KKS sub-categories like AA, AB, etc.)

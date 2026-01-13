@@ -61,6 +61,7 @@ export const PortSchema = z.object({
   direction: PortDirectionSchema,
   angle: z.number(),
   connectionKks: z.string().optional(),
+  connectionId: z.string().optional(),  // Legacy field from old format
   allowedConnectionTypes: z.array(ConnectionTypeSchema),
 });
 
@@ -69,8 +70,8 @@ export const LabelPositionSchema = z.enum(['top', 'bottom', 'left', 'right', 'ce
 export const ComponentStyleSchema = z.object({
   strokeColor: z.string(),
   fillColor: z.string(),
-  strokeWidth: z.number().positive(),
-  opacity: z.number().min(0).max(1),
+  strokeWidth: z.number().positive().optional(),
+  opacity: z.number().min(0).max(1).optional(),
   fontSize: z.number().positive().optional(),
   fontFamily: z.string().optional(),
   labelPosition: LabelPositionSchema.optional(),
@@ -88,8 +89,8 @@ export const ComponentPropertiesSchema = z.object({
   level: PropertyValueSchema.optional(),
   normalPosition: z.string().optional(),
   failPosition: z.string().optional(),
-  custom: z.record(z.string(), PropertyValueSchema),
-});
+  custom: z.record(z.string(), PropertyValueSchema).optional(),
+}).passthrough();  // Allow additional properties
 
 export const ComponentSchema = z.object({
   kks: z.string().min(1),
@@ -97,16 +98,20 @@ export const ComponentSchema = z.object({
   systemKks: z.string(),
   buildingKks: z.string(),
   position: PointSchema,
-  rotation: ComponentRotationSchema,
-  scale: PointSchema,
-  size: SizeSchema,
-  ports: z.array(PortSchema),
-  properties: ComponentPropertiesSchema,
-  style: ComponentStyleSchema,
-  locked: z.boolean(),
-  visible: z.boolean(),
+  rotation: ComponentRotationSchema.optional(),
+  scale: PointSchema.optional(),
+  size: SizeSchema.optional(),
+  ports: z.array(PortSchema).optional(),
+  properties: ComponentPropertiesSchema.optional(),
+  style: ComponentStyleSchema.optional(),
+  locked: z.boolean().optional(),
+  visible: z.boolean().optional(),
   layerId: z.string().optional(),
-});
+  wrapLabel: z.boolean().optional(),
+  flipX: z.boolean().optional(),
+  flipY: z.boolean().optional(),
+  id: z.string().optional(),
+}).passthrough();  // Allow additional properties
 
 // ============================================================================
 // Connection Schemas
@@ -136,27 +141,31 @@ export const ConnectionPropertiesSchema = z.object({
   operatingPressure: PropertyValueSchema.optional(),
   operatingTemperature: PropertyValueSchema.optional(),
   flowRate: PropertyValueSchema.optional(),
-  custom: z.record(z.string(), PropertyValueSchema),
-});
+  custom: z.record(z.string(), PropertyValueSchema).optional(),
+}).passthrough();  // Allow additional properties
 
 export const ConnectionSchema = z.object({
   kks: z.string().min(1),
   type: ConnectionTypeSchema,
   label: z.string().optional(),
-  sourceComponentId: z.string().min(1),
+  // Support both old ID-based and new KKS-based formats
+  sourceComponentId: z.string().min(1).optional(),
+  sourceComponentKks: z.string().min(1).optional(),
   sourcePortId: z.string().min(1),
-  targetComponentId: z.string().min(1),
+  targetComponentId: z.string().min(1).optional(),
+  targetComponentKks: z.string().min(1).optional(),
   targetPortId: z.string().min(1),
-  isCrossSystem: z.boolean(),
+  isCrossSystem: z.boolean().optional(),
   sourceSystemKks: z.string().optional(),
   targetSystemKks: z.string().optional(),
-  waypoints: z.array(PointSchema),
-  routingType: RoutingTypeSchema,
-  style: ConnectionStyleSchema,
-  properties: ConnectionPropertiesSchema,
-  locked: z.boolean(),
-  visible: z.boolean(),
-});
+  waypoints: z.array(PointSchema).optional(),
+  routingType: RoutingTypeSchema.optional(),
+  style: ConnectionStyleSchema.optional(),
+  properties: ConnectionPropertiesSchema.optional(),
+  locked: z.boolean().optional(),
+  visible: z.boolean().optional(),
+  id: z.string().optional(),
+}).passthrough();  // Allow additional properties
 
 // ============================================================================
 // Diagram Schemas
@@ -165,40 +174,58 @@ export const ConnectionSchema = z.object({
 export const DiagramMetadataSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
-  author: z.string(),
-  revision: z.string(),
+  author: z.string().optional(),
+  revision: z.string().optional(),
   facility: z.string().optional(),
   system: z.string().optional(),
   sheetNumber: z.string().optional(),
   totalSheets: z.number().positive().optional(),
-  tags: z.array(z.string()),
-});
+  tags: z.array(z.string()).optional(),
+}).passthrough();  // Allow additional properties
 
 export const DiagramSettingsSchema = z.object({
-  gridSize: z.number().positive(),
-  gridEnabled: z.boolean(),
-  snapToGrid: z.boolean(),
-  snapTolerance: z.number().positive(),
-  canvasWidth: z.number().positive(),
-  canvasHeight: z.number().positive(),
-  backgroundColor: z.string(),
-  defaultPipeStyle: ConnectionStyleSchema,
-  showLabels: z.boolean(),
-  showPorts: z.boolean(),
+  gridSize: z.number().positive().optional(),
+  gridEnabled: z.boolean().optional(),
+  snapToGrid: z.boolean().optional(),
+  snapTolerance: z.number().positive().optional(),
+  canvasWidth: z.number().positive().optional(),
+  canvasHeight: z.number().positive().optional(),
+  backgroundColor: z.string().optional(),
+  defaultPipeStyle: ConnectionStyleSchema.optional(),
+  showLabels: z.boolean().optional(),
+  showPorts: z.boolean().optional(),
+}).passthrough();  // Allow additional properties
+
+// Building polygon schema for diagram areas
+export const BuildingPolygonSchema = z.object({
+  id: z.string().min(1),
+  name: z.string(),
+  polygon: z.array(PointSchema),
+  fillColor: z.string(),
+  strokeColor: z.string(),
+  strokeWidth: z.number(),
+  strokeDash: z.array(z.number()).optional(),
+  labelPosition: PointSchema,
+  labelVisible: z.boolean(),
+  containedItems: z.array(z.string()),
+  locked: z.boolean(),
+  visible: z.boolean(),
+  zIndex: z.number(),
 });
 
 export const DiagramSchema = z.object({
   kks: z.string().min(1),
   name: z.string().min(1),
-  version: z.string(),
+  version: z.string().optional(),
   systemKks: z.string(),
-  metadata: DiagramMetadataSchema,
-  settings: DiagramSettingsSchema,
-  components: z.record(z.string(), ComponentSchema),
-  connections: z.record(z.string(), ConnectionSchema),
-  createdAt: z.string().datetime({ offset: true }).or(z.string()),
-  modifiedAt: z.string().datetime({ offset: true }).or(z.string()),
-});
+  metadata: DiagramMetadataSchema.optional(),
+  settings: DiagramSettingsSchema.optional(),
+  components: z.record(z.string(), ComponentSchema).optional(),
+  connections: z.record(z.string(), ConnectionSchema).optional(),
+  buildings: z.record(z.string(), BuildingPolygonSchema).optional(),
+  createdAt: z.string().optional(),
+  modifiedAt: z.string().optional(),
+}).passthrough();  // Allow additional properties
 
 // ============================================================================
 // KKS Schemas
@@ -273,11 +300,11 @@ export const PlantSchema = z.object({
  * Complete save file format
  */
 export const SaveFileSchema = z.object({
-  version: z.string(),
-  application: z.literal('FlowMark'),
-  exportedAt: z.string(),
+  version: z.string().optional(),
+  application: z.string().optional(),  // Allow any string, not just 'FlowMark'
+  exportedAt: z.string().optional(),
   diagram: DiagramSchema,
-});
+}).passthrough();  // Allow additional properties
 
 /**
  * Plant file format (includes all units, systems, and diagrams)

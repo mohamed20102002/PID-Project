@@ -2,11 +2,11 @@
  * Technical Panel
  *
  * A dedicated panel for advanced technical tools and modes.
- * Includes KKS-based pipe highlighting and other diagnostic features.
+ * Includes segment-based pipe highlighting and other diagnostic features.
  */
 
-import React, { useCallback, useMemo } from 'react';
-import { useUIStore } from '../../store/uiStore';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useUIStore, SegmentHighlight } from '../../store/uiStore';
 import { useDiagramStore } from '../../store/diagramStore';
 
 interface TechnicalPanelProps {
@@ -14,8 +14,9 @@ interface TechnicalPanelProps {
 }
 
 /**
- * KKS Pipe Highlighter Section
- * Highlights pipes connected to components whose KKS contains a specific segment
+ * Segment Highlighter Section
+ * Highlights pipes connected to components whose KKS contains any of the specified segments
+ * Each segment can have its own highlight color
  */
 // Predefined color options for quick selection
 const HIGHLIGHT_COLORS = [
@@ -25,69 +26,120 @@ const HIGHLIGHT_COLORS = [
   { name: 'Orange', value: '#ff8800' },
   { name: 'Magenta', value: '#ff00ff' },
   { name: 'Red', value: '#ff0000' },
+  { name: 'Blue', value: '#0088ff' },
+  { name: 'Pink', value: '#ff69b4' },
 ];
 
-const KksPipeHighlighter: React.FC = () => {
+const SegmentHighlighter: React.FC = () => {
   const kksHighlightEnabled = useUIStore((state) => state.kksHighlightEnabled);
-  const kksHighlightSegment = useUIStore((state) => state.kksHighlightSegment);
-  const kksHighlightColor = useUIStore((state) => state.kksHighlightColor);
+  const kksHighlightSegments = useUIStore((state) => state.kksHighlightSegments);
   const kksHighlightStrokeWidth = useUIStore((state) => state.kksHighlightStrokeWidth);
   const kksHighlightGlowIntensity = useUIStore((state) => state.kksHighlightGlowIntensity);
   const kksHideNonMatching = useUIStore((state) => state.kksHideNonMatching);
   const setKksHighlightEnabled = useUIStore((state) => state.setKksHighlightEnabled);
-  const setKksHighlightSegment = useUIStore((state) => state.setKksHighlightSegment);
-  const setKksHighlightColor = useUIStore((state) => state.setKksHighlightColor);
   const setKksHighlightStrokeWidth = useUIStore((state) => state.setKksHighlightStrokeWidth);
   const setKksHighlightGlowIntensity = useUIStore((state) => state.setKksHighlightGlowIntensity);
   const setKksHideNonMatching = useUIStore((state) => state.setKksHideNonMatching);
+  const addSegmentHighlight = useUIStore((state) => state.addSegmentHighlight);
+  const removeSegmentHighlight = useUIStore((state) => state.removeSegmentHighlight);
+  const updateSegmentHighlight = useUIStore((state) => state.updateSegmentHighlight);
+  const clearSegmentHighlights = useUIStore((state) => state.clearSegmentHighlights);
+
+  // Preview segment state (for live highlighting while typing)
+  const kksHighlightSegment = useUIStore((state) => state.kksHighlightSegment);
+  const kksHighlightColor = useUIStore((state) => state.kksHighlightColor);
+  const setKksHighlightSegment = useUIStore((state) => state.setKksHighlightSegment);
+  const setKksHighlightColor = useUIStore((state) => state.setKksHighlightColor);
 
   const diagram = useDiagramStore((state) => state.diagram);
 
-  // Count matching pipes for preview
-  // Excludes "Additional Components" (category: additional) from KKS matching
-  const matchingCount = useMemo(() => {
-    if (!diagram || !kksHighlightSegment.trim()) return { components: 0, pipes: 0 };
+  // Local state for new segment input - synced with store for live preview
+  const [newSegment, setNewSegmentLocal] = useState('');
+  const [newColor, setNewColorLocal] = useState(HIGHLIGHT_COLORS[0].value);
 
-    const segment = kksHighlightSegment.trim().toUpperCase();
-    const matchingComponentKks = new Set<string>();
-
-    // Find components matching the segment
-    // Skip "Additional Components" category (auto-generated KKS)
-    Object.values(diagram.components).forEach((comp) => {
-      // Check if this is an Additional Component (category starts with 'additional:')
-      const isAdditionalComponent = comp.type.startsWith('additional:');
-
-      if (!isAdditionalComponent && comp.kks.toUpperCase().includes(segment)) {
-        matchingComponentKks.add(comp.kks);
-      }
-    });
-
-    // Count pipes connected to matching components
-    let pipeCount = 0;
-    Object.values(diagram.connections).forEach((conn) => {
-      if (
-        matchingComponentKks.has(conn.sourceComponentKks) ||
-        matchingComponentKks.has(conn.targetComponentKks)
-      ) {
-        pipeCount++;
-      }
-    });
-
-    return { components: matchingComponentKks.size, pipes: pipeCount };
-  }, [diagram, kksHighlightSegment]);
-
-  const handleSegmentChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setKksHighlightSegment(e.target.value.toUpperCase());
+  // Wrapper to update both local state and store (for live preview)
+  const setNewSegment = useCallback((value: string) => {
+    setNewSegmentLocal(value);
+    setKksHighlightSegment(value); // Update store for live highlighting
   }, [setKksHighlightSegment]);
+
+  const setNewColor = useCallback((value: string) => {
+    setNewColorLocal(value);
+    setKksHighlightColor(value); // Update store for live highlighting
+  }, [setKksHighlightColor]);
+
+  // Count matching pipes for preview (per segment)
+  const matchingStats = useMemo(() => {
+    if (!diagram || kksHighlightSegments.length === 0) {
+      return { totalComponents: 0, totalPipes: 0, perSegment: {} as Record<string, { components: number; pipes: number }> };
+    }
+
+    const allMatchingComponentKks = new Set<string>();
+    const perSegment: Record<string, { components: number; pipes: number }> = {};
+
+    // For each segment, find matching components
+    kksHighlightSegments.forEach((segHighlight) => {
+      const segmentUpper = segHighlight.segment.toUpperCase();
+      const matchingKks = new Set<string>();
+
+      Object.values(diagram.components).forEach((comp) => {
+        const isAdditionalComponent = comp.type.startsWith('additional:');
+        if (!isAdditionalComponent) {
+          const compKksUpper = comp.kks.toUpperCase();
+          if (compKksUpper.includes(segmentUpper)) {
+            matchingKks.add(comp.kks);
+            allMatchingComponentKks.add(comp.kks);
+          }
+        }
+      });
+
+      // Count pipes for this segment
+      let pipeCount = 0;
+      Object.values(diagram.connections).forEach((conn) => {
+        if (matchingKks.has(conn.sourceComponentKks) || matchingKks.has(conn.targetComponentKks)) {
+          pipeCount++;
+        }
+      });
+
+      perSegment[segHighlight.id] = { components: matchingKks.size, pipes: pipeCount };
+    });
+
+    // Count total unique pipes
+    let totalPipes = 0;
+    Object.values(diagram.connections).forEach((conn) => {
+      if (allMatchingComponentKks.has(conn.sourceComponentKks) || allMatchingComponentKks.has(conn.targetComponentKks)) {
+        totalPipes++;
+      }
+    });
+
+    return { totalComponents: allMatchingComponentKks.size, totalPipes, perSegment };
+  }, [diagram, kksHighlightSegments]);
+
+  const handleAddSegment = useCallback(() => {
+    if (newSegment.trim()) {
+      addSegmentHighlight(newSegment.trim(), newColor);
+      setNewSegment('');
+      // Cycle to next color
+      const currentIndex = HIGHLIGHT_COLORS.findIndex(c => c.value === newColor);
+      const nextIndex = (currentIndex + 1) % HIGHLIGHT_COLORS.length;
+      setNewColor(HIGHLIGHT_COLORS[nextIndex].value);
+    }
+  }, [newSegment, newColor, addSegmentHighlight]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddSegment();
+    }
+  }, [handleAddSegment]);
 
   const handleToggle = useCallback(() => {
     setKksHighlightEnabled(!kksHighlightEnabled);
   }, [kksHighlightEnabled, setKksHighlightEnabled]);
 
-  const handleClear = useCallback(() => {
-    setKksHighlightSegment('');
+  const handleClearAll = useCallback(() => {
+    clearSegmentHighlights();
     setKksHighlightEnabled(false);
-  }, [setKksHighlightSegment, setKksHighlightEnabled]);
+  }, [clearSegmentHighlights, setKksHighlightEnabled]);
 
   return (
     <div className="bg-gray-800 rounded-lg p-3">
@@ -100,7 +152,7 @@ const KksPipeHighlighter: React.FC = () => {
             <polyline points="8 8 12 12 8 16" />
             <polyline points="16 8 12 12 16 16" />
           </svg>
-          <span className="text-sm font-medium text-gray-200">KKS Pipe Highlighter</span>
+          <span className="text-sm font-medium text-gray-200">Segment Highlighter</span>
         </div>
         {/* Toggle Switch */}
         <button
@@ -117,70 +169,102 @@ const KksPipeHighlighter: React.FC = () => {
         </button>
       </div>
 
-      {/* KKS Segment Input */}
+      {/* Add New Segment */}
       <div className="mb-3">
         <label className="block text-xs text-gray-400 mb-1">
-          KKS Segment to Match
+          Add Segment with Color
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <input
             type="text"
-            value={kksHighlightSegment}
-            onChange={handleSegmentChange}
-            placeholder="e.g., 90, KBA, AA"
-            className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent font-mono"
+            value={newSegment}
+            onChange={(e) => setNewSegment(e.target.value.toUpperCase())}
+            onKeyDown={handleKeyDown}
+            placeholder="e.g., LAA, KBA, 10AA"
+            className="flex-1 min-w-0 px-3 h-9 bg-gray-700 border border-gray-600 rounded text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent font-mono"
           />
-          {kksHighlightSegment && (
-            <button
-              onClick={handleClear}
-              className="px-2 py-1 text-gray-400 hover:text-gray-200 hover:bg-gray-700 rounded"
-              title="Clear"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          )}
+          <input
+            type="color"
+            value={newColor}
+            onChange={(e) => setNewColor(e.target.value)}
+            className="w-9 h-9 flex-shrink-0 rounded cursor-pointer border border-gray-600"
+            title="Select color"
+          />
+          <button
+            onClick={handleAddSegment}
+            disabled={!newSegment.trim()}
+            className="px-3 h-9 flex-shrink-0 bg-cyan-600 hover:bg-cyan-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded text-sm font-medium transition-colors"
+          >
+            Add
+          </button>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
-          Enter any part of a KKS code to highlight connected pipes
-        </p>
+        <div className="flex gap-1 mt-2">
+          {HIGHLIGHT_COLORS.map((color) => (
+            <button
+              key={color.value}
+              onClick={() => setNewColor(color.value)}
+              className={`w-5 h-5 rounded border-2 transition-all ${
+                newColor === color.value
+                  ? 'border-white scale-110'
+                  : 'border-gray-600 hover:border-gray-400'
+              }`}
+              style={{ backgroundColor: color.value }}
+              title={color.name}
+            />
+          ))}
+        </div>
       </div>
+
+      {/* Segment List */}
+      {kksHighlightSegments.length > 0 && (
+        <div className="mb-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs text-gray-400">Active Segments</label>
+            <button
+              onClick={handleClearAll}
+              className="text-xs text-gray-500 hover:text-red-400 transition-colors"
+            >
+              Clear All
+            </button>
+          </div>
+          <div className="space-y-1.5 max-h-40 overflow-y-auto">
+            {kksHighlightSegments.map((seg) => (
+              <div
+                key={seg.id}
+                className="flex items-center gap-2 p-2 bg-gray-700 rounded group"
+              >
+                <div
+                  className="w-4 h-4 rounded flex-shrink-0 border border-gray-500"
+                  style={{ backgroundColor: seg.color }}
+                />
+                <input
+                  type="color"
+                  value={seg.color}
+                  onChange={(e) => updateSegmentHighlight(seg.id, { color: e.target.value })}
+                  className="w-6 h-6 rounded cursor-pointer border-0 opacity-0 absolute"
+                  style={{ marginLeft: '-24px' }}
+                />
+                <span className="flex-1 text-sm text-gray-200 font-mono">{seg.segment}</span>
+                <span className="text-xs text-gray-500">
+                  {matchingStats.perSegment[seg.id]?.pipes || 0} pipes
+                </span>
+                <button
+                  onClick={() => removeSegmentHighlight(seg.id)}
+                  className="p-1 text-gray-500 hover:text-red-400 hover:bg-gray-600 rounded opacity-0 group-hover:opacity-100 transition-all"
+                  title="Remove segment"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Highlight Style Controls */}
       <div className="mb-3 space-y-3">
-        {/* Color Selection */}
-        <div>
-          <label className="block text-xs text-gray-400 mb-1.5">
-            Highlight Color
-          </label>
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1">
-              {HIGHLIGHT_COLORS.map((color) => (
-                <button
-                  key={color.value}
-                  onClick={() => setKksHighlightColor(color.value)}
-                  className={`w-6 h-6 rounded border-2 transition-all ${
-                    kksHighlightColor === color.value
-                      ? 'border-white scale-110'
-                      : 'border-gray-600 hover:border-gray-400'
-                  }`}
-                  style={{ backgroundColor: color.value }}
-                  title={color.name}
-                />
-              ))}
-            </div>
-            <input
-              type="color"
-              value={kksHighlightColor}
-              onChange={(e) => setKksHighlightColor(e.target.value)}
-              className="w-6 h-6 rounded cursor-pointer border border-gray-600"
-              title="Custom color"
-            />
-          </div>
-        </div>
-
         {/* Stroke Width */}
         <div>
           <label className="block text-xs text-gray-400 mb-1">
@@ -214,7 +298,7 @@ const KksPipeHighlighter: React.FC = () => {
         {/* Hide Other Components Toggle */}
         <div
           className={`flex items-center justify-between p-2 rounded ${
-            kksHighlightEnabled && matchingCount.pipes > 0
+            kksHighlightEnabled && matchingStats.totalPipes > 0
               ? 'bg-gray-700'
               : 'bg-gray-800 opacity-50'
           }`}
@@ -229,10 +313,10 @@ const KksPipeHighlighter: React.FC = () => {
           </div>
           <button
             onClick={() => setKksHideNonMatching(!kksHideNonMatching)}
-            disabled={!kksHighlightEnabled || matchingCount.pipes === 0}
+            disabled={!kksHighlightEnabled || matchingStats.totalPipes === 0}
             className={`relative w-9 h-5 rounded-full transition-colors ${
               kksHideNonMatching && kksHighlightEnabled ? 'bg-cyan-500' : 'bg-gray-600'
-            } ${!kksHighlightEnabled || matchingCount.pipes === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            } ${!kksHighlightEnabled || matchingStats.totalPipes === 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
           >
             <span
               className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
@@ -244,16 +328,16 @@ const KksPipeHighlighter: React.FC = () => {
       </div>
 
       {/* Match Preview */}
-      {kksHighlightSegment.trim() && (
+      {kksHighlightSegments.length > 0 && (
         <div className={`p-2 rounded text-sm ${
-          matchingCount.pipes > 0 ? 'bg-cyan-900/30 border border-cyan-700/50' : 'bg-gray-700'
+          matchingStats.totalPipes > 0 ? 'bg-cyan-900/30 border border-cyan-700/50' : 'bg-gray-700'
         }`}>
-          {matchingCount.components > 0 ? (
+          {matchingStats.totalComponents > 0 ? (
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${kksHighlightEnabled ? 'bg-cyan-400 animate-pulse' : 'bg-cyan-600'}`} />
               <span className="text-gray-300">
-                <span className="font-medium text-cyan-400">{matchingCount.pipes}</span> pipe(s) connected to{' '}
-                <span className="font-medium text-cyan-400">{matchingCount.components}</span> matching component(s)
+                <span className="font-medium text-cyan-400">{matchingStats.totalPipes}</span> pipe(s) connected to{' '}
+                <span className="font-medium text-cyan-400">{matchingStats.totalComponents}</span> matching component(s)
               </span>
             </div>
           ) : (
@@ -270,13 +354,13 @@ const KksPipeHighlighter: React.FC = () => {
       )}
 
       {/* Status indicator when active */}
-      {kksHighlightEnabled && kksHighlightSegment.trim() && matchingCount.pipes > 0 && (
+      {kksHighlightEnabled && kksHighlightSegments.length > 0 && matchingStats.totalPipes > 0 && (
         <div className="mt-3 flex items-center gap-2 text-xs text-cyan-400">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
           </span>
-          Highlighting active - pipes are glowing
+          Highlighting active - {kksHighlightSegments.length} segment(s)
         </div>
       )}
     </div>
@@ -289,8 +373,8 @@ const KksPipeHighlighter: React.FC = () => {
 export const TechnicalPanel: React.FC<TechnicalPanelProps> = ({ className = '' }) => {
   return (
     <div className={`bg-gray-50 p-3 space-y-4 ${className}`}>
-      {/* KKS Pipe Highlighter */}
-      <KksPipeHighlighter />
+      {/* Segment Highlighter */}
+      <SegmentHighlighter />
 
       {/* Placeholder for future tools */}
       <div className="border-t border-gray-200 pt-3">

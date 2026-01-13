@@ -122,25 +122,26 @@ export class SearchEngine {
         }
       }
 
-      // Search components
-      for (const component of Object.values(diagram.components)) {
+      // Search components - use entries to get both key and component
+      for (const [componentKey, component] of Object.entries(diagram.components)) {
+        // Skip "Additional Components" (category: additional) - these have auto-generated KKS
+        if (component.type.startsWith('additional:')) {
+          continue;
+        }
         // Apply building filter if set
         if (opts.buildingFilter && component.buildingKks !== opts.buildingFilter) {
           continue;
         }
-        const componentResults = this.searchComponent(component, normalizedQuery, opts, diagram.systemKks);
+        // Pass the dictionary key as the component identifier for lookups
+        const componentResults = this.searchComponent(component, normalizedQuery, opts, diagram.systemKks, componentKey);
         results.push(...componentResults);
       }
 
-      // Search connections
+      // Search connections - use entries to get both key and connection
       if (opts.searchConnections) {
-        for (const connection of Object.values(diagram.connections)) {
-          // Skip connections without ID (old unmigrated data)
-          if (!connection.id) {
-            console.warn('[SearchEngine] Skipping connection without ID:', connection.kks);
-            continue;
-          }
-          const connectionResults = this.searchConnection(connection, normalizedQuery, opts, diagram.systemKks);
+        for (const [connectionKey, connection] of Object.entries(diagram.connections)) {
+          // Pass the dictionary key as the connection identifier for lookups
+          const connectionResults = this.searchConnection(connection, normalizedQuery, opts, diagram.systemKks, connectionKey);
           results.push(...connectionResults);
         }
       }
@@ -155,16 +156,21 @@ export class SearchEngine {
 
   /**
    * Search within a component
+   * @param componentKey - The dictionary key used to store this component (for lookups)
    */
   private searchComponent(
     component: Component,
     query: string,
     opts: SearchOptions,
-    systemKks?: string
+    systemKks?: string,
+    componentKey?: string
   ): SearchResult[] {
     const results: SearchResult[] = [];
     const normalizeText = (text: string) =>
       opts.caseSensitive ? text : text.toLowerCase();
+
+    // Use the dictionary key as the ID for lookups (works for both old KKS-keyed and new ID-keyed formats)
+    const lookupId = componentKey || (component as any).id || component.kks;
 
     // Search KKS
     if (opts.searchKks) {
@@ -182,7 +188,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
-          id: component.id,
+          id: lookupId,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType,
@@ -215,7 +221,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
-          id: component.id,
+          id: lookupId,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(
@@ -232,7 +238,7 @@ export class SearchEngine {
 
     // Search properties
     if (opts.searchProperties) {
-      const propResults = this.searchProperties(component, query, opts, systemKks);
+      const propResults = this.searchProperties(component, query, opts, systemKks, componentKey);
       results.push(...propResults);
     }
 
@@ -241,17 +247,22 @@ export class SearchEngine {
 
   /**
    * Search within component properties
+   * @param componentKey - The dictionary key used to store this component (for lookups)
    */
   private searchProperties(
     component: Component,
     query: string,
     opts: SearchOptions,
-    systemKks?: string
+    systemKks?: string,
+    componentKey?: string
   ): SearchResult[] {
     const results: SearchResult[] = [];
     const normalizeText = (text: string) =>
       opts.caseSensitive ? text : text.toLowerCase();
     const props = component.properties;
+
+    // Use the dictionary key as the ID for lookups
+    const lookupId = componentKey || (component as any).id || component.kks;
 
     // Search tag number
     if (props.tagNumber) {
@@ -260,7 +271,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
-          id: component.id,
+          id: lookupId,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(normalizeText(props.tagNumber), query),
@@ -279,7 +290,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
-          id: component.id,
+          id: lookupId,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(normalizeText(props.description), query),
@@ -298,7 +309,7 @@ export class SearchEngine {
         results.push({
           type: 'component',
           kks: component.kks,
-          id: component.id,
+          id: lookupId,
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(normalizeText(props.manufacturer), query),
@@ -318,7 +329,7 @@ export class SearchEngine {
           results.push({
             type: 'component',
             kks: component.kks,
-            id: component.id,
+            id: lookupId,
             label: component.kks,
             description: this.getComponentDescription(component),
             matchType: this.getMatchType(normalizeText(value.value), query),
@@ -337,15 +348,22 @@ export class SearchEngine {
   /**
    * Search within a connection
    */
+  /**
+   * @param connectionKey - The dictionary key used to store this connection (for lookups)
+   */
   private searchConnection(
     connection: Connection,
     query: string,
     opts: SearchOptions,
-    systemKks?: string
+    systemKks?: string,
+    connectionKey?: string
   ): SearchResult[] {
     const results: SearchResult[] = [];
     const normalizeText = (text: string) =>
       opts.caseSensitive ? text : text.toLowerCase();
+
+    // Use the dictionary key as the ID for lookups (works for both old KKS-keyed and new ID-keyed formats)
+    const lookupId = connectionKey || connection.id || connection.kks;
 
     // Search KKS
     const kksScore = this.matchScore(normalizeText(connection.kks), query);
@@ -362,7 +380,7 @@ export class SearchEngine {
       results.push({
         type: 'connection',
         kks: connection.kks,
-        id: connection.id,  // Store connection ID for selection
+        id: lookupId,
         label: connection.label || connection.kks,
         description: this.getConnectionDescription(connection),
         matchType,
@@ -380,7 +398,7 @@ export class SearchEngine {
         results.push({
           type: 'connection',
           kks: connection.kks,
-          id: connection.id,  // Store connection ID for selection
+          id: lookupId,
           label: connection.label,
           description: this.getConnectionDescription(connection),
           matchType: this.getMatchType(normalizeText(connection.label), query),
@@ -402,7 +420,7 @@ export class SearchEngine {
         results.push({
           type: 'connection',
           kks: connection.kks,
-          id: connection.id,  // Store connection ID for selection
+          id: lookupId,
           label: connection.label || connection.kks,
           description: this.getConnectionDescription(connection),
           matchType: this.getMatchType(
@@ -544,15 +562,23 @@ export class SearchEngine {
 
     const suggestions = new Set<string>();
 
-    // Collect unique KKS codes
+    // Collect unique KKS codes (excluding additional components)
     for (const component of Object.values(this.diagram.components)) {
+      // Skip "Additional Components" (category: additional)
+      if (component.type.startsWith('additional:')) {
+        continue;
+      }
       if (component.kks.toLowerCase().includes(query.toLowerCase())) {
         suggestions.add(component.kks);
       }
     }
 
-    // Collect unique tag numbers
+    // Collect unique tag numbers (excluding additional components)
     for (const component of Object.values(this.diagram.components)) {
+      // Skip "Additional Components" (category: additional)
+      if (component.type.startsWith('additional:')) {
+        continue;
+      }
       if (
         component.properties.tagNumber &&
         component.properties.tagNumber.toLowerCase().includes(query.toLowerCase())

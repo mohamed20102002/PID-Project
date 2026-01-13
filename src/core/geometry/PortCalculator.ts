@@ -54,6 +54,8 @@ export function calculatePortWorldPosition(
 ): Point {
   const size = getComponentSize(component);
   const rotation = component.rotation || 0;
+  const flipX = component.flipX || false;
+  const flipY = component.flipY || false;
 
   // Get symbol definition to access centerPoint
   const customSymbols = useCustomSymbolStore.getState().customSymbols;
@@ -66,10 +68,19 @@ export function calculatePortWorldPosition(
   // Step 1: Calculate port position in component's local space
   // Port relative position is 0-1, multiply by size to get pixel position
   // Then subtract centerPoint offset (because component uses centerPoint as anchor)
-  const localX = (portRelativePosition.x - centerX) * size.width;
-  const localY = (portRelativePosition.y - centerY) * size.height;
+  let localX = (portRelativePosition.x - centerX) * size.width;
+  let localY = (portRelativePosition.y - centerY) * size.height;
 
-  // Step 2: Apply rotation around center (0, 0)
+  // Step 2: Apply flip transformations (mirror around center)
+  // This matches how Konva applies scaleX/scaleY in BaseSymbol
+  if (flipX) {
+    localX = -localX;
+  }
+  if (flipY) {
+    localY = -localY;
+  }
+
+  // Step 3: Apply rotation around center (0, 0)
   const radians = (rotation * Math.PI) / 180;
   const cos = Math.cos(radians);
   const sin = Math.sin(radians);
@@ -77,7 +88,7 @@ export function calculatePortWorldPosition(
   const rotatedX = localX * cos - localY * sin;
   const rotatedY = localX * sin + localY * cos;
 
-  // Step 3: Translate to world position
+  // Step 4: Translate to world position
   return {
     x: component.position.x + rotatedX,
     y: component.position.y + rotatedY,

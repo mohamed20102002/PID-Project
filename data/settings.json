@@ -1,0 +1,30 @@
+{
+  "mode": "draw",
+  "tool": "select",
+  "viewport": {
+    "x": -7123.064459973729,
+    "y": -611.658864584192,
+    "scale": 1.0834705943388394
+  },
+  "systemViewports": {
+    "10JEC": {
+      "x": 0,
+      "y": 0,
+      "scale": 0.25937424601000014
+    }
+  },
+  "gridVisible": true,
+  "snapToGrid": true,
+  "gridSize": 20,
+  "axisOverlayVisible": false,
+  "axisLinesVisible": true,
+  "leftPanelOpen": true,
+  "rightPanelOpen": true,
+  "canvasDarkMode": false,
+  "darkModePipeColor": "#ffffff",
+  "darkModePipeStrokeWidth": 2.5,
+  "darkModePipeGlowBlur": 15,
+  "darkModePipeGlowOpacity": 1,
+  "kksHideFadeOpacity": 0.35,
+  "editModePassword": "admin1234"
+}

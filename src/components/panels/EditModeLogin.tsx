@@ -7,9 +7,6 @@
 import React, { useState, useCallback } from 'react';
 import { useUIStore } from '../../store/uiStore';
 
-// Admin password - in production this should be stored securely
-const ADMIN_PASSWORD = 'admin123';
-
 interface EditModeLoginProps {
   isOpen: boolean;
   onClose: () => void;
@@ -19,11 +16,12 @@ export const EditModeLogin: React.FC<EditModeLoginProps> = ({ isOpen, onClose })
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const setMode = useUIStore((state) => state.setMode);
+  const editModePassword = useUIStore((state) => state.editModePassword);
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password === ADMIN_PASSWORD) {
+    if (password === editModePassword) {
       setMode('draw');
       setPassword('');
       setError('');
@@ -32,7 +30,7 @@ export const EditModeLogin: React.FC<EditModeLoginProps> = ({ isOpen, onClose })
       setError('Incorrect password');
       setPassword('');
     }
-  }, [password, setMode, onClose]);
+  }, [password, editModePassword, setMode, onClose]);
 
   const handleClose = useCallback(() => {
     setPassword('');

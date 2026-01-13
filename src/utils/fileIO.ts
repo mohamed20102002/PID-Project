@@ -207,21 +207,83 @@ function parseAndValidateFile(
     return { success: false, error: 'Invalid JSON format' };
   }
 
-  // Validate file format
-  const validation = validateSaveFile(data);
+  // Validate file format with error handling
+  try {
+    let diagram: Diagram;
 
-  if (!validation.success) {
+    // Try to validate as SaveFile format first
+    const validation = validateSaveFile(data);
+
+    if (validation.success) {
+      diagram = validation.data!.diagram as Diagram;
+    } else {
+      // Try to load as raw diagram (older export format)
+      const rawData = data as any;
+      if (rawData.kks && rawData.components && rawData.connections) {
+        console.log('[fileIO] Loading as raw diagram format (not wrapped in SaveFile)');
+        diagram = rawData as Diagram;
+      } else if (rawData.diagram && rawData.diagram.kks) {
+        // Has diagram wrapper but failed validation - try to use it anyway
+        console.log('[fileIO] Loading diagram despite validation errors');
+        diagram = rawData.diagram as Diagram;
+      } else {
+        const errorMessages = validation.errors?.join('\n') || 'Unknown validation error';
+        return {
+          success: false,
+          error: `Invalid file format:\n${errorMessages}`,
+        };
+      }
+    }
+
+    // Ensure buildings exists (may be missing in older exports)
+    if (!diagram.buildings) {
+      (diagram as any).buildings = {};
+    }
+
+    // Ensure metadata.tags is an array
+    if (diagram.metadata && !Array.isArray(diagram.metadata.tags)) {
+      (diagram.metadata as any).tags = [];
+    }
+
+    // Ensure components exists and is an object
+    if (!diagram.components || typeof diagram.components !== 'object') {
+      (diagram as any).components = {};
+    }
+
+    // Ensure connections exists and is an object
+    if (!diagram.connections || typeof diagram.connections !== 'object') {
+      (diagram as any).connections = {};
+    }
+
+    // Ensure all components have ports array
+    Object.values(diagram.components).forEach((comp: any) => {
+      if (!comp.ports || !Array.isArray(comp.ports)) {
+        comp.ports = [];
+      }
+    });
+
+    // Ensure all connections have waypoints array
+    Object.values(diagram.connections).forEach((conn: any) => {
+      if (!conn.waypoints || !Array.isArray(conn.waypoints)) {
+        conn.waypoints = [];
+      }
+      if (conn.isCrossSystem === undefined) {
+        conn.isCrossSystem = false;
+      }
+    });
+
+    return {
+      success: true,
+      diagram,
+      filename,
+    };
+  } catch (err) {
+    console.error('[fileIO] Validation error:', err);
     return {
       success: false,
-      error: `Invalid file format:\n${validation.errors?.join('\n')}`,
+      error: `Error processing file: ${(err as Error).message}`
     };
   }
-
-  return {
-    success: true,
-    diagram: validation.data!.diagram as Diagram,
-    filename,
-  };
 }
 
 // ============================================================================

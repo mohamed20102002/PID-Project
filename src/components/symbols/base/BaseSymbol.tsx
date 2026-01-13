@@ -414,7 +414,17 @@ const renderLabel = (
   // Get label value from component properties or KKS
   let text = '';
   if (label.binding === 'kks') {
-    text = component.kks || '';
+    // For terminals, show only the base KKS (without the -terminalId suffix)
+    const isTerminal = component.type.startsWith('terminals:');
+    const props = component.properties as Record<string, string>;
+    const terminalId = isTerminal ? (props.terminalId || '') : '';
+
+    if (isTerminal && terminalId && component.kks.endsWith(`-${terminalId}`)) {
+      // Extract base KKS by removing the terminal ID suffix
+      text = component.kks.slice(0, -(terminalId.length + 1));
+    } else {
+      text = component.kks || '';
+    }
   } else if (label.binding === 'letterCode') {
     text = (component.properties as Record<string, unknown>).letterCode as string || '';
   } else if (label.binding) {

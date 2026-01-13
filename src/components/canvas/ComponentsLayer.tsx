@@ -97,8 +97,11 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
 
   // KKS Pipe Highlighting state
   const kksHighlightEnabled = useUIStore((state) => state.kksHighlightEnabled);
+  const kksHighlightSegments = useUIStore((state) => state.kksHighlightSegments);
   const kksHighlightSegment = useUIStore((state) => state.kksHighlightSegment);
+  const kksHighlightColor = useUIStore((state) => state.kksHighlightColor);
   const kksHideNonMatching = useUIStore((state) => state.kksHideNonMatching);
+  const kksHideFadeOpacity = useUIStore((state) => state.kksHideFadeOpacity);
 
   // Dark mode
   const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
@@ -131,25 +134,39 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   // Alignment guides state
   const [alignmentGuides, setAlignmentGuides] = useState<AlignmentGuide[]>([]);
 
-  // Compute set of component KKS that match the KKS highlight segment
+  // Compute set of component KKS that match any KKS highlight segment
+  // Includes both saved segments AND the live preview segment being typed
   // Excludes "Additional Components" (category: additional) from KKS matching
   const kksMatchingComponents = useMemo(() => {
-    if (!kksHighlightEnabled || !kksHighlightSegment.trim()) return new Set<string>();
+    // Build combined segments array: saved segments + preview segment (if any)
+    const allSegments = [...kksHighlightSegments];
+    const previewSegment = kksHighlightSegment.trim().toUpperCase();
+    if (previewSegment.length > 0) {
+      // Add preview segment with its selected color (at the start so it takes priority)
+      allSegments.unshift({ id: 'preview', segment: previewSegment, color: kksHighlightColor });
+    }
 
-    const segment = kksHighlightSegment.trim().toUpperCase();
+    if (!kksHighlightEnabled || allSegments.length === 0) return new Set<string>();
+
     const matchingKks = new Set<string>();
 
     components.forEach((comp) => {
       // Skip "Additional Components" category (auto-generated KKS)
       const isAdditionalComponent = comp.type.startsWith('additional:');
+      if (isAdditionalComponent) return;
 
-      if (!isAdditionalComponent && comp.kks.toUpperCase().includes(segment)) {
-        matchingKks.add(comp.kks);
+      // Check if component matches any segment
+      const compKksUpper = comp.kks.toUpperCase();
+      for (const segmentObj of allSegments) {
+        if (compKksUpper.includes(segmentObj.segment.toUpperCase())) {
+          matchingKks.add(comp.kks);
+          break; // Found a match, no need to check other segments
+        }
       }
     });
 
     return matchingKks;
-  }, [kksHighlightEnabled, kksHighlightSegment, components]);
+  }, [kksHighlightEnabled, kksHighlightSegments, kksHighlightSegment, kksHighlightColor, components]);
 
   // Check if a component is connected to a matching component (for pipes through it)
   const kksConnectedComponents = useMemo(() => {
@@ -561,6 +578,15 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         return;
       }
 
+      // Check if target system exists in the diagram cache BEFORE switching
+      // If the system hasn't been implemented yet, show a message instead of navigating
+      const targetDiagram = diagramCache[targetSystemKks];
+      if (!targetDiagram) {
+        // Show alert message that the system doesn't exist yet
+        alert(`System "${targetSystemKks}" does not exist yet.\n\nThe target system has not been implemented.`);
+        return;
+      }
+
       // Save current viewport before switching
       if (diagram?.systemKks) {
         saveViewportForSystem(diagram.systemKks);
@@ -574,12 +600,6 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
       setTimeout(() => {
         // Try to restore saved viewport for target system
         restoreViewportForSystem(targetSystemKks);
-
-        const targetDiagram = diagramCache[targetSystemKks];
-        if (!targetDiagram) {
-          console.warn(`No diagram found for system: ${targetSystemKks}`);
-          return;
-        }
 
         // Find the target terminal component
         let targetComponent = targetTerminalKks
@@ -725,7 +745,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         const isKksConnected = kksConnectedComponents.has(component.kks);
         const shouldHideForKks = kksHighlightEnabled && kksHideNonMatching && kksMatchingComponents.size > 0;
         const isVisibleForKks = isKksMatching || isKksConnected || componentIsSelected;
-        const kksOpacity = shouldHideForKks && !isVisibleForKks ? 0.1 : 1;
+        const kksOpacity = shouldHideForKks && !isVisibleForKks ? kksHideFadeOpacity : 1;
 
         return (
           <Group

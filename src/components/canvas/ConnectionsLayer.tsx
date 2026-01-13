@@ -254,7 +254,27 @@ const ConnectionLine: React.FC<ConnectionLineProps> = ({
 
   // Determine styles
   const baseStyle = connection.type === 'signal' ? PIPE_STYLES.signal : PIPE_STYLES.pipe;
-  const customColor = connection.style?.strokeColor || baseStyle.stroke;
+  const rawCustomColor = connection.style?.strokeColor || baseStyle.stroke;
+
+  // In dark mode, convert black/dark colors to white for visibility
+  // Check if color is dark (black or near-black) by parsing hex
+  const isDarkColor = (color: string): boolean => {
+    if (!color) return false;
+    const hex = color.replace('#', '');
+    if (hex.length !== 6) return false;
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    // Consider colors with brightness < 50 as "dark"
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness < 50;
+  };
+
+  // Apply dark mode color conversion: dark colors become white, others stay as-is
+  const customColor = darkMode && isDarkColor(rawCustomColor)
+    ? darkModePipeStyle.color  // Use the dark mode pipe color (default white)
+    : rawCustomColor;
+
   const customWidth = connection.style?.strokeWidth || baseStyle.strokeWidth;
   const customDash = connection.style?.strokeDash || ('dash' in baseStyle ? baseStyle.dash : undefined);
 
@@ -615,8 +635,8 @@ export const ConnectionsLayer: React.FC = () => {
   const diagram = useDiagramStore(state => state.diagram);
 
   const connections = useMemo(
-    () => (diagram ? Object.values(diagram.connections) : []),
-    [diagram]
+    () => Object.values(diagram?.connections || {}),
+    [diagram?.connections]
   );
 
   const components = useMemo(
@@ -648,38 +668,50 @@ export const ConnectionsLayer: React.FC = () => {
 
   // KKS Pipe Highlighting state
   const kksHighlightEnabled = useUIStore(state => state.kksHighlightEnabled);
-  const kksHighlightSegment = useUIStore(state => state.kksHighlightSegment);
-  const kksHighlightColor = useUIStore(state => state.kksHighlightColor);
+  const kksHighlightSegments = useUIStore(state => state.kksHighlightSegments);
   const kksHighlightStrokeWidth = useUIStore(state => state.kksHighlightStrokeWidth);
   const kksHighlightGlowIntensity = useUIStore(state => state.kksHighlightGlowIntensity);
   const kksHideNonMatching = useUIStore(state => state.kksHideNonMatching);
+  const kksHideFadeOpacity = useUIStore(state => state.kksHideFadeOpacity);
 
-  // Memoized highlight style object
-  const kksHighlightStyle = useMemo(() => ({
-    color: kksHighlightColor,
-    strokeWidth: kksHighlightStrokeWidth,
-    glowIntensity: kksHighlightGlowIntensity,
-  }), [kksHighlightColor, kksHighlightStrokeWidth, kksHighlightGlowIntensity]);
+  // Preview segment (live typing in textbox)
+  const kksHighlightSegment = useUIStore(state => state.kksHighlightSegment);
+  const kksHighlightColor = useUIStore(state => state.kksHighlightColor);
 
-  // Compute set of component KKS that match the highlight segment
+  // Compute map of component KKS -> highlight color (based on first matching segment)
+  // Includes both saved segments AND the live preview segment being typed
   // Excludes "Additional Components" (category: additional) from KKS matching
-  const highlightedComponentKks = useMemo(() => {
-    if (!kksHighlightEnabled || !kksHighlightSegment.trim()) return new Set<string>();
+  const highlightedComponentColors = useMemo(() => {
+    // Build combined segments array: saved segments + preview segment (if any)
+    const allSegments = [...kksHighlightSegments];
+    const previewSegment = kksHighlightSegment.trim().toUpperCase();
+    if (previewSegment.length > 0) {
+      // Add preview segment with its selected color (at the start so it takes priority)
+      allSegments.unshift({ id: 'preview', segment: previewSegment, color: kksHighlightColor });
+    }
 
-    const segment = kksHighlightSegment.trim().toUpperCase();
-    const matchingKks = new Set<string>();
+    if (!kksHighlightEnabled || allSegments.length === 0) return new Map<string, string>();
+
+    const kksToColor = new Map<string, string>();
 
     Object.values(components).forEach((comp: Component) => {
       // Skip "Additional Components" category (auto-generated KKS)
       const isAdditionalComponent = comp.type.startsWith('additional:');
 
-      if (!isAdditionalComponent && comp.kks.toUpperCase().includes(segment)) {
-        matchingKks.add(comp.kks);
+      if (!isAdditionalComponent) {
+        const compKksUpper = comp.kks.toUpperCase();
+        // Find first matching segment and use its color
+        for (const segHighlight of allSegments) {
+          if (compKksUpper.includes(segHighlight.segment)) {
+            kksToColor.set(comp.kks, segHighlight.color);
+            break; // Use first match
+          }
+        }
       }
     });
 
-    return matchingKks;
-  }, [kksHighlightEnabled, kksHighlightSegment, components]);
+    return kksToColor;
+  }, [kksHighlightEnabled, kksHighlightSegments, kksHighlightSegment, kksHighlightColor, components]);
 
   // Calculate all port positions for alignment guides
   const allPortPositions = useMemo(() => {
@@ -776,12 +808,22 @@ export const ConnectionsLayer: React.FC = () => {
     const isHovered = hoveredConnectionKks === connection.kks;
 
     // Check if this pipe should be highlighted (connected to a matching component)
-    const isKksHighlighted = highlightedComponentKks.has(connection.sourceComponentKks) ||
-                              highlightedComponentKks.has(connection.targetComponentKks);
+    // Get the highlight color from either source or target component
+    const sourceColor = highlightedComponentColors.get(connection.sourceComponentKks);
+    const targetColor = highlightedComponentColors.get(connection.targetComponentKks);
+    const pipeHighlightColor = sourceColor || targetColor || '#00ffff'; // Use source's color, or target's, or default cyan
+    const isKksHighlighted = sourceColor !== undefined || targetColor !== undefined;
+
+    // Create a per-pipe highlight style with the correct color
+    const pipeKksHighlightStyle = {
+      color: pipeHighlightColor,
+      strokeWidth: kksHighlightStrokeWidth,
+      glowIntensity: kksHighlightGlowIntensity,
+    };
 
     // Calculate opacity for non-matching pipes when hide mode is on
-    const shouldHideForKks = kksHighlightEnabled && kksHideNonMatching && highlightedComponentKks.size > 0;
-    const kksHideOpacity = shouldHideForKks && !isKksHighlighted && !isSelected ? 0.1 : 1;
+    const shouldHideForKks = kksHighlightEnabled && kksHideNonMatching && highlightedComponentColors.size > 0;
+    const kksHideOpacity = shouldHideForKks && !isKksHighlighted && !isSelected ? kksHideFadeOpacity : 1;
 
     // Create adjusted connection with moved waypoints for rendering
     const adjustedConnection = adjustedWaypoints !== connection.waypoints
@@ -797,7 +839,7 @@ export const ConnectionsLayer: React.FC = () => {
         isSelected={isSelected}
         isHovered={isHovered}
         isKksHighlighted={isKksHighlighted}
-        kksHighlightStyle={kksHighlightStyle}
+        kksHighlightStyle={pipeKksHighlightStyle}
         kksHideOpacity={kksHideOpacity}
         darkMode={canvasDarkMode}
         darkModePipeStyle={darkModePipeStyle}

@@ -101,12 +101,12 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
   // Memoize derived data to prevent infinite loops
   const componentsMap = useMemo(() => diagram?.components || {}, [diagram?.components]);
   const components = useMemo(
-    () => (diagram ? Object.values(diagram.components) : []),
-    [diagram]
+    () => Object.values(diagram?.components || {}),
+    [diagram?.components]
   );
   const connectionsMap = useMemo(() => diagram?.connections || {}, [diagram?.connections]);
   const connections = useMemo(
-    () => (diagram?.connections ? Object.values(diagram.connections) : []),
+    () => Object.values(diagram?.connections || {}),
     [diagram?.connections]
   );
 
@@ -289,16 +289,9 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
   // Handle mouse down
   const handleMouseDown = useCallback(
     (e: Konva.KonvaEventObject<MouseEvent>) => {
-      // Left click on empty canvas in view mode - clear selection (check this first)
-      const isBackgroundClick = e.target === e.target.getStage() ||
-                                e.target.getClassName() === 'Layer';
-      if (e.evt.button === 0 && isBackgroundClick && mode === 'view') {
-        clearSelection();
-        selectBuilding(null);
-      }
-
-      // Middle mouse button or space+click for panning
-      if (e.evt.button === 1 || (e.evt.button === 0 && tool === 'pan')) {
+      // Middle mouse button, space+click, or Ctrl+left click for panning
+      const isCtrlPan = e.evt.button === 0 && e.evt.ctrlKey;
+      if (e.evt.button === 1 || (e.evt.button === 0 && tool === 'pan') || isCtrlPan) {
         setIsPanning(true);
         const stage = stageRef.current;
         if (stage) {
@@ -309,6 +302,14 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         }
         e.evt.preventDefault();
         return;
+      }
+
+      // Left click on empty canvas in view mode - clear selection (skip if Ctrl held for panning)
+      const isBackgroundClick = e.target === e.target.getStage() ||
+                                e.target.getClassName() === 'Layer';
+      if (e.evt.button === 0 && isBackgroundClick && mode === 'view' && !e.evt.ctrlKey) {
+        clearSelection();
+        selectBuilding(null);
       }
 
       // Left click - building tool mode
@@ -738,8 +739,8 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         return;
       }
 
-      // Space for pan mode
-      if (e.code === 'Space' && !e.repeat) {
+      // Space or Ctrl for pan mode
+      if ((e.code === 'Space' || e.key === 'Control') && !e.repeat) {
         if (containerRef.current) {
           containerRef.current.style.cursor = 'grab';
         }
@@ -775,8 +776,8 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
-        if (containerRef.current) {
+      if (e.code === 'Space' || e.key === 'Control') {
+        if (containerRef.current && !isPanning) {
           containerRef.current.style.cursor = 'default';
         }
       }
@@ -789,7 +790,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [clearSelection, placingComponentType, setPlacingComponentType, setTool, isDrawingConnection, cancelConnectionDrawing, isDrawingBuilding, cancelBuildingDrawing, selectBuilding, connectionWaypoints, removeLastWaypoint]);
+  }, [clearSelection, placingComponentType, setPlacingComponentType, setTool, isDrawingConnection, cancelConnectionDrawing, isDrawingBuilding, cancelBuildingDrawing, selectBuilding, connectionWaypoints, removeLastWaypoint, isPanning]);
 
   // Update cursor based on tool
   useEffect(() => {

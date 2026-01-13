@@ -156,8 +156,13 @@ export interface ComponentProperties {
   normalPosition?: string;            // For valves: "open", "closed", "throttled"
   failPosition?: string;              // For valves: "fail open", "fail closed"
 
+  // Terminal-specific properties
+  terminalId?: string;                // Numeric ID for terminals (appended to KKS)
+  targetSystemKks?: string;           // Target system for terminal links
+  targetTerminalKks?: string;         // Target terminal KKS for terminal links
+
   // Custom properties
-  custom: Record<string, PropertyValue>;
+  custom?: Record<string, PropertyValue>;
 }
 
 /**

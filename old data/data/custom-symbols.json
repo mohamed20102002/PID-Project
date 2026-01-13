@@ -4921,7 +4921,7 @@
       {
         "id": "label-1767541709307-lnzlqd3ch",
         "relativePosition": {
-          "x": -0.5676,
+          "x": -0.765,
           "y": 0.5002
         },
         "anchor": "middle",
@@ -4936,9 +4936,7 @@
     "propertySchema": {
       "required": [],
       "properties": {}
-    },
-    "allowDuplicateKks": false,
-    "hideLabel": false
+    }
   },
   {
     "id": "heatexchangera-1767541344558-copy-1767546678193",
@@ -5268,7 +5266,7 @@
         "style": {
           "stroke": "inherit",
           "strokeWidth": 2,
-          "fill": "#d6a9a9"
+          "fill": "transparent"
         }
       },
       {
@@ -5467,9 +5465,7 @@
           "defaultUnit": "kW"
         }
       }
-    },
-    "allowDuplicateKks": false,
-    "hideLabel": false
+    }
   },
   {
     "id": "deaeratorprimarycircuit-1767548140606",
@@ -6420,303 +6416,6 @@
       }
     ],
     "labels": [],
-    "propertySchema": {
-      "required": [],
-      "properties": {}
-    }
-  },
-  {
-    "id": "bridgeconnection-1768210093389",
-    "category": "additional",
-    "name": "bridgeconnection",
-    "displayName": "Bridge",
-    "description": "Bridge Connection ",
-    "standard": "ISA",
-    "kksEquipmentCode": "",
-    "noKks": true,
-    "allowDuplicateKks": false,
-    "hideLabel": true,
-    "defaultSize": {
-      "width": 60,
-      "height": 60
-    },
-    "minSize": {
-      "width": 30,
-      "height": 30
-    },
-    "maxSize": {
-      "width": 200,
-      "height": 200
-    },
-    "resizable": true,
-    "aspectRatioLocked": true,
-    "rotatable": true,
-    "rotationSteps": [
-      0,
-      90,
-      180,
-      270
-    ],
-    "freeRotation": false,
-    "paths": [
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.25,
-          "y1": 0.5,
-          "x2": 0.3875,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.75,
-          "y1": 0.5,
-          "x2": 0.6125,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      }
-    ],
-    "ports": [
-      {
-        "id": "port-1768210377292-sr7agdd6t",
-        "name": "port1",
-        "relativePosition": {
-          "x": 0.25,
-          "y": 0.5
-        },
-        "direction": "bidirectional",
-        "defaultAngle": 0,
-        "allowedConnections": [
-          "pipe"
-        ]
-      },
-      {
-        "id": "port-1768210378395-z3br9et52",
-        "name": "port2",
-        "relativePosition": {
-          "x": 0.75,
-          "y": 0.5
-        },
-        "direction": "bidirectional",
-        "defaultAngle": 0,
-        "allowedConnections": [
-          "pipe"
-        ]
-      }
-    ],
-    "labels": [],
-    "propertySchema": {
-      "required": [],
-      "properties": {}
-    }
-  },
-  {
-    "id": "trapcatcherfilter-1768229243197",
-    "category": "AT",
-    "name": "trapcatcherfilter",
-    "displayName": "Trap Catcher",
-    "description": "Trap Catcher",
-    "standard": "ISA",
-    "kksEquipmentCode": "AT",
-    "noKks": false,
-    "allowDuplicateKks": false,
-    "hideLabel": false,
-    "defaultSize": {
-      "width": 60,
-      "height": 60
-    },
-    "minSize": {
-      "width": 30,
-      "height": 30
-    },
-    "maxSize": {
-      "width": 200,
-      "height": 200
-    },
-    "resizable": true,
-    "aspectRatioLocked": true,
-    "rotatable": true,
-    "rotationSteps": [
-      0,
-      90,
-      180,
-      270
-    ],
-    "freeRotation": false,
-    "paths": [
-      {
-        "type": "polygon",
-        "data": {
-          "points": [
-            {
-              "x": 0,
-              "y": 0.5
-            },
-            {
-              "x": 0.5,
-              "y": 1
-            },
-            {
-              "x": 1,
-              "y": 0.5
-            },
-            {
-              "x": 0.5,
-              "y": 0
-            },
-            {
-              "x": 0,
-              "y": 0.5
-            }
-          ]
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.125,
-          "y1": 0.5,
-          "x2": 0,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.875,
-          "y1": 0.5,
-          "x2": 1,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.25,
-          "y1": 0.5,
-          "x2": 0.125,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.75,
-          "y1": 0.5,
-          "x2": 0.875,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.625,
-          "y1": 0.5,
-          "x2": 0.5,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      },
-      {
-        "type": "line",
-        "data": {
-          "x1": 0.375,
-          "y1": 0.5,
-          "x2": 0.5,
-          "y2": 0.5
-        },
-        "style": {
-          "stroke": "inherit",
-          "strokeWidth": 2,
-          "fill": "transparent"
-        }
-      }
-    ],
-    "ports": [
-      {
-        "id": "port-1768229199262-88mp3k7mr",
-        "name": "port1",
-        "relativePosition": {
-          "x": 0.5,
-          "y": 0
-        },
-        "direction": "bidirectional",
-        "defaultAngle": 0,
-        "allowedConnections": [
-          "pipe"
-        ]
-      },
-      {
-        "id": "port-1768229200754-p5e2rg0pb",
-        "name": "port2",
-        "relativePosition": {
-          "x": 0.5,
-          "y": 1
-        },
-        "direction": "bidirectional",
-        "defaultAngle": 0,
-        "allowedConnections": [
-          "pipe"
-        ]
-      }
-    ],
-    "labels": [
-      {
-        "id": "label-1768229215702-fhfmj3x8t",
-        "relativePosition": {
-          "x": 1.6317,
-          "y": 0.5
-        },
-        "anchor": "middle",
-        "binding": "kks",
-        "visible": true,
-        "style": {
-          "fontSize": 13,
-          "fontWeight": "normal"
-        }
-      }
-    ],
     "propertySchema": {
       "required": [],
       "properties": {}

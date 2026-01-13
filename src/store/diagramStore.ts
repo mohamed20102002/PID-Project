@@ -8,6 +8,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { persist } from 'zustand/middleware';
+import { nanoid } from 'nanoid';
 import { StorageService } from '../services/StorageService';
 import {
   Diagram,
@@ -40,6 +41,75 @@ function needsMigration(diagram: any): boolean {
 }
 
 /**
+ * Migrate terminals to use full KKS (base + terminalId)
+ * Old terminals may have terminalId in properties but KKS doesn't include it
+ */
+function migrateTerminalKks(diagram: Diagram): Diagram {
+  if (!diagram || !diagram.components) return diagram;
+
+  const components = diagram.components;
+  const newComponents: Record<string, Component> = {};
+  let migrationNeeded = false;
+
+  // First pass: identify terminals that need migration
+  Object.entries(components).forEach(([currentKks, comp]) => {
+    const isTerminal = comp.type.startsWith('terminals:');
+    const props = comp.properties as Record<string, string>;
+    const terminalId = props?.terminalId || '';
+
+    if (isTerminal && terminalId && !currentKks.endsWith(`-${terminalId}`)) {
+      // This terminal needs migration - its KKS should include the terminalId
+      migrationNeeded = true;
+    }
+  });
+
+  if (!migrationNeeded) {
+    return diagram;
+  }
+
+  console.log('[Migration] Migrating terminal KKS codes to include terminal IDs...');
+
+  // Second pass: migrate components
+  Object.entries(components).forEach(([currentKks, comp]) => {
+    const isTerminal = comp.type.startsWith('terminals:');
+    const props = comp.properties as Record<string, string>;
+    const terminalId = props?.terminalId || '';
+
+    if (isTerminal && terminalId && !currentKks.endsWith(`-${terminalId}`)) {
+      // Compute new full KKS
+      const newFullKks = `${currentKks}-${terminalId}`;
+      console.log(`[Migration] Terminal ${currentKks} -> ${newFullKks}`);
+
+      // Store with new KKS
+      newComponents[newFullKks] = {
+        ...comp,
+        kks: newFullKks,
+      };
+
+      // Update any connections referencing this component
+      if (diagram.connections) {
+        Object.values(diagram.connections).forEach((conn) => {
+          if (conn.sourceComponentKks === currentKks) {
+            conn.sourceComponentKks = newFullKks;
+          }
+          if (conn.targetComponentKks === currentKks) {
+            conn.targetComponentKks = newFullKks;
+          }
+        });
+      }
+    } else {
+      // Keep as-is
+      newComponents[currentKks] = comp;
+    }
+  });
+
+  return {
+    ...diagram,
+    components: newComponents,
+  };
+}
+
+/**
  * Migrate a diagram from ID-based to KKS-based storage
  */
 function migrateToKksBased(diagram: any): Diagram {
@@ -69,13 +139,16 @@ function migrateToKksBased(diagram: any): Diagram {
       newComponents[comp.kks] = rest as Component;
 
       // Also update port connectionId to connectionKks
-      if (rest.ports) {
+      if (rest.ports && Array.isArray(rest.ports)) {
         rest.ports = rest.ports.map((p: any) => {
           if (p.connectionId) {
             return { ...p, connectionKks: p.connectionId, connectionId: undefined };
           }
           return p;
         });
+      } else {
+        // Ensure ports is at least an empty array
+        rest.ports = rest.ports || [];
       }
     }
   });
@@ -99,6 +172,10 @@ function migrateToKksBased(diagram: any): Diagram {
       kks: connKks,
       sourceComponentKks: sourceKks,
       targetComponentKks: targetKks,
+      // Ensure waypoints is an array
+      waypoints: Array.isArray(conn.waypoints) ? conn.waypoints : [],
+      // Ensure isCrossSystem has a default
+      isCrossSystem: conn.isCrossSystem ?? false,
       // Remove old ID-based fields
       sourceComponentId: undefined,
       targetComponentId: undefined,
@@ -156,6 +233,7 @@ export interface DiagramActions {
   // Components (use component KKS for all operations)
   addComponent: (component: Omit<Component, 'kks'> & { kks?: string }) => string;
   updateComponent: (kks: string, updates: Partial<Component>) => void;
+  updateComponentInSystem: (systemKks: string, componentKks: string, updates: Partial<Component>) => void;
   renameComponent: (oldKks: string, newKks: string) => boolean;
   deleteComponent: (kks: string) => void;
   moveComponent: (kks: string, position: Point) => void;
@@ -270,7 +348,9 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
     loadDiagram: (diagram) => set((state) => {
       // Migrate if needed
-      const migratedDiagram = needsMigration(diagram) ? migrateToKksBased(diagram) : diagram;
+      let migratedDiagram = needsMigration(diagram) ? migrateToKksBased(diagram) : diagram;
+      // Also migrate terminal KKS codes
+      migratedDiagram = migrateTerminalKks(migratedDiagram);
       state.diagram = migratedDiagram;
       if (migratedDiagram.systemKks) {
         state.diagramCache[migratedDiagram.systemKks] = { ...migratedDiagram };
@@ -338,7 +418,8 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       const cached = get().diagramCache[systemKks];
       if (cached) {
         // Migrate if needed
-        const migratedCached = needsMigration(cached) ? migrateToKksBased(cached) : cached;
+        let migratedCached = needsMigration(cached) ? migrateToKksBased(cached) : cached;
+        migratedCached = migrateTerminalKks(migratedCached);
         set((state) => {
           state.diagram = { ...migratedCached };
           state.diagramCache[systemKks] = { ...migratedCached };
@@ -356,7 +437,8 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
       if (loadResult.success && loadResult.diagram) {
         // Migrate if needed
-        const migratedDiagram = needsMigration(loadResult.diagram) ? migrateToKksBased(loadResult.diagram) : loadResult.diagram;
+        let migratedDiagram = needsMigration(loadResult.diagram) ? migrateToKksBased(loadResult.diagram) : loadResult.diagram;
+        migratedDiagram = migrateTerminalKks(migratedDiagram);
         set((state) => {
           state.diagram = migratedDiagram;
           state.diagramCache[systemKks] = { ...migratedDiagram };
@@ -478,6 +560,7 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
       // Check if KKS already exists in the current diagram
       const state = get();
+
       if (state.diagram && state.diagram.components[kks]) {
         console.error(`KKS "${kks}" already exists in this diagram. Component not added.`);
         alert(`Error: KKS code "${kks}" already exists in this diagram.\nEach component must have a unique KKS identifier.`);
@@ -504,9 +587,48 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       }
     }),
 
+    // Update a component in a specific system (for cross-system operations like bidirectional terminal linking)
+    updateComponentInSystem: (systemKks, componentKks, updates) => {
+      const { diagramCache } = get();
+      const targetDiagram = diagramCache[systemKks];
+
+      if (targetDiagram && targetDiagram.components[componentKks]) {
+        // Create deep copies to avoid mutating frozen/immutable objects
+        const updatedComponent = {
+          ...targetDiagram.components[componentKks],
+          ...updates,
+          properties: {
+            ...(targetDiagram.components[componentKks].properties || {}),
+            ...(updates.properties || {}),
+          },
+        };
+
+        const updatedDiagram: Diagram = {
+          ...targetDiagram,
+          components: {
+            ...targetDiagram.components,
+            [componentKks]: updatedComponent,
+          },
+          modifiedAt: new Date().toISOString(),
+        };
+
+        // Update the cache with the new diagram
+        set((state) => {
+          state.diagramCache[systemKks] = updatedDiagram;
+        });
+
+        // Save the updated diagram to disk
+        StorageService.saveDiagram(systemKks, updatedDiagram);
+
+        console.log(`[diagramStore] Updated component ${componentKks} in system ${systemKks}`);
+      }
+    },
+
     renameComponent: (oldKks, newKks) => {
       const state = get();
-      if (!state.diagram || !state.diagram.components[oldKks]) return false;
+      if (!state.diagram || !state.diagram.components[oldKks]) {
+        return false;
+      }
 
       // Check if the new KKS already exists
       if (state.diagram.components[newKks]) {
@@ -757,16 +879,24 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
         console.log('[diagramStore] Migrating current diagram...');
         migratedDiagram = migrateToKksBased(migratedDiagram);
       }
+      // Also migrate terminal KKS codes
+      if (migratedDiagram) {
+        migratedDiagram = migrateTerminalKks(migratedDiagram);
+      }
 
       // Migrate all cached diagrams if needed
       const migratedCache: Record<string, Diagram> = {};
       if (persisted.diagramCache) {
         Object.entries(persisted.diagramCache).forEach(([systemKks, cached]) => {
+          let migratedCached = cached;
           if (cached && needsMigration(cached)) {
             console.log(`[diagramStore] Migrating cached diagram: ${systemKks}`);
-            migratedCache[systemKks] = migrateToKksBased(cached);
-          } else if (cached) {
-            migratedCache[systemKks] = cached;
+            migratedCached = migrateToKksBased(cached);
+          }
+          if (migratedCached) {
+            // Also migrate terminal KKS codes
+            migratedCached = migrateTerminalKks(migratedCached);
+            migratedCache[systemKks] = migratedCached;
           }
         });
       }

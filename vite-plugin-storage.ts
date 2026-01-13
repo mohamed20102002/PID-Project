@@ -13,6 +13,7 @@ const DATA_DIR = './data';
 const SYSTEMS_DIR = './data/systems';
 const PLANT_FILE = './data/plant.json';
 const CUSTOM_SYMBOLS_FILE = './data/custom-symbols.json';
+const SETTINGS_FILE = './data/settings.json';
 
 // Ensure directories exist
 function ensureDirectories() {
@@ -193,6 +194,54 @@ export function storagePlugin(): Plugin {
             }
           } catch (error) {
             console.error('[Storage] Load custom symbols error:', error);
+            res.statusCode = 500;
+            res.end(JSON.stringify({ success: false, error: String(error) }));
+          }
+        } else {
+          next();
+        }
+      });
+
+      // App Settings
+      server.middlewares.use('/api/storage/settings', async (req, res, next) => {
+        if (req.method === 'POST') {
+          let body = '';
+          req.on('data', chunk => { body += chunk; });
+          req.on('end', () => {
+            try {
+              const { settings } = JSON.parse(body);
+
+              if (!settings) {
+                res.statusCode = 400;
+                res.end(JSON.stringify({ success: false, error: 'Missing settings data' }));
+                return;
+              }
+
+              fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf-8');
+
+              console.log('[Storage] Saved app settings');
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true }));
+            } catch (error) {
+              console.error('[Storage] Save settings error:', error);
+              res.statusCode = 500;
+              res.end(JSON.stringify({ success: false, error: String(error) }));
+            }
+          });
+        } else if (req.method === 'GET') {
+          try {
+            if (fs.existsSync(SETTINGS_FILE)) {
+              const data = fs.readFileSync(SETTINGS_FILE, 'utf-8');
+              const settings = JSON.parse(data);
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, settings }));
+            } else {
+              // Graceful fallback - return null for fresh installs
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, settings: null }));
+            }
+          } catch (error) {
+            console.error('[Storage] Load settings error:', error);
             res.statusCode = 500;
             res.end(JSON.stringify({ success: false, error: String(error) }));
           }

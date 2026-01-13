@@ -14,6 +14,7 @@ import { SymbolRegistry } from '../../data/symbols/SymbolRegistry';
 import { Component, ComponentRotation, Connection, BuildingPolygon } from '../../types';
 import { PropertySchema, PropertyFieldDefinition } from '../../types/symbol.types';
 import { nanoid } from 'nanoid';
+import { TerminalLinkDialog } from './TerminalLinkDialog';
 
 interface PropertiesPanelProps {
   className?: string;
@@ -254,21 +255,48 @@ const ComponentInfo: React.FC<{
   symbolCategory: string;
   onUpdateKks: (kks: string) => void;
   onUpdateBuildingKks: (buildingKks: string) => void;
-}> = ({ component, symbolName, symbolCategory, onUpdateKks, onUpdateBuildingKks }) => {
-  const [localKks, setLocalKks] = React.useState(component.kks);
+  onPropertyChange?: (propertyName: string, value: unknown) => void;
+}> = ({ component, symbolName, symbolCategory, onUpdateKks, onUpdateBuildingKks, onPropertyChange }) => {
   const [localBuildingKks, setLocalBuildingKks] = React.useState(component.buildingKks);
+
+  // Terminal ID for terminal components
+  const isTerminal = component.type.startsWith('terminals:');
+  const props = component.properties as Record<string, string>;
+  const terminalId = props.terminalId || '';
+
+  // For terminals with terminalId, extract the base KKS (without the -terminalId suffix)
+  // The component.kks stores the full KKS (base-terminalId) for terminals
+  const getBaseKks = React.useCallback(() => {
+    if (isTerminal && terminalId && component.kks.endsWith(`-${terminalId}`)) {
+      return component.kks.slice(0, -(terminalId.length + 1));
+    }
+    return component.kks;
+  }, [isTerminal, terminalId, component.kks]);
+
+  const [localKks, setLocalKks] = React.useState(getBaseKks());
+  const [localTerminalId, setLocalTerminalId] = React.useState(terminalId);
 
   // Sync local state when component changes
   React.useEffect(() => {
-    setLocalKks(component.kks);
-  }, [component.kks]);
+    setLocalKks(getBaseKks());
+  }, [getBaseKks]);
 
   React.useEffect(() => {
     setLocalBuildingKks(component.buildingKks);
   }, [component.buildingKks]);
 
+  React.useEffect(() => {
+    if (isTerminal) {
+      setLocalTerminalId(terminalId);
+    }
+  }, [isTerminal, terminalId]);
+
   const handleKksBlur = () => {
-    if (localKks !== component.kks) {
+    // Compare with base KKS for terminals, or full KKS for regular components
+    const baseKks = getBaseKks();
+    if (localKks !== baseKks) {
+      // For terminals with terminalId, we pass the new base KKS
+      // The handleKksChange will append the terminalId to form the full KKS
       onUpdateKks(localKks);
     }
   };
@@ -279,11 +307,29 @@ const ComponentInfo: React.FC<{
     }
   };
 
+  const handleTerminalIdBlur = () => {
+    const trimmed = localTerminalId.trim();
+    if (trimmed !== (props.terminalId || '') && onPropertyChange) {
+      onPropertyChange('terminalId', trimmed);
+    }
+  };
+
+  const handleTerminalIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only allow numbers
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    setLocalTerminalId(value);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       (e.target as HTMLInputElement).blur();
     }
   };
+
+  // Compute full KKS with terminal ID for display
+  const fullKks = isTerminal && localTerminalId
+    ? `${localKks}-${localTerminalId}`
+    : localKks;
 
   return (
     <div className="border-b border-gray-200 pb-3 mb-3">
@@ -307,6 +353,30 @@ const ComponentInfo: React.FC<{
           className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
+
+      {/* Terminal ID - only for terminal components */}
+      {isTerminal && (
+        <div className="mb-3">
+          <label className="block text-xs font-medium text-gray-600 mb-1">
+            Terminal ID (Numbers only)
+          </label>
+          <input
+            type="text"
+            value={localTerminalId}
+            onChange={handleTerminalIdChange}
+            onBlur={handleTerminalIdBlur}
+            onKeyDown={handleKeyDown}
+            placeholder="e.g., 12345"
+            maxLength={10}
+            className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          {localTerminalId && (
+            <p className="text-xs text-gray-500 mt-1">
+              Full ID: <span className="font-mono font-medium">{fullKks}</span>
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="mb-3">
         <label className="block text-xs font-medium text-gray-600 mb-1">
@@ -557,7 +627,7 @@ const NoSelection: React.FC = () => {
 };
 
 /**
- * Terminal Settings Component with Text Inputs
+ * Terminal Settings Component with Text Inputs and Quick Link Dialog
  */
 const TerminalSettings: React.FC<{
   component: Component;
@@ -566,9 +636,16 @@ const TerminalSettings: React.FC<{
 }> = ({ component, currentSystemKks, onPropertyChange }) => {
   const props = component.properties as Record<string, string>;
 
+  // Get update functions from store directly to avoid stale closures
+  const updateComponent = useDiagramStore((state) => state.updateComponent);
+  const updateComponentInSystem = useDiagramStore((state) => state.updateComponentInSystem);
+
   // Local state for text inputs
   const [localTargetSystem, setLocalTargetSystem] = React.useState(props.targetSystemKks || '');
   const [localTargetTerminal, setLocalTargetTerminal] = React.useState(props.targetTerminalKks || '');
+
+  // State for Quick Link Dialog
+  const [isLinkDialogOpen, setIsLinkDialogOpen] = React.useState(false);
 
   // Sync local state when component changes
   React.useEffect(() => {
@@ -596,9 +673,93 @@ const TerminalSettings: React.FC<{
     }
   };
 
+  // Handle selection from Quick Link Dialog - always creates bidirectional link
+  const handleQuickLinkSelect = React.useCallback((
+    targetSystemKks: string,
+    targetTerminalKks: string,
+    targetTerminalProperties?: Record<string, unknown>
+  ) => {
+    // Update local state for immediate UI feedback
+    setLocalTargetSystem(targetSystemKks);
+    setLocalTargetTerminal(targetTerminalKks);
+
+    // Update the current component directly using the store (avoids stale closure issues)
+    // We use the component.kks from props which is always current
+    const currentProps = component.properties as Record<string, unknown>;
+    updateComponent(component.kks, {
+      properties: {
+        ...currentProps,
+        targetSystemKks: targetSystemKks,
+        targetTerminalKks: targetTerminalKks,
+      },
+    });
+
+    // Always create bidirectional link - update the target terminal to link back
+    if (targetTerminalKks && targetTerminalProperties !== undefined) {
+      updateComponentInSystem(targetSystemKks, targetTerminalKks, {
+        properties: {
+          ...targetTerminalProperties,
+          targetSystemKks: currentSystemKks,
+          targetTerminalKks: component.kks,
+        },
+      });
+    }
+  }, [component.kks, component.properties, updateComponent, updateComponentInSystem, currentSystemKks]);
+
+  // Clear link
+  const handleClearLink = React.useCallback(() => {
+    setLocalTargetSystem('');
+    setLocalTargetTerminal('');
+    onPropertyChange('targetSystemKks', '');
+    onPropertyChange('targetTerminalKks', '');
+  }, [onPropertyChange]);
+
+  const hasLink = localTargetSystem || localTargetTerminal;
+
   return (
     <div className="border-t border-gray-200 pt-3 mt-3">
-      <h4 className="text-xs font-medium text-gray-600 mb-3">Terminal Link Settings</h4>
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-xs font-medium text-gray-600">Terminal Link Settings</h4>
+        <button
+          onClick={() => setIsLinkDialogOpen(true)}
+          className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors flex items-center gap-1"
+        >
+          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+          </svg>
+          Quick Link
+        </button>
+      </div>
+
+      {/* Current Link Status */}
+      {hasLink && (
+        <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm">
+              <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+              </svg>
+              <span className="text-blue-800">
+                <span className="font-mono font-medium">{localTargetSystem}</span>
+                {localTargetTerminal && (
+                  <span className="text-blue-600"> / {localTargetTerminal}</span>
+                )}
+              </span>
+            </div>
+            <button
+              onClick={handleClearLink}
+              className="p-1 text-blue-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+              title="Clear link"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Target System KKS */}
       <div className="mb-3">
@@ -637,6 +798,15 @@ const TerminalSettings: React.FC<{
           Leave empty to auto-find a matching terminal on navigation.
         </p>
       </div>
+
+      {/* Quick Link Dialog */}
+      <TerminalLinkDialog
+        isOpen={isLinkDialogOpen}
+        onClose={() => setIsLinkDialogOpen(false)}
+        onSelect={handleQuickLinkSelect}
+        currentSystemKks={currentSystemKks}
+        currentTerminalKks={component.kks}
+      />
     </div>
   );
 };
@@ -1242,10 +1412,49 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
     return undefined;
   }, [selectedComponent, customSymbols]);
 
+  // Selection handling (needed for property changes that rename components)
+  const select = useUIStore((state) => state.select);
+
   // Handle property change
   const handlePropertyChange = useCallback(
     (propertyName: string, value: unknown) => {
       if (!selectedComponent) return;
+
+      // Special handling for terminalId changes on terminals
+      const isTerminal = selectedComponent.type.startsWith('terminals:');
+
+      if (isTerminal && propertyName === 'terminalId') {
+        const newTerminalId = (value as string || '').trim();
+        const currentKks = selectedComponent.kks;
+        const props = selectedComponent.properties as Record<string, string>;
+        const oldTerminalId = props.terminalId || '';
+
+        // Extract base KKS by removing old terminal ID suffix if present
+        let baseKks = currentKks;
+        if (oldTerminalId && currentKks.endsWith(`-${oldTerminalId}`)) {
+          baseKks = currentKks.slice(0, -(oldTerminalId.length + 1));
+        }
+
+        // Compute new full KKS
+        const newFullKks = newTerminalId ? `${baseKks}-${newTerminalId}` : baseKks;
+
+        // Update the property first
+        updateComponent(currentKks, {
+          properties: {
+            ...selectedComponent.properties,
+            terminalId: newTerminalId,
+          },
+        });
+
+        // If KKS changed, rename the component
+        if (newFullKks !== currentKks) {
+          const success = renameComponent(currentKks, newFullKks);
+          if (success) {
+            select([newFullKks], []);
+          }
+        }
+        return;
+      }
 
       updateComponent(selectedComponent.kks, {
         properties: {
@@ -1254,21 +1463,31 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
         },
       });
     },
-    [selectedComponent, updateComponent]
+    [selectedComponent, updateComponent, renameComponent, select]
   );
 
-  // Handle KKS change
-  const select = useUIStore((state) => state.select);
+  // Handle KKS change (for terminals, this receives the base KKS without terminalId)
   const handleKksChange = useCallback(
-    (newKks: string) => {
-      if (!selectedComponent || !newKks.trim()) return;
-      const trimmedKks = newKks.trim().toUpperCase();
-      if (trimmedKks === selectedComponent.kks) return;
+    (newBaseKks: string) => {
+      if (!selectedComponent || !newBaseKks.trim()) return;
+      const trimmedBaseKks = newBaseKks.trim().toUpperCase();
+
+      // For terminals with terminalId, we need to append it to form the full KKS
+      const isTerminal = selectedComponent.type.startsWith('terminals:');
+      const props = selectedComponent.properties as Record<string, string>;
+      const terminalId = isTerminal ? (props.terminalId || '') : '';
+
+      // Compute the new full KKS
+      const newFullKks = terminalId ? `${trimmedBaseKks}-${terminalId}` : trimmedBaseKks;
+
+      // Don't rename if the KKS hasn't changed
+      if (newFullKks === selectedComponent.kks) return;
+
       const oldKks = selectedComponent.kks;
-      const success = renameComponent(oldKks, trimmedKks);
+      const success = renameComponent(oldKks, newFullKks);
       // Update selection to use new KKS
       if (success) {
-        select([trimmedKks], []);
+        select([newFullKks], []);
       }
     },
     [selectedComponent, renameComponent, select]
@@ -1425,6 +1644,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
         symbolCategory={symbolDefinition.category}
         onUpdateKks={handleKksChange}
         onUpdateBuildingKks={handleBuildingKksChange}
+        onPropertyChange={handlePropertyChange}
       />
 
       {/* Rotation Controls */}

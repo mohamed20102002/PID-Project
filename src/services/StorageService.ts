@@ -220,6 +220,47 @@ class StorageServiceClass {
       return { success: false, error: errorMsg };
     }
   }
+
+  // ========== App Settings Operations ==========
+
+  async saveSettings(settings: Record<string, unknown>): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await fetch('/api/storage/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ settings }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('[StorageService] Saved app settings');
+      }
+
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Save settings failed';
+      console.error('[StorageService] Save settings error:', error);
+      return { success: false, error: errorMsg };
+    }
+  }
+
+  async loadSettings(): Promise<{ success: boolean; settings?: Record<string, unknown> | null; error?: string }> {
+    try {
+      const response = await fetch('/api/storage/settings');
+      const result = await response.json();
+
+      if (result.success && result.settings) {
+        console.log('[StorageService] Loaded app settings');
+      }
+
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Load settings failed';
+      console.error('[StorageService] Load settings error:', error);
+      return { success: false, error: errorMsg };
+    }
+  }
 }
 
 // Export singleton instance

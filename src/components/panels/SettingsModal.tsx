@@ -15,10 +15,17 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-type TabId = 'homepage' | 'appearance';
+type TabId = 'homepage' | 'appearance' | 'security';
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<TabId>('homepage');
+
+  // Password change state
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
 
   const {
     homepage,
@@ -40,6 +47,44 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const setDarkModePipeStrokeWidth = useUIStore((state) => state.setDarkModePipeStrokeWidth);
   const setDarkModePipeGlowBlur = useUIStore((state) => state.setDarkModePipeGlowBlur);
   const setDarkModePipeGlowOpacity = useUIStore((state) => state.setDarkModePipeGlowOpacity);
+
+  // Segment highlighter settings
+  const kksHideFadeOpacity = useUIStore((state) => state.kksHideFadeOpacity);
+  const setKksHideFadeOpacity = useUIStore((state) => state.setKksHideFadeOpacity);
+
+  // Edit mode password
+  const editModePassword = useUIStore((state) => state.editModePassword);
+  const setEditModePassword = useUIStore((state) => state.setEditModePassword);
+
+  // Handle password change
+  const handlePasswordChange = () => {
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    if (currentPassword !== editModePassword) {
+      setPasswordError('Current password is incorrect');
+      return;
+    }
+
+    if (newPassword.length < 4) {
+      setPasswordError('New password must be at least 4 characters');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New passwords do not match');
+      return;
+    }
+
+    setEditModePassword(newPassword);
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setPasswordSuccess('Password changed successfully!');
+
+    // Clear success message after 3 seconds
+    setTimeout(() => setPasswordSuccess(''), 3000);
+  };
 
   if (!isOpen) return null;
 
@@ -204,6 +249,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             </svg>
             Appearance
           </button>
+          <button
+            onClick={() => setActiveTab('security')}
+            className={`flex items-center gap-2 px-6 py-3 text-sm font-medium transition-colors ${
+              activeTab === 'security'
+                ? 'text-indigo-600 border-b-2 border-indigo-600 bg-white'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
+            </svg>
+            Security
+          </button>
         </div>
 
         {/* Content */}
@@ -330,6 +389,35 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 </label>
               </div>
 
+              {/* Segment Highlighter Settings */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  Segment Highlighter
+                </h3>
+                <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Hidden Elements Opacity: {Math.round(kksHideFadeOpacity * 100)}%
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="0.5"
+                      step="0.05"
+                      value={kksHideFadeOpacity}
+                      onChange={(e) => setKksHideFadeOpacity(parseFloat(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Controls how visible non-matching elements are when "Hide other components" is enabled
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Dark Mode Pipe Settings - only show when dark mode is enabled */}
               {canvasDarkMode && (
                 <div>
@@ -425,6 +513,83 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {activeTab === 'security' && (
+            <div className="space-y-6">
+              {/* Change Password */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg>
+                  Change Edit Mode Password
+                </h3>
+                <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter current password"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter new password"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Confirm new password"
+                    />
+                  </div>
+
+                  {passwordError && (
+                    <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+                      {passwordError}
+                    </p>
+                  )}
+
+                  {passwordSuccess && (
+                    <p className="text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                      {passwordSuccess}
+                    </p>
+                  )}
+
+                  <button
+                    onClick={handlePasswordChange}
+                    disabled={!currentPassword || !newPassword || !confirmPassword}
+                    className="w-full px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  >
+                    Change Password
+                  </button>
+
+                  <p className="text-xs text-gray-500 mt-2">
+                    Password is saved to: <code className="bg-gray-200 px-1 rounded">./data/settings.json</code>
+                  </p>
+                </div>
+              </div>
             </div>
           )}
         </div>

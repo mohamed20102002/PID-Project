@@ -100,15 +100,12 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
       e.stopPropagation();
       e.preventDefault();
 
-      // Don't close the last tab
-      if (tabs.length <= 1) return;
-
       // Remove from cache
       useDiagramStore.setState((state) => {
         const newCache = { ...state.diagramCache };
         delete newCache[systemKks];
 
-        // If closing the active tab, switch to another
+        // If closing the active tab, switch to another or go to Home
         if (state.diagram?.systemKks === systemKks) {
           const remainingTabs = Object.keys(newCache);
           if (remainingTabs.length > 0) {
@@ -116,6 +113,12 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
             return {
               diagramCache: newCache,
               diagram: newCache[nextSystemKks] ? { ...newCache[nextSystemKks] } : null,
+            };
+          } else {
+            // No remaining tabs - go to Home
+            return {
+              diagramCache: newCache,
+              diagram: null,
             };
           }
         }
@@ -128,6 +131,8 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
         const remainingTabs = tabs.filter(t => t.systemKks !== systemKks);
         if (remainingTabs.length > 0) {
           selectSystem(remainingTabs[0].systemKks);
+        } else {
+          selectSystem(null);
         }
       }
     },
@@ -147,11 +152,11 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
 
   // Handle context menu actions
   const handleCloseTab = useCallback(() => {
-    if (contextMenu && tabs.length > 1) {
+    if (contextMenu) {
       handleTabClose({ stopPropagation: () => {}, preventDefault: () => {} } as React.MouseEvent, contextMenu.systemKks);
       closeContextMenu();
     }
-  }, [contextMenu, tabs.length, handleTabClose, closeContextMenu]);
+  }, [contextMenu, handleTabClose, closeContextMenu]);
 
   const handleCloseOthers = useCallback(() => {
     if (contextMenu) {
@@ -259,25 +264,22 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
               {tab.systemKks}
             </span>
 
-            {/* Close button */}
-            {tabs.length > 1 && (
-              <button
-                className={`p-0.5 rounded hover:bg-gray-200 ${
-                  tab.systemKks === diagram?.systemKks ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                }`}
-                onClick={(e) => handleTabClose(e, tab.systemKks)}
+            {/* Close button - always visible */}
+            <button
+              className="p-0.5 rounded hover:bg-gray-300 transition-colors ml-1"
+              onClick={(e) => handleTabClose(e, tab.systemKks)}
+              title="Close tab"
+            >
+              <svg
+                className="w-3.5 h-3.5 text-gray-500 hover:text-gray-700"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
               >
-                <svg
-                  className="w-3 h-3 text-gray-500"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-            )}
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         ))}
       </div>
@@ -289,9 +291,8 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
           style={{ left: contextMenu.x, top: contextMenu.y }}
         >
           <button
-            className="w-full px-4 py-1.5 text-sm text-left hover:bg-gray-100 disabled:opacity-50"
+            className="w-full px-4 py-1.5 text-sm text-left hover:bg-gray-100"
             onClick={handleCloseTab}
-            disabled={tabs.length <= 1}
           >
             Close
           </button>

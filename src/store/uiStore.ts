@@ -6,8 +6,31 @@
 
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Point, Selection, SelectionType } from '../types';
+import { StorageService } from '../services/StorageService';
+
+// Custom storage adapter that saves to local file via StorageService
+const fileStorage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    const result = await StorageService.loadSettings();
+    if (result.success && result.settings) {
+      return JSON.stringify({ state: result.settings });
+    }
+    return null;
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    try {
+      const parsed = JSON.parse(value);
+      await StorageService.saveSettings(parsed.state || {});
+    } catch (error) {
+      console.error('[uiStore] Failed to save settings:', error);
+    }
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await StorageService.saveSettings({});
+  },
+};
 
 // ============================================================================
 // Types
@@ -26,6 +49,13 @@ export interface Viewport {
   x: number;       // Pan offset X
   y: number;       // Pan offset Y
   scale: number;   // Zoom level (1 = 100%)
+}
+
+// Segment highlight with individual color
+export interface SegmentHighlight {
+  id: string;      // Unique ID for the segment entry
+  segment: string; // The segment text to match (e.g., "LAA", "KBA")
+  color: string;   // Highlight color for this segment
 }
 
 export interface UIState {
@@ -110,11 +140,13 @@ export interface UIState {
 
   // KKS Pipe Highlighting (Technical Panel feature)
   kksHighlightEnabled: boolean;
-  kksHighlightSegment: string;
-  kksHighlightColor: string;
+  kksHighlightSegment: string;  // Legacy - single segment (kept for compatibility)
+  kksHighlightColor: string;    // Legacy - single color (kept for compatibility)
+  kksHighlightSegments: SegmentHighlight[];  // New - multiple segments with colors
   kksHighlightStrokeWidth: number;
   kksHighlightGlowIntensity: number;
   kksHideNonMatching: boolean;
+  kksHideFadeOpacity: number;  // Opacity for non-matching elements when hiding (0.0 - 1.0)
 
   // Canvas Dark Mode
   canvasDarkMode: boolean;
@@ -124,6 +156,9 @@ export interface UIState {
   darkModePipeStrokeWidth: number;
   darkModePipeGlowBlur: number;
   darkModePipeGlowOpacity: number;
+
+  // Edit Mode Password
+  editModePassword: string;
 }
 
 export interface UIActions {
@@ -227,6 +262,13 @@ export interface UIActions {
   setKksHighlightStrokeWidth: (width: number) => void;
   setKksHighlightGlowIntensity: (intensity: number) => void;
   setKksHideNonMatching: (hide: boolean) => void;
+  setKksHideFadeOpacity: (opacity: number) => void;
+
+  // Segment Highlights (multiple segments with colors)
+  addSegmentHighlight: (segment: string, color: string) => void;
+  removeSegmentHighlight: (id: string) => void;
+  updateSegmentHighlight: (id: string, updates: Partial<Omit<SegmentHighlight, 'id'>>) => void;
+  clearSegmentHighlights: () => void;
 
   // Canvas Dark Mode
   setCanvasDarkMode: (enabled: boolean) => void;
@@ -237,6 +279,9 @@ export interface UIActions {
   setDarkModePipeStrokeWidth: (width: number) => void;
   setDarkModePipeGlowBlur: (blur: number) => void;
   setDarkModePipeGlowOpacity: (opacity: number) => void;
+
+  // Edit Mode Password
+  setEditModePassword: (password: string) => void;
 }
 
 // ============================================================================
@@ -293,15 +338,19 @@ const initialState: UIState = {
   kksHighlightEnabled: false,
   kksHighlightSegment: '',
   kksHighlightColor: '#00ffff',
+  kksHighlightSegments: [],
   kksHighlightStrokeWidth: 4,
   kksHighlightGlowIntensity: 50,
   kksHideNonMatching: false,
+  kksHideFadeOpacity: 0.15,
   canvasDarkMode: false,
   // Dark Mode Pipe Settings
   darkModePipeColor: '#ffffff',
   darkModePipeStrokeWidth: 2.5,
   darkModePipeGlowBlur: 15,
   darkModePipeGlowOpacity: 1,
+  // Edit Mode Password
+  editModePassword: 'admin123',
 };
 
 // ============================================================================
@@ -721,6 +770,36 @@ export const useUIStore = create<UIState & UIActions>()(
       state.kksHideNonMatching = hide;
     }),
 
+    setKksHideFadeOpacity: (opacity) => set((state) => {
+      state.kksHideFadeOpacity = Math.max(0, Math.min(1, opacity));
+    }),
+
+    // Segment Highlights (multiple segments with colors)
+    addSegmentHighlight: (segment: string, color: string) => set((state) => {
+      const id = `seg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      state.kksHighlightSegments.push({ id, segment: segment.toUpperCase(), color });
+    }),
+
+    removeSegmentHighlight: (id: string) => set((state) => {
+      state.kksHighlightSegments = state.kksHighlightSegments.filter(s => s.id !== id);
+    }),
+
+    updateSegmentHighlight: (id: string, updates: Partial<Omit<SegmentHighlight, 'id'>>) => set((state) => {
+      const index = state.kksHighlightSegments.findIndex(s => s.id === id);
+      if (index !== -1) {
+        if (updates.segment !== undefined) {
+          state.kksHighlightSegments[index].segment = updates.segment.toUpperCase();
+        }
+        if (updates.color !== undefined) {
+          state.kksHighlightSegments[index].color = updates.color;
+        }
+      }
+    }),
+
+    clearSegmentHighlights: () => set((state) => {
+      state.kksHighlightSegments = [];
+    }),
+
     // Canvas Dark Mode
     setCanvasDarkMode: (enabled) => set((state) => {
       state.canvasDarkMode = enabled;
@@ -746,9 +825,15 @@ export const useUIStore = create<UIState & UIActions>()(
     setDarkModePipeGlowOpacity: (opacity) => set((state) => {
       state.darkModePipeGlowOpacity = Math.max(0, Math.min(1, opacity));
     }),
+
+    // Edit Mode Password
+    setEditModePassword: (password) => set((state) => {
+      state.editModePassword = password;
+    }),
   })),
   {
     name: 'flowmark_ui',
+    storage: createJSONStorage(() => fileStorage),
     partialize: (state) => ({
       mode: state.mode,  // Persist edit mode across refreshes
       tool: state.tool,  // Persist current tool
@@ -767,6 +852,10 @@ export const useUIStore = create<UIState & UIActions>()(
       darkModePipeStrokeWidth: state.darkModePipeStrokeWidth,
       darkModePipeGlowBlur: state.darkModePipeGlowBlur,
       darkModePipeGlowOpacity: state.darkModePipeGlowOpacity,
+      // Segment Highlighter Settings
+      kksHideFadeOpacity: state.kksHideFadeOpacity,
+      // Edit Mode Password
+      editModePassword: state.editModePassword,
     }),
   }
 ));
