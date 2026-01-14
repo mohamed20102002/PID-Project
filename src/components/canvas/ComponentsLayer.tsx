@@ -10,15 +10,134 @@ import { Layer, Group, Rect, Line } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import { MemoizedBaseSymbol } from '../symbols/base/BaseSymbol';
 import { useDiagramStore } from '../../store/diagramStore';
-import { useUIStore } from '../../store/uiStore';
+import { useUIStore, useUIStoreShallow } from '../../store/uiStore';
 import { usePlantStore } from '../../store/plantStore';
 import { useHistoryStore } from '../../store/historyStore';
 import { useCustomSymbolStore } from '../../store/customSymbolStore';
 import { SnapEngine } from '../../core/grid/SnapEngine';
 import type { Component, Point } from '../../types';
+import type { SymbolDefinition } from '../../types/symbol.types';
 import { MoveMultipleCommand, MoveComponentCommand } from '../../core/commands/ComponentCommands';
 import { UpdateWaypointsCommand } from '../../core/commands/ConnectionCommands';
 import { SymbolRegistry } from '../../data/symbols/SymbolRegistry';
+
+// ============================================================================
+// Memoized Component Item - Prevents inline function recreation
+// ============================================================================
+
+interface ComponentItemProps {
+  component: Component;
+  definition: SymbolDefinition;
+  isSelected: boolean;
+  isHovered: boolean;
+  isDragging: boolean;
+  isHighlighted: boolean;
+  isBeingDraggedWithSelection: boolean;
+  dragDelta: Point;
+  showPorts: boolean;
+  mode: 'view' | 'draw';
+  tool: string;
+  darkMode: boolean;
+  kksOpacity: number;
+  onDragStart: (e: KonvaEventObject<DragEvent>, component: Component) => void;
+  onDragMove: (e: KonvaEventObject<DragEvent>) => void;
+  onDragEnd: (e: KonvaEventObject<DragEvent>, component: Component) => void;
+  onClick: (e: KonvaEventObject<MouseEvent>, component: Component) => void;
+  onDoubleClick: (component: Component) => void;
+  onMouseEnter: (kks: string) => void;
+  onMouseLeave: () => void;
+  onPortClick: (componentKks: string, portId: string) => void;
+}
+
+const ComponentItem = React.memo<ComponentItemProps>(({
+  component,
+  definition,
+  isSelected,
+  isHovered,
+  isDragging,
+  isHighlighted,
+  isBeingDraggedWithSelection,
+  dragDelta,
+  showPorts,
+  mode,
+  tool,
+  darkMode,
+  kksOpacity,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
+  onClick,
+  onDoubleClick,
+  onMouseEnter,
+  onMouseLeave,
+  onPortClick,
+}) => {
+  // Calculate offset for dragged selection
+  const offsetX = isBeingDraggedWithSelection ? dragDelta.x : 0;
+  const offsetY = isBeingDraggedWithSelection ? dragDelta.y : 0;
+
+  // Memoize the component with zeroed position to prevent object recreation
+  const componentWithZeroPosition = useMemo(() => ({
+    ...component,
+    position: { x: 0, y: 0 }
+  }), [component]);
+
+  // Memoize event handlers to prevent recreation
+  const handleDragStart = useCallback((e: KonvaEventObject<DragEvent>) => {
+    onDragStart(e, component);
+  }, [onDragStart, component]);
+
+  const handleDragEnd = useCallback((e: KonvaEventObject<DragEvent>) => {
+    onDragEnd(e, component);
+  }, [onDragEnd, component]);
+
+  const handleClick = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    onClick(e, component);
+  }, [onClick, component]);
+
+  const handleDoubleClick = useCallback(() => {
+    onDoubleClick(component);
+  }, [onDoubleClick, component]);
+
+  const handleMouseEnter = useCallback(() => {
+    onMouseEnter(component.kks);
+  }, [onMouseEnter, component.kks]);
+
+  const handlePortClick = useCallback((portId: string) => {
+    onPortClick(component.kks, portId);
+  }, [onPortClick, component.kks]);
+
+  return (
+    <Group
+      x={component.position.x + offsetX}
+      y={component.position.y + offsetY}
+      opacity={kksOpacity}
+      draggable={mode === 'draw' && tool === 'select'}
+      onDragStart={handleDragStart}
+      onDragMove={onDragMove}
+      onDragEnd={handleDragEnd}
+      onClick={handleClick}
+      onTap={handleClick}
+      onDblClick={handleDoubleClick}
+      onDblTap={handleDoubleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <MemoizedBaseSymbol
+        definition={definition}
+        component={componentWithZeroPosition}
+        isSelected={isSelected}
+        isHovered={isHovered}
+        isDragging={isDragging || isBeingDraggedWithSelection}
+        isHighlighted={isHighlighted}
+        showPorts={showPorts}
+        mode={mode}
+        darkMode={darkMode}
+        onPortClick={handlePortClick}
+      />
+    </Group>
+  );
+});
 
 // Alignment guide line type
 interface AlignmentGuide {
@@ -86,7 +205,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
     [connections]
   );
 
-  // UI Store - use individual selectors
+  // UI Store - use individual selectors to prevent issues
   const mode = useUIStore((state) => state.mode);
   const tool = useUIStore((state) => state.tool);
   const selection = useUIStore((state) => state.selection);
@@ -94,6 +213,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   const isDrawingConnection = useUIStore((state) => state.isDrawingConnection);
   const snapToGrid = useUIStore((state) => state.snapToGrid);
   const highlightedComponentKks = useUIStore((state) => state.highlightedComponentKks);
+  const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
 
   // KKS Pipe Highlighting state
   const kksHighlightEnabled = useUIStore((state) => state.kksHighlightEnabled);
@@ -103,9 +223,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   const kksHideNonMatching = useUIStore((state) => state.kksHideNonMatching);
   const kksHideFadeOpacity = useUIStore((state) => state.kksHideFadeOpacity);
 
-  // Dark mode
-  const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
-
+  // UI Store actions
   const select = useUIStore((state) => state.select);
   const addToSelection = useUIStore((state) => state.addToSelection);
   const clearSelection = useUIStore((state) => state.clearSelection);
@@ -133,32 +251,43 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
 
   // Alignment guides state
   const [alignmentGuides, setAlignmentGuides] = useState<AlignmentGuide[]>([]);
+  const lastAlignmentCalcRef = useRef<number>(0);
+  const ALIGNMENT_THROTTLE_MS = 32; // ~30fps for alignment guides (reduce CPU load)
+
+  // Pre-compute uppercase segments once (outside component loop)
+  const upperCaseSegments = useMemo(() => {
+    const previewSegment = kksHighlightSegment.trim().toUpperCase();
+    const segments: string[] = [];
+
+    // Add preview segment first (higher priority)
+    if (previewSegment.length > 0) {
+      segments.push(previewSegment);
+    }
+
+    // Add saved segments
+    kksHighlightSegments.forEach(seg => {
+      segments.push(seg.segment.toUpperCase());
+    });
+
+    return segments;
+  }, [kksHighlightSegments, kksHighlightSegment]);
 
   // Compute set of component KKS that match any KKS highlight segment
   // Includes both saved segments AND the live preview segment being typed
   // Excludes "Additional Components" (category: additional) from KKS matching
   const kksMatchingComponents = useMemo(() => {
-    // Build combined segments array: saved segments + preview segment (if any)
-    const allSegments = [...kksHighlightSegments];
-    const previewSegment = kksHighlightSegment.trim().toUpperCase();
-    if (previewSegment.length > 0) {
-      // Add preview segment with its selected color (at the start so it takes priority)
-      allSegments.unshift({ id: 'preview', segment: previewSegment, color: kksHighlightColor });
-    }
-
-    if (!kksHighlightEnabled || allSegments.length === 0) return new Set<string>();
+    if (!kksHighlightEnabled || upperCaseSegments.length === 0) return new Set<string>();
 
     const matchingKks = new Set<string>();
 
     components.forEach((comp) => {
       // Skip "Additional Components" category (auto-generated KKS)
-      const isAdditionalComponent = comp.type.startsWith('additional:');
-      if (isAdditionalComponent) return;
+      if (comp.type.startsWith('additional:')) return;
 
-      // Check if component matches any segment
+      // Check if component matches any segment (segments already uppercased)
       const compKksUpper = comp.kks.toUpperCase();
-      for (const segmentObj of allSegments) {
-        if (compKksUpper.includes(segmentObj.segment.toUpperCase())) {
+      for (const segment of upperCaseSegments) {
+        if (compKksUpper.includes(segment)) {
           matchingKks.add(comp.kks);
           break; // Found a match, no need to check other segments
         }
@@ -166,7 +295,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
     });
 
     return matchingKks;
-  }, [kksHighlightEnabled, kksHighlightSegments, kksHighlightSegment, kksHighlightColor, components]);
+  }, [kksHighlightEnabled, upperCaseSegments, components]);
 
   // Check if a component is connected to a matching component (for pipes through it)
   const kksConnectedComponents = useMemo(() => {
@@ -453,14 +582,18 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
       // Update global drag state for connections to follow
       updateDragSelectionDelta({ x: deltaX, y: deltaY });
 
-      // Calculate alignment guides
-      const draggedComponent = components.find((c) => c.kks === draggedKks);
-      if (draggedComponent) {
-        const guides = calculateAlignmentGuides(draggedComponent, x, y);
-        setAlignmentGuides(guides);
+      // Calculate alignment guides (throttled to reduce CPU load)
+      const now = performance.now();
+      if (now - lastAlignmentCalcRef.current >= ALIGNMENT_THROTTLE_MS) {
+        lastAlignmentCalcRef.current = now;
+        const draggedComponent = components.find((c) => c.kks === draggedKks);
+        if (draggedComponent) {
+          const guides = calculateAlignmentGuides(draggedComponent, x, y);
+          setAlignmentGuides(guides);
+        }
       }
     },
-    [isDragging, dragStartPos, draggedKks, snapToGrid, snapEngine, updateDragSelectionDelta, components, calculateAlignmentGuides]
+    [isDragging, dragStartPos, draggedKks, snapToGrid, snapEngine, updateDragSelectionDelta, components, calculateAlignmentGuides, ALIGNMENT_THROTTLE_MS]
   );
 
   // Handle component drag end
@@ -715,13 +848,21 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   // Determine if ports should be shown
   const showPorts = tool === 'pipe' || isDrawingConnection;
 
+  // Stable callback for mouse leave
+  const handleMouseLeave = useCallback(() => {
+    setHoveredComponent(null);
+  }, [setHoveredComponent]);
+
+  // Pre-compute shouldHideForKks to avoid recalculating in loop
+  const shouldHideForKks = kksHighlightEnabled && kksHideNonMatching && kksMatchingComponents.size > 0;
+
   return (
     <Layer
       onMouseDown={handleLayerMouseDown}
       onMouseMove={handleLayerMouseMove}
       onMouseUp={handleLayerMouseUp}
     >
-      {/* Render all components */}
+      {/* Render all components using memoized ComponentItem */}
       {components.map((component) => {
         // Check custom symbols first, then fall back to SymbolRegistry
         const definition = customSymbols[component.type] || SymbolRegistry.getSymbol(component.type);
@@ -731,52 +872,40 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         }
 
         const componentIsSelected = isSelected(component.kks);
-        const componentIsHovered = hoveredComponentKks === component.kks;
         const componentIsDragging = draggedKks === component.kks;
-        const componentIsHighlighted = highlightedComponentKks === component.kks;
-
-        // Apply drag offset to selected components (except the one being dragged, it moves itself)
         const isBeingDraggedWithSelection = isDragging && componentIsSelected && !componentIsDragging;
-        const offsetX = isBeingDraggedWithSelection ? dragDelta.x : 0;
-        const offsetY = isBeingDraggedWithSelection ? dragDelta.y : 0;
 
-        // KKS Highlight visibility: hide non-matching components when hide mode is on
+        // KKS Highlight visibility
         const isKksMatching = kksMatchingComponents.has(component.kks);
         const isKksConnected = kksConnectedComponents.has(component.kks);
-        const shouldHideForKks = kksHighlightEnabled && kksHideNonMatching && kksMatchingComponents.size > 0;
         const isVisibleForKks = isKksMatching || isKksConnected || componentIsSelected;
         const kksOpacity = shouldHideForKks && !isVisibleForKks ? kksHideFadeOpacity : 1;
 
         return (
-          <Group
+          <ComponentItem
             key={component.kks}
-            x={component.position.x + offsetX}
-            y={component.position.y + offsetY}
-            opacity={kksOpacity}
-            draggable={mode === 'draw' && tool === 'select'}
-            onDragStart={(e) => handleDragStart(e, component)}
+            component={component}
+            definition={definition}
+            isSelected={componentIsSelected}
+            isHovered={hoveredComponentKks === component.kks}
+            isDragging={componentIsDragging}
+            isHighlighted={highlightedComponentKks === component.kks}
+            isBeingDraggedWithSelection={isBeingDraggedWithSelection}
+            dragDelta={dragDelta}
+            showPorts={showPorts}
+            mode={mode}
+            tool={tool}
+            darkMode={canvasDarkMode}
+            kksOpacity={kksOpacity}
+            onDragStart={handleDragStart}
             onDragMove={handleDragMove}
-            onDragEnd={(e) => handleDragEnd(e, component)}
-            onClick={(e) => handleComponentClick(e, component)}
-            onTap={(e) => handleComponentClick(e, component)}
-            onDblClick={() => handleDoubleClick(component)}
-            onDblTap={() => handleDoubleClick(component)}
-            onMouseEnter={() => setHoveredComponent(component.kks)}
-            onMouseLeave={() => setHoveredComponent(null)}
-          >
-            <MemoizedBaseSymbol
-              definition={definition}
-              component={{...component, position: { x: 0, y: 0 }}}
-              isSelected={componentIsSelected}
-              isHovered={componentIsHovered}
-              isDragging={componentIsDragging || isBeingDraggedWithSelection}
-              isHighlighted={componentIsHighlighted}
-              showPorts={showPorts}
-              mode={mode}
-              darkMode={canvasDarkMode}
-              onPortClick={(portId) => handlePortClick(component.kks, portId)}
-            />
-          </Group>
+            onDragEnd={handleDragEnd}
+            onClick={handleComponentClick}
+            onDoubleClick={handleDoubleClick}
+            onMouseEnter={setHoveredComponent}
+            onMouseLeave={handleMouseLeave}
+            onPortClick={handlePortClick}
+          />
         );
       })}
 

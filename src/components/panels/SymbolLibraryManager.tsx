@@ -5,7 +5,7 @@
  * favorites, and import/export functionality.
  */
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { Stage, Layer } from 'react-konva';
 import { SymbolDefinition, SymbolCategory } from '../../types/symbol.types';
 import { SymbolRegistry, KKS_HIERARCHY } from '../../data/symbols/SymbolRegistry';
@@ -412,7 +412,7 @@ interface SymbolCardProps {
   onDuplicate?: () => void;
 }
 
-const SymbolCard: React.FC<SymbolCardProps> = ({
+const SymbolCard: React.FC<SymbolCardProps> = React.memo(({
   symbol,
   isFavorite,
   isCustom,
@@ -421,20 +421,25 @@ const SymbolCard: React.FC<SymbolCardProps> = ({
   onDelete,
   onDuplicate,
 }) => {
+  // Memoize the Stage preview to prevent recreation on re-renders
+  const preview = useMemo(() => (
+    <Stage width={80} height={80}>
+      <Layer>
+        <SymbolPreview
+          definition={symbol}
+          size={70}
+          strokeColor="#1a1a1a"
+        />
+      </Layer>
+    </Stage>
+  ), [symbol]);
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow group">
       {/* Preview */}
       <div className="h-20 flex items-center justify-center bg-gray-50 rounded mb-2 relative">
         {/* Render actual symbol preview */}
-        <Stage width={80} height={80}>
-          <Layer>
-            <SymbolPreview
-              definition={symbol}
-              size={70}
-              strokeColor="#1a1a1a"
-            />
-          </Layer>
-        </Stage>
+        {preview}
 
         {/* Badges - removed custom badge since all symbols are now user-managed */}
         <div className="absolute top-1 right-1 flex gap-1">
@@ -502,6 +507,14 @@ const SymbolCard: React.FC<SymbolCardProps> = ({
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison - only re-render when these specific props change
+  return (
+    prevProps.symbol.id === nextProps.symbol.id &&
+    prevProps.symbol === nextProps.symbol &&
+    prevProps.isFavorite === nextProps.isFavorite &&
+    prevProps.isCustom === nextProps.isCustom
+  );
+});
 
 export default SymbolLibraryManager;

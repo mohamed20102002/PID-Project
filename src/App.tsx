@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, lazy, Suspense } from 'react';
 import './index.css';
 import Konva from 'konva';
 import { DiagramCanvas } from './components/canvas';
@@ -6,16 +6,18 @@ import { ToolPalette } from './components/panels/ToolPalette';
 import { PropertiesPanel } from './components/panels/PropertiesPanel';
 import { SearchPanel } from './components/panels/SearchPanel';
 import { PlantExplorer } from './components/panels/PlantExplorer';
-import { SymbolLibraryManager } from './components/panels/SymbolLibraryManager';
-import { VisualComponentDesigner } from './components/panels/VisualComponentDesigner';
-import { QuickSystemSearch } from './components/panels/QuickSystemSearch';
 import { WorkspaceStatus } from './components/panels/WorkspaceStatus';
 import { SystemTabs } from './components/tabs/DiagramTabs';
 import { HomePage } from './components/panels/HomePage';
-import { EditModeLogin } from './components/panels/EditModeLogin';
-import { SettingsModal } from './components/panels/SettingsModal';
 import { TechnicalPanel } from './components/panels/TechnicalPanel';
 import { ResizableDivider } from './components/common/ResizableDivider';
+
+// Lazy load modal components for better initial load performance
+const SymbolLibraryManager = lazy(() => import('./components/panels/SymbolLibraryManager'));
+const VisualComponentDesigner = lazy(() => import('./components/panels/VisualComponentDesigner'));
+const QuickSystemSearch = lazy(() => import('./components/panels/QuickSystemSearch'));
+const EditModeLogin = lazy(() => import('./components/panels/EditModeLogin'));
+const SettingsModal = lazy(() => import('./components/panels/SettingsModal'));
 import { useStorageService } from './hooks/useStorageService';
 import { useUIStore, selectZoomPercent } from './store/uiStore';
 import { useDiagramStore } from './store/diagramStore';
@@ -892,44 +894,57 @@ function App() {
         <span className="ml-auto">FlowMark v0.1.0 | Developed by Mohamed Ahmed Darwish</span>
       </footer>
 
-      {/* Symbol Library Manager Modal */}
-      <SymbolLibraryManager
-        isOpen={isSymbolLibraryOpen}
-        onClose={() => setIsSymbolLibraryOpen(false)}
-      />
+      {/* Lazy-loaded modal components wrapped in Suspense */}
+      <Suspense fallback={null}>
+        {/* Symbol Library Manager Modal */}
+        {isSymbolLibraryOpen && (
+          <SymbolLibraryManager
+            isOpen={isSymbolLibraryOpen}
+            onClose={() => setIsSymbolLibraryOpen(false)}
+          />
+        )}
 
-      {/* Visual Component Designer Modal */}
-      <VisualComponentDesigner
-        isOpen={isVisualDesignerOpen}
-        onClose={() => {
-          setIsVisualDesignerOpen(false);
-          setEditingSymbolId(null);
-        }}
-        onSave={(definition) => {
-          setIsVisualDesignerOpen(false);
-          setEditingSymbolId(null);
-          setIsSymbolLibraryOpen(true); // Show in library after creation
-        }}
-        symbolId={editingSymbolId}
-      />
+        {/* Visual Component Designer Modal */}
+        {isVisualDesignerOpen && (
+          <VisualComponentDesigner
+            isOpen={isVisualDesignerOpen}
+            onClose={() => {
+              setIsVisualDesignerOpen(false);
+              setEditingSymbolId(null);
+            }}
+            onSave={(definition) => {
+              setIsVisualDesignerOpen(false);
+              setEditingSymbolId(null);
+              setIsSymbolLibraryOpen(true); // Show in library after creation
+            }}
+            symbolId={editingSymbolId}
+          />
+        )}
 
-      {/* Quick System Search (Ctrl+K) */}
-      <QuickSystemSearch
-        isOpen={isQuickSearchOpen}
-        onClose={() => setIsQuickSearchOpen(false)}
-      />
+        {/* Quick System Search (Ctrl+K) */}
+        {isQuickSearchOpen && (
+          <QuickSystemSearch
+            isOpen={isQuickSearchOpen}
+            onClose={() => setIsQuickSearchOpen(false)}
+          />
+        )}
 
-      {/* Edit Mode Login Modal */}
-      <EditModeLogin
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
+        {/* Edit Mode Login Modal */}
+        {isLoginModalOpen && (
+          <EditModeLogin
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+          />
+        )}
 
-      {/* Settings Modal */}
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
+        {/* Settings Modal */}
+        {isSettingsOpen && (
+          <SettingsModal
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+          />
+        )}
+      </Suspense>
     </div>
   );
 }

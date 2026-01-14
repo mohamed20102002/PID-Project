@@ -39,6 +39,12 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
   const [searchAllSystems, setSearchAllSystems] = useState(true);
   const [buildingFilter, setBuildingFilter] = useState<string>('');
   const [safetyClassFilter, setSafetyClassFilter] = useState<SafetyClass | ''>('');
+  const [displayLimit, setDisplayLimit] = useState(50); // Limit displayed results for performance
+
+  // Reset display limit when query changes
+  useEffect(() => {
+    setDisplayLimit(50);
+  }, [query]);
 
   // Get buildings list
   const buildings = useMemo(() => getAllBuildings(), [getAllBuildings]);
@@ -261,6 +267,18 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
     );
   };
 
+  // Memoize displayed results to limit rendering
+  const displayedResults = useMemo(() => {
+    return results.slice(0, displayLimit);
+  }, [results, displayLimit]);
+
+  const hasMoreResults = results.length > displayLimit;
+
+  // Handle showing more results
+  const handleShowMore = useCallback(() => {
+    setDisplayLimit((prev) => prev + 50);
+  }, []);
+
   // Highlight matched text
   const highlightMatch = (text: string, matchText: string) => {
     if (!matchText) return text;
@@ -375,12 +393,13 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
             <>
               <div className="text-xs text-gray-500 mb-1 flex-shrink-0">
                 {results.length} result{results.length !== 1 ? 's' : ''}
+                {hasMoreResults && ` (showing ${displayLimit})`}
               </div>
               <div
                 ref={resultsRef}
                 className="flex-1 overflow-y-auto space-y-1 min-h-0"
               >
-                {results.map((result, index) => (
+                {displayedResults.map((result, index) => (
                   <button
                     key={`${result.type}-${result.id || result.kks}-${result.matchField}-${result.systemKks}`}
                     className={`w-full text-left p-2 rounded-lg text-sm transition-colors ${
@@ -458,6 +477,15 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({
                     </div>
                   </button>
                 ))}
+                {/* Show more button */}
+                {hasMoreResults && (
+                  <button
+                    onClick={handleShowMore}
+                    className="w-full py-2 text-xs text-pid-primary hover:bg-gray-100 rounded-lg"
+                  >
+                    Show more results ({results.length - displayLimit} remaining)
+                  </button>
+                )}
               </div>
             </>
           ) : !isSearching ? (

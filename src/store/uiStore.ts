@@ -5,6 +5,7 @@
  */
 
 import { create } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 import { immer } from 'zustand/middleware/immer';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { Point, Selection, SelectionType } from '../types';
@@ -869,3 +870,22 @@ export const selectZoomPercent = (state: UIState) => Math.round(state.viewport.s
 export const selectIsSelected = (kks: string) => (state: UIState) =>
   state.selection.componentKks.includes(kks) || state.selection.connectionKks.includes(kks);
 export const selectHasSelection = (state: UIState) => state.selection.type !== 'none';
+
+// ============================================================================
+// Shallow Selector Hook - Prevents unnecessary re-renders
+// ============================================================================
+
+/**
+ * Use this hook when selecting multiple values from the store to prevent
+ * unnecessary re-renders. It uses shallow comparison for the selected values.
+ *
+ * Example:
+ * const { mode, tool, selection } = useUIStoreShallow(state => ({
+ *   mode: state.mode,
+ *   tool: state.tool,
+ *   selection: state.selection
+ * }));
+ */
+export function useUIStoreShallow<T>(selector: (state: UIState & UIActions) => T): T {
+  return useUIStore(useShallow(selector));
+}

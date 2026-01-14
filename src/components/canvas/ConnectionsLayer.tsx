@@ -184,6 +184,7 @@ interface DarkModePipeStyle {
 
 interface ConnectionLineProps {
   connection: Connection;
+  connectionKks: string;
   sourcePos: Point;
   targetPos: Point;
   isSelected: boolean;
@@ -193,12 +194,13 @@ interface ConnectionLineProps {
   kksHideOpacity: number;
   darkMode: boolean;
   darkModePipeStyle: DarkModePipeStyle;
-  onSelect: () => void;
-  onHover: (hovered: boolean) => void;
+  onSelect: (kks: string, shiftKey: boolean, ctrlKey: boolean) => void;
+  onHover: (kks: string | null) => void;
 }
 
 const ConnectionLine: React.FC<ConnectionLineProps> = ({
   connection,
+  connectionKks,
   sourcePos,
   targetPos,
   isSelected,
@@ -211,6 +213,24 @@ const ConnectionLine: React.FC<ConnectionLineProps> = ({
   onSelect,
   onHover,
 }) => {
+  // Memoized callbacks that use connectionKks internally
+  const handleClick = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    e.cancelBubble = true;
+    onSelect(connectionKks, e.evt.shiftKey, e.evt.ctrlKey);
+  }, [connectionKks, onSelect]);
+
+  const handleTap = useCallback((e: KonvaEventObject<TouchEvent>) => {
+    e.cancelBubble = true;
+    onSelect(connectionKks, false, false);
+  }, [connectionKks, onSelect]);
+
+  const handleMouseEnter = useCallback(() => {
+    onHover(connectionKks);
+  }, [connectionKks, onHover]);
+
+  const handleMouseLeave = useCallback(() => {
+    onHover(null);
+  }, [onHover]);
   // Calculate the path points
   const pathPoints = useMemo(
     () => calculatePipePath(sourcePos, targetPos, connection.waypoints),
@@ -361,16 +381,10 @@ const ConnectionLine: React.FC<ConnectionLineProps> = ({
         strokeWidth={12}
         lineCap="round"
         lineJoin="round"
-        onClick={(e) => {
-          e.cancelBubble = true;
-          onSelect();
-        }}
-        onTap={(e) => {
-          e.cancelBubble = true;
-          onSelect();
-        }}
-        onMouseEnter={() => onHover(true)}
-        onMouseLeave={() => onHover(false)}
+        onClick={handleClick}
+        onTap={handleTap}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       />
 
       {/* KKS Highlight glow effect (outer glow) */}
@@ -486,9 +500,14 @@ const ConnectionLine: React.FC<ConnectionLineProps> = ({
 // Memoize ConnectionLine to prevent unnecessary re-renders
 const MemoizedConnectionLine = React.memo(ConnectionLine, (prevProps, nextProps) => {
   // Only re-render if these specific props change
+  // Note: onSelect and onHover are stable callbacks, so we don't compare them
   return (
+    prevProps.connectionKks === nextProps.connectionKks &&
     prevProps.connection.kks === nextProps.connection.kks &&
     prevProps.connection.waypoints === nextProps.connection.waypoints &&
+    prevProps.connection.label === nextProps.connection.label &&
+    prevProps.connection.labelRotation === nextProps.connection.labelRotation &&
+    prevProps.connection.style === nextProps.connection.style &&
     prevProps.sourcePos.x === nextProps.sourcePos.x &&
     prevProps.sourcePos.y === nextProps.sourcePos.y &&
     prevProps.targetPos.x === nextProps.targetPos.x &&
@@ -678,40 +697,48 @@ export const ConnectionsLayer: React.FC = () => {
   const kksHighlightSegment = useUIStore(state => state.kksHighlightSegment);
   const kksHighlightColor = useUIStore(state => state.kksHighlightColor);
 
+  // Pre-compute uppercase segments with colors once (outside component loop)
+  const upperCaseSegmentsWithColors = useMemo(() => {
+    const previewSegment = kksHighlightSegment.trim().toUpperCase();
+    const segments: Array<{ segment: string; color: string }> = [];
+
+    // Add preview segment first (higher priority)
+    if (previewSegment.length > 0) {
+      segments.push({ segment: previewSegment, color: kksHighlightColor });
+    }
+
+    // Add saved segments (uppercase for case-insensitive matching)
+    kksHighlightSegments.forEach(seg => {
+      segments.push({ segment: seg.segment.toUpperCase(), color: seg.color });
+    });
+
+    return segments;
+  }, [kksHighlightSegments, kksHighlightSegment, kksHighlightColor]);
+
   // Compute map of component KKS -> highlight color (based on first matching segment)
   // Includes both saved segments AND the live preview segment being typed
   // Excludes "Additional Components" (category: additional) from KKS matching
   const highlightedComponentColors = useMemo(() => {
-    // Build combined segments array: saved segments + preview segment (if any)
-    const allSegments = [...kksHighlightSegments];
-    const previewSegment = kksHighlightSegment.trim().toUpperCase();
-    if (previewSegment.length > 0) {
-      // Add preview segment with its selected color (at the start so it takes priority)
-      allSegments.unshift({ id: 'preview', segment: previewSegment, color: kksHighlightColor });
-    }
-
-    if (!kksHighlightEnabled || allSegments.length === 0) return new Map<string, string>();
+    if (!kksHighlightEnabled || upperCaseSegmentsWithColors.length === 0) return new Map<string, string>();
 
     const kksToColor = new Map<string, string>();
 
     Object.values(components).forEach((comp: Component) => {
       // Skip "Additional Components" category (auto-generated KKS)
-      const isAdditionalComponent = comp.type.startsWith('additional:');
+      if (comp.type.startsWith('additional:')) return;
 
-      if (!isAdditionalComponent) {
-        const compKksUpper = comp.kks.toUpperCase();
-        // Find first matching segment and use its color
-        for (const segHighlight of allSegments) {
-          if (compKksUpper.includes(segHighlight.segment)) {
-            kksToColor.set(comp.kks, segHighlight.color);
-            break; // Use first match
-          }
+      const compKksUpper = comp.kks.toUpperCase();
+      // Find first matching segment and use its color (segments already uppercased)
+      for (const segHighlight of upperCaseSegmentsWithColors) {
+        if (compKksUpper.includes(segHighlight.segment)) {
+          kksToColor.set(comp.kks, segHighlight.color);
+          break; // Use first match
         }
       }
     });
 
     return kksToColor;
-  }, [kksHighlightEnabled, kksHighlightSegments, kksHighlightSegment, kksHighlightColor, components]);
+  }, [kksHighlightEnabled, upperCaseSegmentsWithColors, components]);
 
   // Calculate all port positions for alignment guides
   const allPortPositions = useMemo(() => {
@@ -741,16 +768,24 @@ export const ConnectionsLayer: React.FC = () => {
 
   const [hoveredConnectionKks, setHoveredConnectionKks] = useState<string | null>(null);
 
-  // Handle connection selection
+  // Handle connection selection - stable callback for memoized children
   const handleConnectionSelect = useCallback(
-    (id: string, e: KonvaEventObject<MouseEvent>) => {
-      if (e.evt.shiftKey || e.evt.ctrlKey) {
-        addToSelection([], [id]);
+    (kks: string, shiftKey: boolean, ctrlKey: boolean) => {
+      if (shiftKey || ctrlKey) {
+        addToSelection([], [kks]);
       } else {
-        select([], [id]);
+        select([], [kks]);
       }
     },
     [select, addToSelection]
+  );
+
+  // Handle hover - stable callback for memoized children
+  const handleConnectionHover = useCallback(
+    (kks: string | null) => {
+      setHoveredConnectionKks(kks);
+    },
+    []
   );
 
   // Render all connections - not memoized to ensure drag updates work correctly
@@ -834,6 +869,7 @@ export const ConnectionsLayer: React.FC = () => {
       <MemoizedConnectionLine
         key={connection.kks}
         connection={adjustedConnection}
+        connectionKks={connection.kks}
         sourcePos={sourcePos}
         targetPos={targetPos}
         isSelected={isSelected}
@@ -843,12 +879,8 @@ export const ConnectionsLayer: React.FC = () => {
         kksHideOpacity={kksHideOpacity}
         darkMode={canvasDarkMode}
         darkModePipeStyle={darkModePipeStyle}
-        onSelect={() =>
-          handleConnectionSelect(connection.kks, {
-            evt: { shiftKey: false, ctrlKey: false },
-          } as KonvaEventObject<MouseEvent>)
-        }
-        onHover={hovered => setHoveredConnectionKks(hovered ? connection.kks : null)}
+        onSelect={handleConnectionSelect}
+        onHover={handleConnectionHover}
       />
     );
   });

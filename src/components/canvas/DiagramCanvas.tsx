@@ -474,18 +474,30 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
   // Handle drop from palette
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
+      console.log('[DiagramCanvas] Drop event received');
       e.preventDefault();
 
-      if (mode === 'view' || !diagram) return;
+      if (mode === 'view' || !diagram) {
+        console.log('[DiagramCanvas] Drop rejected - mode:', mode, 'diagram:', !!diagram);
+        return;
+      }
 
-      // Get drop data
-      const dataString = e.dataTransfer.getData('application/json');
-      if (!dataString) return;
+      // Get drop data - use text/plain for better browser compatibility
+      const dataString = e.dataTransfer.getData('text/plain');
+      console.log('[DiagramCanvas] Drop data string:', dataString);
+      if (!dataString) {
+        console.log('[DiagramCanvas] No data string found in drop event');
+        return;
+      }
 
       try {
         const data = JSON.parse(dataString);
+        console.log('[DiagramCanvas] Parsed drop data:', data);
         const symbolId = data.symbolId;
-        if (!symbolId) return;
+        if (!symbolId) {
+          console.log('[DiagramCanvas] No symbolId in drop data');
+          return;
+        }
 
         // Get drop position relative to container
         const container = containerRef.current;
@@ -499,13 +511,15 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
         const canvasX = (dropX - viewport.x) / viewport.scale;
         const canvasY = (dropY - viewport.y) / viewport.scale;
 
+        console.log('[DiagramCanvas] Placing component at:', canvasX, canvasY);
         placeComponent(symbolId, canvasX, canvasY);
 
         // Clear placing mode
         setPlacingComponentType(null);
         setTool('select');
+        console.log('[DiagramCanvas] Component placed successfully');
       } catch (error) {
-        console.error('Failed to parse drop data:', error);
+        console.error('[DiagramCanvas] Failed to parse drop data:', error);
       }
     },
     [mode, diagram, viewport, placeComponent, setPlacingComponentType, setTool]

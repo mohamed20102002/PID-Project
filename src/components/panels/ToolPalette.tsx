@@ -28,10 +28,10 @@ interface SymbolItemProps {
 }
 
 /**
- * Symbol Item Component - Memoized for performance
+ * Symbol Item Component
  * Uses CSS for hover states to avoid re-renders
  */
-const SymbolItem: React.FC<SymbolItemProps> = React.memo(({ symbol, onDragStart, onClick, onEdit }) => {
+const SymbolItem: React.FC<SymbolItemProps> = ({ symbol, onDragStart, onClick, onEdit }) => {
   const previewSize = 40;
 
   const handleEditClick = useCallback((e: React.MouseEvent) => {
@@ -40,6 +40,7 @@ const SymbolItem: React.FC<SymbolItemProps> = React.memo(({ symbol, onDragStart,
   }, [onEdit, symbol]);
 
   const handleDragStart = useCallback((e: React.DragEvent) => {
+    console.log('[SymbolItem] handleDragStart called for:', symbol.id);
     onDragStart(symbol, e);
   }, [onDragStart, symbol]);
 
@@ -93,10 +94,7 @@ const SymbolItem: React.FC<SymbolItemProps> = React.memo(({ symbol, onDragStart,
       </span>
     </div>
   );
-}, (prevProps, nextProps) => {
-  // Custom comparison - only re-render if symbol changes
-  return prevProps.symbol.id === nextProps.symbol.id;
-});
+};
 
 /**
  * Sub-Category Section Component (for KKS sub-categories like AA, AB, etc.)
@@ -346,11 +344,14 @@ export const ToolPalette: React.FC<ToolPaletteProps> = ({ className = '', onEdit
   // Handle symbol drag start
   const handleSymbolDragStart = useCallback(
     (symbol: SymbolDefinition, e: React.DragEvent) => {
+      console.log('[ToolPalette] Drag started for symbol:', symbol.id, symbol.displayName);
       dragDataRef.current = symbol;
       setPlacingComponentType(symbol.id);
 
-      // Set drag data
-      e.dataTransfer.setData('application/json', JSON.stringify({ symbolId: symbol.id }));
+      // Set drag data - use text/plain for better browser compatibility
+      const dragData = JSON.stringify({ symbolId: symbol.id });
+      console.log('[ToolPalette] Setting drag data:', dragData);
+      e.dataTransfer.setData('text/plain', dragData);
       e.dataTransfer.effectAllowed = 'copy';
 
       // Create drag image

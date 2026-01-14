@@ -581,6 +581,13 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
     return component.style?.fillColor || colors.fill;
   }, [component.style?.fillColor, darkMode, colors]);
 
+  // Memoize the rendered paths to avoid expensive recalculations (especially arcs)
+  const renderedPaths = useMemo(() => {
+    return definition.paths.map((path, index) =>
+      renderPath(path, index, width, height, strokeColor, fillColor)
+    );
+  }, [definition.paths, width, height, strokeColor, fillColor]);
+
   // Handle port hover
   const handlePortHover = (portId: string | null) => {
     setHoveredPort(portId);
@@ -651,10 +658,8 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
           />
         )}
 
-        {/* Render all paths */}
-        {definition.paths.map((path, index) =>
-          renderPath(path, index, width, height, strokeColor, fillColor)
-        )}
+        {/* Render all paths (memoized) */}
+        {renderedPaths}
 
         {/* Render ports when in connection mode or hovering (only in draw mode) */}
         {definition.ports?.map((port, index) => {
@@ -727,7 +732,7 @@ export const SymbolPreview: React.FC<{
   size?: number;
   strokeColor?: string;
   fillColor?: string;
-}> = ({
+}> = React.memo(({
   definition,
   size = 32,
   strokeColor = COLORS.stroke,
@@ -753,6 +758,13 @@ export const SymbolPreview: React.FC<{
   const offsetX = centerX * width;
   const offsetY = centerY * height;
 
+  // Memoize the rendered paths to avoid expensive recalculations
+  const renderedPaths = useMemo(() => {
+    return definition.paths.map((path, index) =>
+      renderPath(path, index, width, height, strokeColor, fillColor)
+    );
+  }, [definition.paths, width, height, strokeColor, fillColor]);
+
   return (
     <Group
       x={size / 2}
@@ -760,11 +772,16 @@ export const SymbolPreview: React.FC<{
       offsetX={offsetX}
       offsetY={offsetY}
     >
-      {definition.paths.map((path, index) =>
-        renderPath(path, index, width, height, strokeColor, fillColor)
-      )}
+      {renderedPaths}
     </Group>
   );
-};
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.definition.id === nextProps.definition.id &&
+    prevProps.size === nextProps.size &&
+    prevProps.strokeColor === nextProps.strokeColor &&
+    prevProps.fillColor === nextProps.fillColor
+  );
+});
 
 export default BaseSymbol;
