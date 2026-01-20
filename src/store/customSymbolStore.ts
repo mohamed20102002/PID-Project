@@ -75,6 +75,12 @@ interface CustomSymbolActions {
   /** Check if a symbol ID is available */
   isIdAvailable: (id: string) => boolean;
 
+  /** Rename a custom symbol - updates ID based on new name and returns new ID */
+  renameSymbol: (oldId: string, newName: string) => { newId: string; success: boolean };
+
+  /** Migrate all symbols to use name-based IDs */
+  migrateToNameBasedIds: () => { migrated: number; oldToNewMap: Record<string, string> };
+
   /** Migrate old symbols to new coordinate system (fixes stretching from pre-200×200 design area) */
   migrateSymbolCoordinates: (symbolId: string) => boolean;
 
@@ -373,6 +379,147 @@ export const useCustomSymbolStore = create<CustomSymbolState & CustomSymbolActio
       isIdAvailable: (id) => {
         const { customSymbols } = get();
         return !customSymbols[id];
+      },
+
+      renameSymbol: (oldId, newName) => {
+        const { customSymbols } = get();
+        const symbol = customSymbols[oldId];
+
+        if (!symbol) {
+          console.warn(`[customSymbolStore] Symbol ${oldId} not found for rename`);
+          return { newId: oldId, success: false };
+        }
+
+        // Generate new ID from name (sanitize: lowercase, replace spaces with dashes)
+        const sanitizedName = newName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+        const newId = `custom:${sanitizedName}`;
+
+        // If ID hasn't changed, just update the name
+        if (newId === oldId) {
+          set((state) => {
+            state.customSymbols[oldId].name = newName;
+            state.customSymbols[oldId].displayName = newName;
+          });
+          return { newId: oldId, success: true };
+        }
+
+        // Check if new ID already exists
+        if (customSymbols[newId]) {
+          console.warn(`[customSymbolStore] Symbol with ID ${newId} already exists`);
+          alert(`A symbol with the name "${newName}" already exists. Please choose a different name.`);
+          return { newId: oldId, success: false };
+        }
+
+        // Create symbol with new ID
+        set((state) => {
+          const updatedSymbol: SymbolDefinition = {
+            ...symbol,
+            id: newId,
+            name: newName,
+            displayName: newName,
+          };
+
+          // Add with new ID
+          state.customSymbols[newId] = updatedSymbol;
+
+          // Delete old ID
+          delete state.customSymbols[oldId];
+
+          // Update favorites
+          const favIndex = state.favorites.indexOf(oldId);
+          if (favIndex !== -1) {
+            state.favorites[favIndex] = newId;
+          }
+
+          // Update recentlyUsed
+          const recentIndex = state.recentlyUsed.indexOf(oldId);
+          if (recentIndex !== -1) {
+            state.recentlyUsed[recentIndex] = newId;
+          }
+        });
+
+        console.log(`[customSymbolStore] Renamed symbol: ${oldId} -> ${newId}`);
+        return { newId, success: true };
+      },
+
+      migrateToNameBasedIds: () => {
+        const { customSymbols } = get();
+        const oldToNewMap: Record<string, string> = {};
+        let migrated = 0;
+
+        // Get all symbol entries
+        const entries = Object.entries(customSymbols);
+
+        for (const [oldId, symbol] of entries) {
+          // Generate the correct ID from displayName
+          const name = symbol.displayName || symbol.name;
+          if (!name) continue;
+
+          const sanitizedName = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+          const expectedId = `custom:${sanitizedName}`;
+
+          // Skip if ID is already correct
+          if (oldId === expectedId) {
+            console.log(`[customSymbolStore] Symbol "${name}" already has correct ID: ${oldId}`);
+            continue;
+          }
+
+          // Skip special symbols like piping:corner
+          if (!oldId.startsWith('custom:') && oldId !== 'piping:corner') {
+            console.log(`[customSymbolStore] Skipping non-custom symbol: ${oldId}`);
+            continue;
+          }
+
+          // Check if target ID already exists
+          if (customSymbols[expectedId] && oldId !== expectedId) {
+            // Add a suffix to make it unique
+            let counter = 2;
+            let uniqueId = `${expectedId}-${counter}`;
+            while (customSymbols[uniqueId]) {
+              counter++;
+              uniqueId = `${expectedId}-${counter}`;
+            }
+            oldToNewMap[oldId] = uniqueId;
+            console.log(`[customSymbolStore] Migrating "${name}": ${oldId} -> ${uniqueId} (conflict resolved)`);
+          } else {
+            oldToNewMap[oldId] = expectedId;
+            console.log(`[customSymbolStore] Migrating "${name}": ${oldId} -> ${expectedId}`);
+          }
+        }
+
+        // Apply migrations
+        set((state) => {
+          for (const [oldId, newId] of Object.entries(oldToNewMap)) {
+            const symbol = state.customSymbols[oldId];
+            if (!symbol) continue;
+
+            // Create symbol with new ID
+            state.customSymbols[newId] = {
+              ...symbol,
+              id: newId,
+            };
+
+            // Delete old entry
+            delete state.customSymbols[oldId];
+
+            // Update favorites
+            const favIndex = state.favorites.indexOf(oldId);
+            if (favIndex !== -1) {
+              state.favorites[favIndex] = newId;
+            }
+
+            // Update recentlyUsed
+            const recentIndex = state.recentlyUsed.indexOf(oldId);
+            if (recentIndex !== -1) {
+              state.recentlyUsed[recentIndex] = newId;
+            }
+
+            migrated++;
+          }
+        });
+
+        console.log(`[customSymbolStore] Migration complete: ${migrated} symbols migrated`);
+        return { migrated, oldToNewMap };
       },
 
       migrateSymbolCoordinates: (symbolId) => {

@@ -9,6 +9,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { SymbolDefinition, SymbolCategory, PathStyle } from '../../types/symbol.types';
 import { SymbolRegistry } from '../../data/symbols/SymbolRegistry';
 import { useCustomSymbolStore } from '../../store/customSymbolStore';
+import { useDiagramStore } from '../../store/diagramStore';
 
 interface SymbolEditorProps {
   /** Symbol ID to edit */
@@ -17,6 +18,8 @@ interface SymbolEditorProps {
   onClose: () => void;
   /** Callback when symbol is saved */
   onSave?: (symbol: SymbolDefinition) => void;
+  /** Callback when symbol ID changes (due to rename) */
+  onSymbolIdChange?: (oldId: string, newId: string) => void;
 }
 
 type EditorTab = 'properties' | 'appearance' | 'ports' | 'advanced';
@@ -25,6 +28,7 @@ export const SymbolEditor: React.FC<SymbolEditorProps> = ({
   symbolId,
   onClose,
   onSave,
+  onSymbolIdChange,
 }) => {
   const [activeTab, setActiveTab] = useState<EditorTab>('properties');
   const [isDirty, setIsDirty] = useState(false);
@@ -36,7 +40,10 @@ export const SymbolEditor: React.FC<SymbolEditorProps> = ({
     updateCustomSymbol,
     setSymbolOverride,
     duplicateSymbol,
+    renameSymbol,
   } = useCustomSymbolStore();
+
+  const updateComponentTypes = useDiagramStore((state) => state.updateComponentTypes);
 
   // Get the symbol definition
   const symbol = useMemo(() => {
@@ -97,7 +104,38 @@ export const SymbolEditor: React.FC<SymbolEditorProps> = ({
     if (!symbolId || !currentSymbol) return;
 
     if (isCustomSymbol) {
-      // Update custom symbol directly
+      // Check if displayName changed - if so, rename the symbol (which changes the ID)
+      const originalSymbol = customSymbols[symbolId];
+      const newDisplayName = editedSymbol.displayName || originalSymbol?.displayName;
+
+      if (newDisplayName && newDisplayName !== originalSymbol?.displayName) {
+        // Rename the symbol (this updates the ID based on the new name)
+        const { newId, success } = renameSymbol(symbolId, newDisplayName);
+
+        if (success && newId !== symbolId) {
+          // Update all components using the old symbol type
+          const updatedCount = updateComponentTypes(symbolId, newId);
+          console.log(`[SymbolEditor] Renamed symbol and updated ${updatedCount} components`);
+
+          // Apply any other changes to the renamed symbol
+          const otherChanges = { ...editedSymbol };
+          delete otherChanges.displayName;
+          delete otherChanges.name;
+
+          if (Object.keys(otherChanges).length > 0) {
+            updateCustomSymbol(newId, otherChanges);
+          }
+
+          // Notify parent about the ID change
+          onSymbolIdChange?.(symbolId, newId);
+
+          setIsDirty(false);
+          onSave?.({ ...currentSymbol, id: newId } as SymbolDefinition);
+          return;
+        }
+      }
+
+      // No rename needed, just update the symbol
       updateCustomSymbol(symbolId, editedSymbol);
     } else {
       // Save as override for built-in symbol
@@ -106,19 +144,21 @@ export const SymbolEditor: React.FC<SymbolEditorProps> = ({
 
     setIsDirty(false);
     onSave?.(currentSymbol as SymbolDefinition);
-  }, [symbolId, currentSymbol, isCustomSymbol, editedSymbol, updateCustomSymbol, setSymbolOverride, onSave]);
+  }, [symbolId, currentSymbol, isCustomSymbol, editedSymbol, customSymbols, renameSymbol, updateComponentTypes, updateCustomSymbol, setSymbolOverride, onSave, onSymbolIdChange]);
 
   // Create a copy as custom symbol
   const handleDuplicate = useCallback(() => {
     if (!symbolId || !currentSymbol) return;
 
-    const newId = `custom:${currentSymbol.name}-copy-${Date.now()}`;
-    const newName = `${currentSymbol.displayName} (Copy)`;
+    const baseName = `${currentSymbol.displayName} Copy`;
+    const sanitizedName = baseName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const newId = `custom:${sanitizedName}`;
+    const newName = baseName;
 
     duplicateSymbol(symbolId, newId, newName);
 
     // Could switch to editing the new symbol here
-    alert(`Created custom symbol: ${newName}`);
+    alert(`Created custom symbol: ${newName}\n\nRemember to rename it to something meaningful!`);
   }, [symbolId, currentSymbol, duplicateSymbol]);
 
   // Reset to default

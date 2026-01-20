@@ -57,6 +57,16 @@ export interface SegmentHighlight {
   id: string;      // Unique ID for the segment entry
   segment: string; // The segment text to match (e.g., "LAA", "KBA")
   color: string;   // Highlight color for this segment
+  enabled: boolean; // Whether this segment's highlighting is active
+}
+
+// Type highlight - highlight by component type (e.g., all valves, all pumps)
+export interface TypeHighlight {
+  id: string;           // Unique ID for the type entry
+  symbolId: string;     // The symbol ID to match (e.g., "custom:shut-off-valve")
+  displayName: string;  // Display name for UI (e.g., "Shut-Off Valve")
+  color: string;        // Highlight color for this type
+  enabled: boolean;     // Whether this type's highlighting is active
 }
 
 export interface UIState {
@@ -139,11 +149,12 @@ export interface UIState {
   dragSelectionDelta: Point;
   draggedSelectionKks: string[];
 
-  // KKS Pipe Highlighting (Technical Panel feature)
+  // Highlighter (Technical Panel feature)
   kksHighlightEnabled: boolean;
   kksHighlightSegment: string;  // Legacy - single segment (kept for compatibility)
   kksHighlightColor: string;    // Legacy - single color (kept for compatibility)
-  kksHighlightSegments: SegmentHighlight[];  // New - multiple segments with colors
+  kksHighlightSegments: SegmentHighlight[];  // Segment highlights (by KKS segment)
+  kksHighlightTypes: TypeHighlight[];  // Type highlights (by component type)
   kksHighlightStrokeWidth: number;
   kksHighlightGlowIntensity: number;
   kksHideNonMatching: boolean;
@@ -160,6 +171,16 @@ export interface UIState {
 
   // Edit Mode Password
   editModePassword: string;
+
+  // KKS Hover Tooltip Settings
+  kksHoverTooltipEnabled: boolean;
+  kksHoverDelayMs: number; // Delay in milliseconds before showing tooltip
+
+  // Paste Segment Dialog
+  pasteSegmentDialogOpen: boolean;
+  pastedComponentKks: string[];
+  pastedKksMap: Map<string, string>; // old KKS -> new KKS
+  clipboardComponentKks: string[]; // Original KKS from clipboard
 }
 
 export interface UIActions {
@@ -271,6 +292,12 @@ export interface UIActions {
   updateSegmentHighlight: (id: string, updates: Partial<Omit<SegmentHighlight, 'id'>>) => void;
   clearSegmentHighlights: () => void;
 
+  // Type Highlights (highlight by component type)
+  addTypeHighlight: (symbolId: string, displayName: string, color: string) => void;
+  removeTypeHighlight: (id: string) => void;
+  updateTypeHighlight: (id: string, updates: Partial<Omit<TypeHighlight, 'id'>>) => void;
+  clearTypeHighlights: () => void;
+
   // Canvas Dark Mode
   setCanvasDarkMode: (enabled: boolean) => void;
   toggleCanvasDarkMode: () => void;
@@ -283,6 +310,14 @@ export interface UIActions {
 
   // Edit Mode Password
   setEditModePassword: (password: string) => void;
+
+  // KKS Hover Tooltip Settings
+  setKksHoverTooltipEnabled: (enabled: boolean) => void;
+  setKksHoverDelayMs: (delay: number) => void;
+
+  // Paste Segment Dialog
+  showPasteSegmentDialog: (pastedKks: string[], kksMap: Map<string, string>, clipboardKks: string[]) => void;
+  closePasteSegmentDialog: () => void;
 }
 
 // ============================================================================
@@ -340,6 +375,7 @@ const initialState: UIState = {
   kksHighlightSegment: '',
   kksHighlightColor: '#00ffff',
   kksHighlightSegments: [],
+  kksHighlightTypes: [],
   kksHighlightStrokeWidth: 4,
   kksHighlightGlowIntensity: 50,
   kksHideNonMatching: false,
@@ -352,6 +388,14 @@ const initialState: UIState = {
   darkModePipeGlowOpacity: 1,
   // Edit Mode Password
   editModePassword: 'admin123',
+  // KKS Hover Tooltip Settings
+  kksHoverTooltipEnabled: true,
+  kksHoverDelayMs: 500, // Default 500ms hover delay
+
+  // Paste Segment Dialog
+  pasteSegmentDialogOpen: false,
+  pastedComponentKks: [],
+  pastedKksMap: new Map(),
 };
 
 // ============================================================================
@@ -778,7 +822,7 @@ export const useUIStore = create<UIState & UIActions>()(
     // Segment Highlights (multiple segments with colors)
     addSegmentHighlight: (segment: string, color: string) => set((state) => {
       const id = `seg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      state.kksHighlightSegments.push({ id, segment: segment.toUpperCase(), color });
+      state.kksHighlightSegments.push({ id, segment: segment.toUpperCase(), color, enabled: true });
     }),
 
     removeSegmentHighlight: (id: string) => set((state) => {
@@ -794,11 +838,46 @@ export const useUIStore = create<UIState & UIActions>()(
         if (updates.color !== undefined) {
           state.kksHighlightSegments[index].color = updates.color;
         }
+        if (updates.enabled !== undefined) {
+          state.kksHighlightSegments[index].enabled = updates.enabled;
+        }
       }
     }),
 
     clearSegmentHighlights: () => set((state) => {
       state.kksHighlightSegments = [];
+    }),
+
+    // Type Highlights (highlight by component type)
+    addTypeHighlight: (symbolId: string, displayName: string, color: string) => set((state) => {
+      const id = `type-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      state.kksHighlightTypes.push({ id, symbolId, displayName, color, enabled: true });
+    }),
+
+    removeTypeHighlight: (id: string) => set((state) => {
+      state.kksHighlightTypes = state.kksHighlightTypes.filter(t => t.id !== id);
+    }),
+
+    updateTypeHighlight: (id: string, updates: Partial<Omit<TypeHighlight, 'id'>>) => set((state) => {
+      const index = state.kksHighlightTypes.findIndex(t => t.id === id);
+      if (index !== -1) {
+        if (updates.symbolId !== undefined) {
+          state.kksHighlightTypes[index].symbolId = updates.symbolId;
+        }
+        if (updates.displayName !== undefined) {
+          state.kksHighlightTypes[index].displayName = updates.displayName;
+        }
+        if (updates.color !== undefined) {
+          state.kksHighlightTypes[index].color = updates.color;
+        }
+        if (updates.enabled !== undefined) {
+          state.kksHighlightTypes[index].enabled = updates.enabled;
+        }
+      }
+    }),
+
+    clearTypeHighlights: () => set((state) => {
+      state.kksHighlightTypes = [];
     }),
 
     // Canvas Dark Mode
@@ -831,6 +910,28 @@ export const useUIStore = create<UIState & UIActions>()(
     setEditModePassword: (password) => set((state) => {
       state.editModePassword = password;
     }),
+
+    // KKS Hover Tooltip Settings
+    setKksHoverTooltipEnabled: (enabled) => set((state) => {
+      state.kksHoverTooltipEnabled = enabled;
+    }),
+
+    setKksHoverDelayMs: (delay) => set((state) => {
+      state.kksHoverDelayMs = Math.max(100, Math.min(3000, delay));
+    }),
+
+    // Paste Segment Dialog
+    showPasteSegmentDialog: (componentKks, kksMap) => set((state) => {
+      state.pasteSegmentDialogOpen = true;
+      state.pastedComponentKks = componentKks;
+      state.pastedKksMap = kksMap;
+    }),
+
+    closePasteSegmentDialog: () => set((state) => {
+      state.pasteSegmentDialogOpen = false;
+      state.pastedComponentKks = [];
+      state.pastedKksMap = new Map();
+    }),
   })),
   {
     name: 'flowmark_ui',
@@ -857,6 +958,9 @@ export const useUIStore = create<UIState & UIActions>()(
       kksHideFadeOpacity: state.kksHideFadeOpacity,
       // Edit Mode Password
       editModePassword: state.editModePassword,
+      // KKS Hover Tooltip Settings
+      kksHoverTooltipEnabled: state.kksHoverTooltipEnabled,
+      kksHoverDelayMs: state.kksHoverDelayMs,
     }),
   }
 ));

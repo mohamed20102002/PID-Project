@@ -161,6 +161,9 @@ export interface ComponentProperties {
   targetSystemKks?: string;           // Target system for terminal links
   targetTerminalKks?: string;         // Target terminal KKS for terminal links
 
+  // Display properties
+  showKksTooltip?: boolean;           // Show KKS system tooltip on hover (default false)
+
   // Custom properties
   custom?: Record<string, PropertyValue>;
 }

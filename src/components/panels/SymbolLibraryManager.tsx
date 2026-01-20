@@ -10,6 +10,7 @@ import { Stage, Layer } from 'react-konva';
 import { SymbolDefinition, SymbolCategory } from '../../types/symbol.types';
 import { SymbolRegistry, KKS_HIERARCHY } from '../../data/symbols/SymbolRegistry';
 import { useCustomSymbolStore } from '../../store/customSymbolStore';
+import { useDiagramStore } from '../../store/diagramStore';
 import { SymbolEditor } from './SymbolEditor';
 import { VisualComponentDesigner } from './VisualComponentDesigner';
 import { SymbolPreview } from '../symbols/base/BaseSymbol';
@@ -43,7 +44,10 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
     exportSymbols,
     migrateAllSymbols,
     cleanupLegacySymbols,
+    migrateToNameBasedIds,
   } = useCustomSymbolStore();
+
+  const updateComponentTypes = useDiagramStore((state) => state.updateComponentTypes);
 
   // Get all symbols based on tab and filters (all symbols are now in customSymbols)
   const getSymbols = useCallback((): SymbolDefinition[] => {
@@ -189,6 +193,22 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
     }
   }, [cleanupLegacySymbols]);
 
+  // Handle migration to name-based IDs
+  const handleMigrateIds = useCallback(() => {
+    if (confirm('This will update all symbol IDs to be based on their names.\n\nFor example: "pumpdesignCopy" will become "custom:pump-design"\n\nAll components using the old IDs will be automatically updated.\n\nContinue?')) {
+      const { migrated, oldToNewMap } = migrateToNameBasedIds();
+
+      // Update all components in diagrams
+      let totalComponentsUpdated = 0;
+      for (const [oldId, newId] of Object.entries(oldToNewMap)) {
+        const count = updateComponentTypes(oldId, newId);
+        totalComponentsUpdated += count;
+      }
+
+      alert(`Migration complete!\n\n${migrated} symbol IDs updated.\n${totalComponentsUpdated} components updated across all diagrams.`);
+    }
+  }, [migrateToNameBasedIds, updateComponentTypes]);
+
   if (!isOpen) return null;
 
   // Show symbol editor if editing (all symbols use Visual Component Designer now)
@@ -318,6 +338,17 @@ export const SymbolLibraryManager: React.FC<SymbolLibraryManagerProps> = ({
               <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" />
             </svg>
             Fix Old Symbols
+          </button>
+          <button
+            className="px-3 py-2 text-sm text-white bg-blue-500 hover:bg-blue-600 rounded-lg flex items-center gap-1"
+            onClick={handleMigrateIds}
+            title="Update symbol IDs to be based on names"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
+            Fix Symbol IDs
           </button>
           <button
             className="px-3 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-lg flex items-center gap-1"

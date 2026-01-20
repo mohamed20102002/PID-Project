@@ -68,6 +68,7 @@ interface PlantActions {
     systemTypes?: SystemType[]
   ) => void;
   updateSystem: (kks: string, updates: Partial<System>) => void;
+  renameSystem: (oldKks: string, newKks: string) => Promise<void>;
   deleteSystem: (kks: string) => void;
   selectSystem: (kks: string | null) => void;
   addDiagramToSystem: (systemKks: string, diagramKks: string) => void;
@@ -387,6 +388,167 @@ export const usePlantStore = create<PlantState & PlantActions>()(
         }
       });
       get().savePlant();
+    },
+
+    renameSystem: async (oldKks, newKks) => {
+      if (oldKks === newKks) return;
+
+      console.log(`[plantStore] Renaming system: ${oldKks} -> ${newKks}`);
+
+      // Get the current diagram data BEFORE any changes
+      const diagramStore = useDiagramStore.getState();
+      const cachedDiagram = diagramStore.diagramCache[oldKks];
+
+      // Helper function to update terminal links in a diagram's components
+      const updateTerminalLinks = (components: Record<string, unknown>) => {
+        const updated: Record<string, unknown> = {};
+        for (const [kks, comp] of Object.entries(components)) {
+          const component = comp as { type?: string; properties?: Record<string, unknown> };
+          if (component.type?.startsWith('terminals:') && component.properties) {
+            const props = component.properties as Record<string, string>;
+            if (props.targetSystemKks === oldKks) {
+              updated[kks] = {
+                ...component,
+                properties: {
+                  ...props,
+                  targetSystemKks: newKks
+                }
+              };
+              continue;
+            }
+          }
+          updated[kks] = component;
+        }
+        return updated;
+      };
+
+      // Prepare the updated diagram for the renamed system
+      let updatedDiagram = cachedDiagram ? {
+        ...cachedDiagram,
+        systemKks: newKks,
+        modifiedAt: new Date().toISOString(),
+        components: Object.fromEntries(
+          Object.entries(cachedDiagram.components).map(([kks, comp]) => [
+            kks,
+            { ...comp, systemKks: newKks }
+          ])
+        )
+      } : null;
+
+      // First, try to rename the folder on disk
+      const renameResult = await StorageService.renameSystem(oldKks, newKks);
+      console.log(`[plantStore] Rename API result:`, renameResult);
+
+      if (!renameResult.success) {
+        console.error(`[plantStore] Failed to rename system folder: ${renameResult.error}`);
+        // If rename failed, we should NOT proceed - this would cause data loss
+        throw new Error(`Failed to rename system: ${renameResult.error}`);
+      }
+
+      // If there was no folder to rename but we have cached data, save it to new location
+      if (renameResult.message === 'Old system folder does not exist' && updatedDiagram) {
+        console.log(`[plantStore] Old folder didn't exist, saving diagram to new location`);
+        await StorageService.saveDiagram(newKks, updatedDiagram);
+      }
+
+      // Now update the diagram cache in diagramStore
+      // Also update terminal links in ALL cached diagrams that reference the old system
+      useDiagramStore.setState((state) => {
+        // Remove old key and add new key for the renamed diagram
+        if (updatedDiagram) {
+          delete state.diagramCache[oldKks];
+          state.diagramCache[newKks] = updatedDiagram;
+
+          // If current diagram is the renamed one, update it too
+          if (state.diagram?.systemKks === oldKks) {
+            state.diagram = updatedDiagram;
+          }
+        }
+
+        // Update terminal links in ALL other cached diagrams
+        for (const [systemKks, diagram] of Object.entries(state.diagramCache)) {
+          if (systemKks === newKks) continue; // Skip the renamed diagram itself
+
+          const diagramObj = diagram as { components?: Record<string, unknown> };
+          if (diagramObj.components) {
+            const updatedComponents = updateTerminalLinks(diagramObj.components);
+            state.diagramCache[systemKks] = {
+              ...diagram,
+              components: updatedComponents,
+              modifiedAt: new Date().toISOString()
+            };
+          }
+        }
+
+        // Update current diagram if it's not the renamed one but has terminal links
+        if (state.diagram && state.diagram.systemKks !== newKks && state.diagram.components) {
+          state.diagram = {
+            ...state.diagram,
+            components: updateTerminalLinks(state.diagram.components as Record<string, unknown>) as typeof state.diagram.components,
+            modifiedAt: new Date().toISOString()
+          };
+        }
+      });
+
+      // Save all updated diagrams to disk
+      const updatedState = useDiagramStore.getState();
+      const savePromises: Promise<unknown>[] = [];
+      for (const [systemKks, diagram] of Object.entries(updatedState.diagramCache)) {
+        if (systemKks !== newKks) {
+          // Check if this diagram has any terminals that were updated
+          const diagramObj = diagram as { components?: Record<string, { type?: string; properties?: Record<string, string> }> };
+          if (diagramObj.components) {
+            const hasUpdatedTerminals = Object.values(diagramObj.components).some(comp =>
+              comp.type?.startsWith('terminals:') && comp.properties?.targetSystemKks === newKks
+            );
+            if (hasUpdatedTerminals) {
+              console.log(`[plantStore] Saving updated terminal links in diagram: ${systemKks}`);
+              savePromises.push(StorageService.saveDiagram(systemKks, diagram as Parameters<typeof StorageService.saveDiagram>[1]));
+            }
+          }
+        }
+      }
+      await Promise.all(savePromises);
+
+      // Update plant data
+      set((state) => {
+        if (!state.plant) return;
+
+        // Find the system and its parent unit
+        for (const unit of Object.values(state.plant.units)) {
+          if (unit.systems[oldKks]) {
+            // Get the system data
+            const systemData = { ...unit.systems[oldKks], kks: newKks };
+
+            // Delete old entry and add new one
+            delete unit.systems[oldKks];
+            unit.systems[newKks] = systemData;
+
+            // Update selected system if it was the renamed one
+            if (state.selectedSystemKks === oldKks) {
+              state.selectedSystemKks = newKks;
+            }
+
+            // Update any system connections that reference this system
+            for (const u of Object.values(state.plant.units)) {
+              for (const sys of Object.values(u.systems)) {
+                if (sys.connectedSystems) {
+                  sys.connectedSystems = sys.connectedSystems.map(conn => ({
+                    ...conn,
+                    targetSystemKks: conn.targetSystemKks === oldKks ? newKks : conn.targetSystemKks
+                  }));
+                }
+              }
+            }
+
+            state.plant.modifiedAt = new Date().toISOString();
+            return;
+          }
+        }
+      });
+
+      await get().savePlant();
+      console.log(`[plantStore] System rename complete: ${oldKks} -> ${newKks}`);
     },
 
     deleteSystem: (kks) => {

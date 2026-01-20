@@ -52,6 +52,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const kksHideFadeOpacity = useUIStore((state) => state.kksHideFadeOpacity);
   const setKksHideFadeOpacity = useUIStore((state) => state.setKksHideFadeOpacity);
 
+  // KKS Hover Tooltip settings
+  const kksHoverTooltipEnabled = useUIStore((state) => state.kksHoverTooltipEnabled);
+  const kksHoverDelayMs = useUIStore((state) => state.kksHoverDelayMs);
+  const setKksHoverTooltipEnabled = useUIStore((state) => state.setKksHoverTooltipEnabled);
+  const setKksHoverDelayMs = useUIStore((state) => state.setKksHoverDelayMs);
+
   // Edit mode password
   const editModePassword = useUIStore((state) => state.editModePassword);
   const setEditModePassword = useUIStore((state) => state.setEditModePassword);
@@ -387,6 +393,53 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                     <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
                   </div>
                 </label>
+              </div>
+
+              {/* KKS Hover Tooltip Settings */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+                    <path d="M12 16v-4M12 8h.01" />
+                  </svg>
+                  KKS Hover Tooltip
+                </h3>
+                <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+                  <label className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm font-medium text-gray-700">Enable Hover Tooltip</div>
+                      <div className="text-xs text-gray-500">Show KKS and system name when hovering over symbols</div>
+                    </div>
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        checked={kksHoverTooltipEnabled}
+                        onChange={(e) => setKksHoverTooltipEnabled(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    </div>
+                  </label>
+                  {kksHoverTooltipEnabled && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Hover Delay: {kksHoverDelayMs}ms
+                      </label>
+                      <input
+                        type="range"
+                        min="100"
+                        max="2000"
+                        step="100"
+                        value={kksHoverDelayMs}
+                        onChange={(e) => setKksHoverDelayMs(parseInt(e.target.value))}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Time to wait before showing the tooltip (100ms - 2000ms)
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Segment Highlighter Settings */}

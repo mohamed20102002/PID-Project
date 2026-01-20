@@ -175,7 +175,12 @@ export const useKeyboardShortcuts = () => {
 
     // Copy connections where BOTH endpoints were copied
     setTimeout(() => {
+      // Get fresh diagram state - the old reference may be stale
+      const currentDiagram = useDiagramStore.getState().diagram;
+      if (!currentDiagram) return;
+
       const selectedSet = new Set(clipboard.components.map((c: any) => c.kks));
+      const newConnectionKksList: string[] = [];
 
       clipboard.connections?.forEach((conn: any) => {
         if (conn &&
@@ -184,11 +189,13 @@ export const useKeyboardShortcuts = () => {
           const newSourceKks = kksMap.get(conn.sourceComponentKks);
           const newTargetKks = kksMap.get(conn.targetComponentKks);
 
-          if (newSourceKks && newTargetKks && diagram.components[newSourceKks] && diagram.components[newTargetKks]) {
+          if (newSourceKks && newTargetKks &&
+              currentDiagram.components[newSourceKks] &&
+              currentDiagram.components[newTargetKks]) {
             const oldSourceComp = clipboard.components.find((c: any) => c.kks === conn.sourceComponentKks);
             const oldTargetComp = clipboard.components.find((c: any) => c.kks === conn.targetComponentKks);
-            const newSourceComp = diagram.components[newSourceKks];
-            const newTargetComp = diagram.components[newTargetKks];
+            const newSourceComp = currentDiagram.components[newSourceKks];
+            const newTargetComp = currentDiagram.components[newTargetKks];
 
             if (oldSourceComp && oldTargetComp) {
               const sourcePortIndex = oldSourceComp.ports.findIndex((p: any) => p.id === conn.sourcePortId);
@@ -196,7 +203,8 @@ export const useKeyboardShortcuts = () => {
 
               if (sourcePortIndex >= 0 && targetPortIndex >= 0 &&
                   newSourceComp.ports[sourcePortIndex] && newTargetComp.ports[targetPortIndex]) {
-                addConnection({
+                const { addConnection: addConn } = useDiagramStore.getState();
+                const newConnKks = addConn({
                   sourceComponentKks: newSourceKks,
                   sourcePortId: newSourceComp.ports[sourcePortIndex].id,
                   targetComponentKks: newTargetKks,
@@ -214,15 +222,23 @@ export const useKeyboardShortcuts = () => {
                   style: { ...conn.style },
                   label: conn.label,
                 });
+                if (newConnKks) {
+                  newConnectionKksList.push(newConnKks);
+                }
               }
             }
           }
         }
       });
 
-      // Select the newly pasted components
-      useUIStore.getState().select(newComponentKksList, []);
-    }, 0);
+      // Select the newly pasted components and connections
+      useUIStore.getState().select(newComponentKksList, newConnectionKksList);
+
+      // Show segment replacement dialog if there are pasted components
+      if (newComponentKksList.length > 0) {
+        useUIStore.getState().showPasteSegmentDialog(newComponentKksList, kksMap);
+      }
+    }, 50);
   }, [mode, diagram, getClipboard, execute]);
 
   // Handle keyboard events

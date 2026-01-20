@@ -21,6 +21,7 @@ interface BaseSymbolProps {
   showPorts?: boolean;
   mode?: AppMode;
   darkMode?: boolean;
+  typeHighlightColor?: string; // Color for type-based highlighting (from Highlighter Types tab)
   onPortClick?: (portId: string) => void;
   onPortHover?: (portId: string | null) => void;
 }
@@ -531,6 +532,7 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
   showPorts = false,
   mode = 'draw',
   darkMode = false,
+  typeHighlightColor,
   onPortClick,
   onPortHover,
 }) => {
@@ -626,7 +628,24 @@ export const BaseSymbol: React.FC<BaseSymbolProps> = ({
         offsetX={offsetX}
         offsetY={offsetY}
       >
-        {/* Highlight glow effect */}
+        {/* Type highlight glow effect (from Highlighter Types tab) */}
+        {typeHighlightColor && !isHighlighted && (
+          <Rect
+            x={offsetX - width / 2 - 6}
+            y={offsetY - height / 2 - 6}
+            width={width + 12}
+            height={height + 12}
+            stroke={typeHighlightColor}
+            strokeWidth={3}
+            fill={`${typeHighlightColor}30`}
+            cornerRadius={6}
+            shadowColor={typeHighlightColor}
+            shadowBlur={15}
+            shadowOpacity={0.7}
+          />
+        )}
+
+        {/* Highlight glow effect (for search result blinking) */}
         {isHighlighted && (
           <Rect
             x={offsetX - width / 2 - 8}
@@ -719,6 +738,7 @@ export const MemoizedBaseSymbol = React.memo(BaseSymbol, (prevProps, nextProps) 
     prevProps.showPorts === nextProps.showPorts &&
     prevProps.mode === nextProps.mode &&
     prevProps.darkMode === nextProps.darkMode &&
+    prevProps.typeHighlightColor === nextProps.typeHighlightColor &&
     prevProps.definition === nextProps.definition
   );
 });

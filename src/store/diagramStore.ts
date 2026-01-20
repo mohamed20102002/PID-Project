@@ -219,7 +219,7 @@ export interface DiagramActions {
   closeDiagram: () => void;
 
   // System switching
-  switchToSystem: (systemKks: string) => Promise<void>;
+  switchToSystem: (systemKks: string, options?: { createIfNotFound?: boolean }) => Promise<{ success: boolean; error?: string }>;
   saveCurrentDiagram: () => Promise<{ success: boolean; error?: string }>;
 
   // Cache management
@@ -233,7 +233,7 @@ export interface DiagramActions {
   // Components (use component KKS for all operations)
   addComponent: (component: Omit<Component, 'kks'> & { kks?: string }) => string;
   updateComponent: (kks: string, updates: Partial<Component>) => void;
-  updateComponentInSystem: (systemKks: string, componentKks: string, updates: Partial<Component>) => void;
+  updateComponentInSystem: (systemKks: string, componentKks: string, updates: Partial<Component>) => Promise<void>;
   renameComponent: (oldKks: string, newKks: string) => boolean;
   deleteComponent: (kks: string) => void;
   moveComponent: (kks: string, position: Point) => void;
@@ -247,6 +247,9 @@ export interface DiagramActions {
 
   // Batch operations
   deleteMultiple: (componentKks: string[], connectionKks: string[]) => void;
+
+  // Symbol type update (when a symbol is renamed)
+  updateComponentTypes: (oldType: string, newType: string) => number;
 
   // Helpers
   getComponent: (kks: string) => Component | undefined;
@@ -390,10 +393,10 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
     // ========== System Switching ==========
 
-    switchToSystem: async (systemKks) => {
+    switchToSystem: async (systemKks, options = { createIfNotFound: true }) => {
       if (!systemKks) {
         console.warn('[diagramStore] switchToSystem: invalid systemKks');
-        return;
+        return { success: false, error: 'Invalid systemKks' };
       }
 
       const currentState = get();
@@ -427,7 +430,7 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
           state.error = null;
         });
         console.log(`[diagramStore] Loaded from cache: ${systemKks}`);
-        return;
+        return { success: true };
       }
 
       // Try to load from file
@@ -447,8 +450,9 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
           state.error = null;
         });
         console.log(`[diagramStore] Loaded from file: ${systemKks}`);
-      } else {
-        // Create new diagram for this system
+        return { success: true };
+      } else if (options.createIfNotFound) {
+        // Create new diagram for this system (only if createIfNotFound is true)
         const newDiagram = createEmptyDiagram(systemKks, `Diagram - ${systemKks}`);
         set((state) => {
           state.diagram = newDiagram;
@@ -461,6 +465,15 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
         // Save the new diagram to file
         await StorageService.saveDiagram(systemKks, newDiagram);
+        return { success: true };
+      } else {
+        // System not found and createIfNotFound is false
+        set((state) => {
+          state.isLoading = false;
+          state.error = `System ${systemKks} not found`;
+        });
+        console.warn(`[diagramStore] System not found: ${systemKks}`);
+        return { success: false, error: `System ${systemKks} not found` };
       }
     },
 
@@ -588,9 +601,27 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     }),
 
     // Update a component in a specific system (for cross-system operations like bidirectional terminal linking)
-    updateComponentInSystem: (systemKks, componentKks, updates) => {
-      const { diagramCache } = get();
-      const targetDiagram = diagramCache[systemKks];
+    updateComponentInSystem: async (systemKks, componentKks, updates) => {
+      const { diagramCache, diagram } = get();
+      let targetDiagram = diagramCache[systemKks];
+
+      // If target is the current diagram, use it directly
+      if (!targetDiagram && diagram?.systemKks === systemKks) {
+        targetDiagram = diagram;
+      }
+
+      // If not in cache, try to load from file
+      if (!targetDiagram) {
+        console.log(`[diagramStore] Loading diagram ${systemKks} for cross-system update`);
+        const result = await StorageService.loadDiagram(systemKks);
+        if (result.success && result.diagram) {
+          targetDiagram = result.diagram;
+          // Add to cache for future use
+          set((state) => {
+            state.diagramCache[systemKks] = result.diagram!;
+          });
+        }
+      }
 
       if (targetDiagram && targetDiagram.components[componentKks]) {
         // Create deep copies to avoid mutating frozen/immutable objects
@@ -615,12 +646,18 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
         // Update the cache with the new diagram
         set((state) => {
           state.diagramCache[systemKks] = updatedDiagram;
+          // Also update current diagram if it's the same system
+          if (state.diagram?.systemKks === systemKks) {
+            state.diagram = updatedDiagram;
+          }
         });
 
         // Save the updated diagram to disk
-        StorageService.saveDiagram(systemKks, updatedDiagram);
+        await StorageService.saveDiagram(systemKks, updatedDiagram);
 
         console.log(`[diagramStore] Updated component ${componentKks} in system ${systemKks}`);
+      } else {
+        console.warn(`[diagramStore] Could not find component ${componentKks} in system ${systemKks}`);
       }
     },
 
@@ -801,6 +838,53 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
       state.isDirty = true;
     }),
+
+    // Update component types when a symbol is renamed
+    updateComponentTypes: (oldType, newType) => {
+      let updatedCount = 0;
+      const { diagram, diagramCache } = get();
+
+      // Update current diagram
+      if (diagram) {
+        set((state) => {
+          Object.values(state.diagram!.components).forEach((component) => {
+            if (component.type === oldType) {
+              component.type = newType;
+              updatedCount++;
+            }
+          });
+          if (updatedCount > 0) {
+            state.isDirty = true;
+          }
+        });
+      }
+
+      // Update all cached diagrams
+      Object.entries(diagramCache).forEach(([systemKks, cachedDiagram]) => {
+        if (cachedDiagram && cachedDiagram !== diagram) {
+          let cacheUpdated = false;
+          set((state) => {
+            if (state.diagramCache[systemKks]) {
+              Object.values(state.diagramCache[systemKks].components).forEach((component) => {
+                if (component.type === oldType) {
+                  component.type = newType;
+                  updatedCount++;
+                  cacheUpdated = true;
+                }
+              });
+            }
+          });
+
+          // Save updated cached diagram to file
+          if (cacheUpdated) {
+            StorageService.saveDiagram(systemKks, get().diagramCache[systemKks]);
+          }
+        }
+      });
+
+      console.log(`[diagramStore] Updated ${updatedCount} components from type "${oldType}" to "${newType}"`);
+      return updatedCount;
+    },
 
     // ========== Helpers ==========
 

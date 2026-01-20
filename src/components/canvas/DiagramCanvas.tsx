@@ -16,6 +16,7 @@ import { ConnectionsLayer } from './ConnectionsLayer';
 import { BuildingsLayer } from './BuildingsLayer';
 import { CanvasBoundary } from './CanvasBoundary';
 import { AxisOverlay } from './AxisOverlay';
+import { KKSHoverTooltip } from './KKSHoverTooltip';
 import { useUIStore } from '../../store/uiStore';
 import { useDiagramStore } from '../../store/diagramStore';
 import { usePlantStore } from '../../store/plantStore';
@@ -33,9 +34,10 @@ interface DiagramCanvasProps {
   width: number;
   height: number;
   onStageReady?: (stage: Konva.Stage | null) => void;
+  onOpenSystem?: (systemKks: string) => void;
 }
 
-export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onStageReady }) => {
+export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onStageReady, onOpenSystem }) => {
   const stageRef = useRef<Konva.Stage>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -1027,6 +1029,12 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
           </p>
         </div>
       )}
+
+      {/* KKS Hover Tooltip */}
+      <KKSHoverTooltip
+        containerRef={containerRef as React.RefObject<HTMLElement>}
+        onOpenSystem={onOpenSystem}
+      />
     </div>
   );
 };

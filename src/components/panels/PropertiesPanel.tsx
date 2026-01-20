@@ -646,6 +646,8 @@ const TerminalSettings: React.FC<{
 
   // State for Quick Link Dialog
   const [isLinkDialogOpen, setIsLinkDialogOpen] = React.useState(false);
+  // State for Remove Link confirmation
+  const [showRemoveConfirm, setShowRemoveConfirm] = React.useState(false);
 
   // Sync local state when component changes
   React.useEffect(() => {
@@ -674,7 +676,7 @@ const TerminalSettings: React.FC<{
   };
 
   // Handle selection from Quick Link Dialog - always creates bidirectional link
-  const handleQuickLinkSelect = React.useCallback((
+  const handleQuickLinkSelect = React.useCallback(async (
     targetSystemKks: string,
     targetTerminalKks: string,
     targetTerminalProperties?: Record<string, unknown>
@@ -696,23 +698,57 @@ const TerminalSettings: React.FC<{
 
     // Always create bidirectional link - update the target terminal to link back
     if (targetTerminalKks && targetTerminalProperties !== undefined) {
-      updateComponentInSystem(targetSystemKks, targetTerminalKks, {
+      await updateComponentInSystem(targetSystemKks, targetTerminalKks, {
         properties: {
           ...targetTerminalProperties,
           targetSystemKks: currentSystemKks,
           targetTerminalKks: component.kks,
         },
       });
+      console.log(`[PropertiesPanel] Created bidirectional link: ${component.kks} <-> ${targetTerminalKks}`);
     }
   }, [component.kks, component.properties, updateComponent, updateComponentInSystem, currentSystemKks]);
 
-  // Clear link
-  const handleClearLink = React.useCallback(() => {
+  // Clear link (also removes the bidirectional link from the target terminal)
+  const handleClearLink = React.useCallback(async () => {
+    const targetSystem = localTargetSystem;
+    const targetTerminal = localTargetTerminal;
+
+    // Clear local state
     setLocalTargetSystem('');
     setLocalTargetTerminal('');
-    onPropertyChange('targetSystemKks', '');
-    onPropertyChange('targetTerminalKks', '');
-  }, [onPropertyChange]);
+
+    // Clear this terminal's link using updateComponent directly
+    const currentProps = component.properties as Record<string, unknown>;
+    updateComponent(component.kks, {
+      properties: {
+        ...currentProps,
+        targetSystemKks: '',
+        targetTerminalKks: '',
+      },
+    });
+
+    // Also clear the bidirectional link from the target terminal
+    if (targetSystem && targetTerminal) {
+      // First load the target terminal's current properties
+      const diagramCache = useDiagramStore.getState().diagramCache;
+      const currentDiagram = useDiagramStore.getState().diagram;
+      const targetDiagram = targetSystem === currentSystemKks ? currentDiagram : diagramCache[targetSystem];
+      const targetComp = targetDiagram?.components?.[targetTerminal];
+      const targetProps = (targetComp?.properties || {}) as Record<string, unknown>;
+
+      await updateComponentInSystem(targetSystem, targetTerminal, {
+        properties: {
+          ...targetProps,
+          targetSystemKks: '',
+          targetTerminalKks: '',
+        },
+      });
+      console.log(`[PropertiesPanel] Removed bidirectional link from ${targetTerminal}`);
+    }
+
+    setShowRemoveConfirm(false);
+  }, [localTargetSystem, localTargetTerminal, component.kks, component.properties, updateComponent, updateComponentInSystem, currentSystemKks]);
 
   const hasLink = localTargetSystem || localTargetTerminal;
 
@@ -720,20 +756,64 @@ const TerminalSettings: React.FC<{
     <div className="border-t border-gray-200 pt-3 mt-3">
       <div className="flex items-center justify-between mb-3">
         <h4 className="text-xs font-medium text-gray-600">Terminal Link Settings</h4>
-        <button
-          onClick={() => setIsLinkDialogOpen(true)}
-          className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors flex items-center gap-1"
-        >
-          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-          </svg>
-          Quick Link
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setIsLinkDialogOpen(true)}
+            className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors flex items-center gap-1"
+          >
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+              <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+            </svg>
+            Quick Link
+          </button>
+          {hasLink && (
+            <button
+              onClick={() => setShowRemoveConfirm(true)}
+              className="p-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+              title="Remove Link"
+            >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
 
+      {/* Remove Link Confirmation Dialog */}
+      {showRemoveConfirm && (
+        <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-start gap-2 mb-2">
+            <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div>
+              <p className="text-sm font-medium text-red-800">Remove terminal link?</p>
+              <p className="text-xs text-red-600 mt-1">
+                This will remove the link from both terminals ({component.kks} and {localTargetTerminal || 'target'}).
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => setShowRemoveConfirm(false)}
+              className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleClearLink}
+              className="px-3 py-1 text-xs bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+            >
+              Remove Link
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Current Link Status */}
-      {hasLink && (
+      {hasLink && !showRemoveConfirm && (
         <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm">
@@ -749,9 +829,9 @@ const TerminalSettings: React.FC<{
               </span>
             </div>
             <button
-              onClick={handleClearLink}
+              onClick={() => setShowRemoveConfirm(true)}
               className="p-1 text-blue-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-              title="Clear link"
+              title="Remove link"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -1676,6 +1756,21 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
           <span className="text-sm text-gray-700">Wrap KKS to 2 lines</span>
         </label>
         <p className="text-xs text-gray-400 mt-1">Splits KKS after 7 characters (e.g., 10KBA10 / AA001)</p>
+      </div>
+
+      {/* KKS Hover Tooltip Setting */}
+      <div className="mb-3">
+        <label className="block text-xs font-medium text-gray-600 mb-2">KKS Hover Info</label>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={(selectedComponent.properties as Record<string, unknown>).showKksTooltip === true}
+            onChange={(e) => handlePropertyChange('showKksTooltip', e.target.checked)}
+            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          />
+          <span className="text-sm text-gray-700">Show system info on hover</span>
+        </label>
+        <p className="text-xs text-gray-400 mt-1">Display KKS code and system name tooltip when hovering</p>
       </div>
 
       {/* Terminal Link Settings - only for terminals */}

@@ -2,15 +2,40 @@
   "mode": "draw",
   "tool": "select",
   "viewport": {
-    "x": -7123.064459973729,
-    "y": -611.658864584192,
-    "scale": 1.0834705943388394
+    "x": -279,
+    "y": -14.940212186525173,
+    "scale": 0.5054470284992945
   },
   "systemViewports": {
     "10JEC": {
+      "x": -339.6207519085409,
+      "y": -159.17956108088453,
+      "scale": 0.1308063926612463
+    },
+    "10KBA": {
+      "x": 0,
+      "y": -100.79554441541643,
+      "scale": 0.4177248169415655
+    },
+    "JNG2": {
+      "x": -20.186300000000074,
+      "y": -38.70450000000011,
+      "scale": 0.21066500344486383
+    },
+    "10JNG": {
       "x": 0,
       "y": 0,
-      "scale": 0.25937424601000014
+      "scale": 0.11000000000000001
+    },
+    "10JNG2": {
+      "x": -711.2206904844895,
+      "y": -642.7399955168323,
+      "scale": 1.0834705943388394
+    },
+    "10JNG3": {
+      "x": -2270.6521931961843,
+      "y": -675.0803326736276,
+      "scale": 1.4420993610649955
     }
   },
   "gridVisible": true,
@@ -25,6 +50,8 @@
   "darkModePipeStrokeWidth": 2.5,
   "darkModePipeGlowBlur": 15,
   "darkModePipeGlowOpacity": 1,
-  "kksHideFadeOpacity": 0.35,
-  "editModePassword": "admin1234"
+  "kksHideFadeOpacity": 0.25,
+  "editModePassword": "admin1234",
+  "kksHoverTooltipEnabled": true,
+  "kksHoverDelayMs": 500
 }

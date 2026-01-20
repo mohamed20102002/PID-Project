@@ -12,6 +12,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDesignerStore } from '../../store/designerStore';
 import { useCustomSymbolStore } from '../../store/customSymbolStore';
+import { useDiagramStore } from '../../store/diagramStore';
 import { DesignerCanvas } from './designer/DesignerCanvas';
 import { ToolPalette } from './designer/ToolPalette';
 import { PropertiesPanel } from './designer/PropertiesPanel';
@@ -53,7 +54,8 @@ export const VisualComponentDesigner: React.FC<VisualComponentDesignerProps> = (
     setCanvasSize: setStoreCanvasSize,
   } = useDesignerStore();
 
-  const { customSymbols, addCustomSymbol, updateCustomSymbol } = useCustomSymbolStore();
+  const { customSymbols, addCustomSymbol, updateCustomSymbol, renameSymbol } = useCustomSymbolStore();
+  const updateComponentTypes = useDiagramStore((state) => state.updateComponentTypes);
 
   // Load symbol or draft when opened
   useEffect(() => {
@@ -139,17 +141,47 @@ export const VisualComponentDesigner: React.FC<VisualComponentDesignerProps> = (
       // Save to custom symbols
       if (symbolId) {
         // EDITING mode: Update the existing symbol we're editing
-        // Check if renaming to an existing symbol name (excluding self)
-        const duplicateName = Object.values(customSymbols).find(
-          s => s.id !== symbolId && s.name === definition.name
-        );
-        if (duplicateName) {
-          alert(`Error: Symbol name "${definition.name}" is already used by another symbol.\nPlease use a different Symbol Name.`);
-          setIsSaving(false);
-          return;
-        }
+        const originalSymbol = customSymbols[symbolId];
+        const nameChanged = originalSymbol && definition.displayName !== originalSymbol.displayName;
 
-        updateCustomSymbol(symbolId, definition);
+        if (nameChanged) {
+          // Name changed - use renameSymbol to update ID based on new name
+          const { newId, success } = renameSymbol(symbolId, definition.displayName);
+
+          if (!success) {
+            setIsSaving(false);
+            return;
+          }
+
+          if (newId !== symbolId) {
+            // Update all components using the old symbol type
+            const updatedCount = updateComponentTypes(symbolId, newId);
+            console.log(`[VisualComponentDesigner] Renamed symbol ${symbolId} -> ${newId}, updated ${updatedCount} components`);
+
+            // Apply other changes to the renamed symbol (excluding name/displayName which are already updated)
+            const otherChanges = { ...definition };
+            delete otherChanges.id;
+            delete otherChanges.name;
+            delete otherChanges.displayName;
+
+            if (Object.keys(otherChanges).length > 0) {
+              updateCustomSymbol(newId, otherChanges);
+            }
+          }
+        } else {
+          // No name change - just update normally
+          // Check if renaming to an existing symbol name (excluding self)
+          const duplicateName = Object.values(customSymbols).find(
+            s => s.id !== symbolId && s.name === definition.name
+          );
+          if (duplicateName) {
+            alert(`Error: Symbol name "${definition.name}" is already used by another symbol.\nPlease use a different Symbol Name.`);
+            setIsSaving(false);
+            return;
+          }
+
+          updateCustomSymbol(symbolId, definition);
+        }
         alert('Symbol updated successfully!');
       } else {
         // NEW symbol mode: Check for duplicate ID or Name before adding

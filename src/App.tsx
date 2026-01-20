@@ -18,6 +18,8 @@ const VisualComponentDesigner = lazy(() => import('./components/panels/VisualCom
 const QuickSystemSearch = lazy(() => import('./components/panels/QuickSystemSearch'));
 const EditModeLogin = lazy(() => import('./components/panels/EditModeLogin'));
 const SettingsModal = lazy(() => import('./components/panels/SettingsModal'));
+const ReferencesModal = lazy(() => import('./components/panels/ReferencesModal'));
+const PasteSegmentDialog = lazy(() => import('./components/panels/PasteSegmentDialog'));
 import { useStorageService } from './hooks/useStorageService';
 import { useUIStore, selectZoomPercent } from './store/uiStore';
 import { useDiagramStore } from './store/diagramStore';
@@ -129,6 +131,7 @@ function App() {
   const mousePosition = useUIStore((state) => state.mousePosition);
   const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
   const toggleCanvasDarkMode = useUIStore((state) => state.toggleCanvasDarkMode);
+  const pasteSegmentDialogOpen = useUIStore((state) => state.pasteSegmentDialogOpen);
 
   // Diagram Store
   const diagram = useDiagramStore((state) => state.diagram);
@@ -168,6 +171,9 @@ function App() {
 
   // Settings Modal state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // References Modal state
+  const [isReferencesOpen, setIsReferencesOpen] = useState(false);
 
   // Storage service hook (auto-save enabled)
   useStorageService({
@@ -303,12 +309,82 @@ function App() {
   // Load plant data from file on startup
   const loadPlantFromFile = usePlantStore((state) => state.loadPlantFromFile);
   const plant = usePlantStore((state) => state.plant);
+  const selectSystem = usePlantStore((state) => state.selectSystem);
+  const selectedSystemKks = usePlantStore((state) => state.selectedSystemKks);
+
+  // Switch to system from diagram store
+  const switchToSystem = useDiagramStore((state) => state.switchToSystem);
+
+  // Handle opening a system from KKS hover tooltip
+  const handleOpenSystem = useCallback((systemKks: string): { success: boolean; error?: string } => {
+    console.log(`[App.handleOpenSystem] Called with systemKks: "${systemKks}"`);
+
+    if (!systemKks) {
+      console.warn('[App.handleOpenSystem] Empty systemKks provided');
+      return { success: false, error: 'No system KKS provided' };
+    }
+
+    if (!plant) {
+      console.warn('[App.handleOpenSystem] Plant data not loaded');
+      return { success: false, error: 'Plant data not loaded' };
+    }
+
+    // Log available systems for debugging
+    const allSystems: string[] = [];
+    // units is an object keyed by unit ID, not an array
+    Object.values(plant?.units || {}).forEach(unit => {
+      console.log(`[App.handleOpenSystem] Checking unit: ${unit.kks} (${unit.name})`);
+      // systems is also an object keyed by system KKS
+      Object.values(unit.systems || {}).forEach(sys => {
+        allSystems.push(sys.kks);
+      });
+    });
+    console.log(`[App.handleOpenSystem] Available systems: ${allSystems.join(', ')}`);
+
+    // Find matching system in plant - try different matching strategies
+    let matchedSystemKks: string | null = null;
+
+    Object.values(plant?.units || {}).forEach(unit => {
+      Object.values(unit.systems || {}).forEach(sys => {
+        const sysKksUpper = sys.kks.toUpperCase();
+        const searchKksUpper = systemKks.toUpperCase();
+
+        // Exact match (case-insensitive)
+        if (sysKksUpper === searchKksUpper) {
+          console.log(`[App.handleOpenSystem] Exact match found: ${sys.kks}`);
+          matchedSystemKks = sys.kks;
+        }
+        // System KKS contains the search term (e.g., "10KBA" contains "KBA")
+        else if (sysKksUpper.includes(searchKksUpper)) {
+          console.log(`[App.handleOpenSystem] Partial match (sys contains search): ${sys.kks}`);
+          matchedSystemKks = sys.kks;
+        }
+        // Search term contains the system KKS
+        else if (searchKksUpper.includes(sysKksUpper)) {
+          console.log(`[App.handleOpenSystem] Partial match (search contains sys): ${sys.kks}`);
+          matchedSystemKks = sys.kks;
+        }
+      });
+    });
+
+    if (matchedSystemKks) {
+      console.log(`[App.handleOpenSystem] SUCCESS - Opening system: ${matchedSystemKks}`);
+      selectSystem(matchedSystemKks);
+      switchToSystem(matchedSystemKks);
+      return { success: true };
+    } else {
+      const errorMsg = `System "${systemKks}" not found. Available: ${allSystems.join(', ')}`;
+      console.warn(`[App.handleOpenSystem] FAILED - ${errorMsg}`);
+      return { success: false, error: errorMsg };
+    }
+  }, [plant, selectSystem, switchToSystem]);
 
   // Initialize symbol library with default symbols on first load
   const initializeDefaultSymbols = useCustomSymbolStore((state) => state.initializeDefaultSymbols);
 
-  // Get validateCache from diagramStore
+  // Get validateCache and updateComponentTypes from diagramStore
   const validateCache = useDiagramStore((state) => state.validateCache);
+  const updateComponentTypes = useDiagramStore((state) => state.updateComponentTypes);
 
   useEffect(() => {
     // Load plant from file on startup
@@ -330,6 +406,23 @@ function App() {
       if (result.success) {
         console.log(`[App] Loaded ${result.count} custom symbols from file`);
 
+        // Auto-fix: Migrate symbols to name-based IDs on startup
+        const { migrated, oldToNewMap } = symbolStore.migrateToNameBasedIds();
+        if (migrated > 0) {
+          console.log(`[App] Auto-fixed ${migrated} symbol IDs on startup`);
+
+          // Update component types in all diagrams
+          for (const [oldId, newId] of Object.entries(oldToNewMap)) {
+            const updated = updateComponentTypes(oldId, newId);
+            if (updated > 0) {
+              console.log(`[App] Updated ${updated} components from "${oldId}" to "${newId}"`);
+            }
+          }
+
+          // Save updated symbols to file
+          await symbolStore.saveToFile();
+        }
+
         // Start auto-sync after initial load
         symbolStore.startAutoSync();
       } else {
@@ -338,7 +431,7 @@ function App() {
     };
 
     loadSymbols();
-  }, [loadPlantFromFile, initializeDefaultSymbols, validateCache]);
+  }, [loadPlantFromFile, initializeDefaultSymbols, validateCache, updateComponentTypes]);
 
   // Show loading state if plant is not loaded yet
   if (!plant) {
@@ -580,6 +673,20 @@ function App() {
               <div className="h-4 w-px bg-gray-200 mx-1" />
             </>
           )}
+          {/* References Button */}
+          <button
+            className="p-1.5 text-gray-500 hover:bg-gray-100 rounded"
+            onClick={() => setIsReferencesOpen(true)}
+            title="References"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+              <path d="M8 7h8" />
+              <path d="M8 11h8" />
+              <path d="M8 15h4" />
+            </svg>
+          </button>
           {/* Dark Mode Toggle */}
           <button
             className={`p-1.5 rounded transition-colors ${
@@ -714,6 +821,7 @@ function App() {
               width={canvasSize.width}
               height={canvasSize.height}
               onStageReady={handleStageReady}
+              onOpenSystem={handleOpenSystem}
             />
           )}
 
@@ -944,6 +1052,17 @@ function App() {
             onClose={() => setIsSettingsOpen(false)}
           />
         )}
+
+        {/* References Modal */}
+        {isReferencesOpen && (
+          <ReferencesModal
+            isOpen={isReferencesOpen}
+            onClose={() => setIsReferencesOpen(false)}
+          />
+        )}
+
+        {/* Paste Segment Dialog */}
+        {pasteSegmentDialogOpen && <PasteSegmentDialog />}
       </Suspense>
     </div>
   );

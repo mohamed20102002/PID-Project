@@ -6788,9 +6788,7 @@
           "connectionKks": "CONNMK9G1TOF21UN"
         }
       ],
-      "properties": {
-        "showKksTooltip": true
-      },
+      "properties": {},
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -42981,11 +42979,11 @@
         }
       ],
       "properties": {
-        "targetSystemKks": "10JNG2",
+        "targetSystemKks": "",
         "leftPortDirection": "in",
         "terminalId": "17013",
         "showKksTooltip": true,
-        "targetTerminalKks": "CMPMKJZUIJAN1VN"
+        "targetTerminalKks": ""
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -43067,11 +43065,11 @@
         }
       ],
       "properties": {
-        "targetSystemKks": "",
+        "targetSystemKks": "JNG2",
         "leftPortDirection": "in",
         "terminalId": "17027",
         "showKksTooltip": true,
-        "targetTerminalKks": ""
+        "targetTerminalKks": "10KBA93AA102-17027"
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -43153,11 +43151,10 @@
         }
       ],
       "properties": {
-        "targetSystemKks": "",
+        "targetSystemKks": "10JNG",
         "leftPortDirection": "in",
         "terminalId": "17012",
-        "showKksTooltip": true,
-        "targetTerminalKks": ""
+        "showKksTooltip": true
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -43239,11 +43236,11 @@
         }
       ],
       "properties": {
-        "targetSystemKks": "",
+        "targetSystemKks": "JNG2",
         "leftPortDirection": "in",
         "terminalId": "17022",
         "showKksTooltip": true,
-        "targetTerminalKks": ""
+        "targetTerminalKks": "10KBA94AA102-17022"
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -56923,5 +56920,5 @@
     }
   },
   "createdAt": "2026-01-08T22:55:21.961Z",
-  "modifiedAt": "2026-01-19T06:39:26.505Z"
+  "modifiedAt": "2026-01-18T16:35:41.294Z"
 }

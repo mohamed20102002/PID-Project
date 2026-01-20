@@ -57,7 +57,7 @@ const DEFAULT_OPTIONS: SearchOptions = {
   searchType: true,
   searchProperties: true,
   searchConnections: true,
-  maxResults: 50,
+  maxResults: 500,  // Increased from 50 to show more results
   minScore: 0.5,  // Increased from 0.1 to filter out weak matches
   caseSensitive: false,
 };
@@ -200,23 +200,30 @@ export class SearchEngine {
       }
     }
 
-    // Search type
+    // Search type - prioritize display name over raw type ID
     if (opts.searchType) {
-      // Search by component type string (e.g., "valve:gate", "pump:centrifugal")
-      const typeScore = this.matchScore(normalizeText(component.type), query);
-
-      // Also search by symbol display name (e.g., "Gate Valve", "Centrifugal Pump")
-      let symbolDisplayName = '';
-      let displayNameScore = 0;
+      // Get symbol to search by display name (more reliable than raw type ID which may have old names)
       const symbol = useCustomSymbolStore.getState().getSymbol(component.type) ||
                      SymbolRegistry.getSymbol(component.type);
+
+      let displayNameScore = 0;
+      let symbolDisplayName = '';
+
       if (symbol) {
         symbolDisplayName = symbol.displayName;
         displayNameScore = this.matchScore(normalizeText(symbolDisplayName), query);
       }
 
-      // Use the better score between type string and display name
-      const bestScore = Math.max(typeScore, displayNameScore);
+      // Only search by raw type ID if:
+      // 1. No symbol found (orphaned component), AND
+      // 2. Type has proper format (contains ':') - avoids matching old IDs like "pump-flowsensor-123"
+      let typeScore = 0;
+      if (!symbol && component.type.includes(':')) {
+        typeScore = this.matchScore(normalizeText(component.type), query);
+      }
+
+      // Use display name score if symbol found, otherwise use type score
+      const bestScore = symbol ? displayNameScore : typeScore;
       if (bestScore > 0) {
         results.push({
           type: 'component',
@@ -225,7 +232,7 @@ export class SearchEngine {
           label: component.kks,
           description: this.getComponentDescription(component),
           matchType: this.getMatchType(
-            displayNameScore > typeScore ? normalizeText(symbolDisplayName) : normalizeText(component.type),
+            symbolDisplayName ? normalizeText(symbolDisplayName) : normalizeText(component.type),
             query
           ),
           matchField: 'Type',
@@ -516,12 +523,22 @@ export class SearchEngine {
   private getComponentDescription(component: Component): string {
     const parts: string[] = [];
 
-    // Type (formatted)
-    const [category, type] = component.type.split(':');
-    if (type) {
-      parts.push(`${type.charAt(0).toUpperCase()}${type.slice(1)} ${category}`);
+    // Get the symbol to show display name instead of raw type
+    const symbol = useCustomSymbolStore.getState().getSymbol(component.type) ||
+                   SymbolRegistry.getSymbol(component.type);
+
+    if (symbol) {
+      // Use symbol display name (e.g., "Shut-Off Valve")
+      parts.push(symbol.displayName);
     } else {
-      parts.push(component.type);
+      // Fallback: format the type (try to split on ':')
+      const [category, type] = component.type.split(':');
+      if (type) {
+        parts.push(`${type.charAt(0).toUpperCase()}${type.slice(1)} ${category}`);
+      } else {
+        // If no ':' separator, just show the raw type
+        parts.push(component.type);
+      }
     }
 
     // Tag number if available

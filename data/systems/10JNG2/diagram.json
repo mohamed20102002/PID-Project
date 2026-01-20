@@ -1,0 +1,837 @@
+{
+  "kks": "DIAMKJXXH5LOQEH",
+  "name": "Diagram - 10JNG2",
+  "version": "1.0.0",
+  "systemKks": "10JNG2",
+  "metadata": {
+    "title": "Diagram - 10JNG2",
+    "author": "User",
+    "revision": "A",
+    "tags": []
+  },
+  "settings": {
+    "gridSize": 20,
+    "gridEnabled": true,
+    "snapToGrid": true,
+    "snapTolerance": 10,
+    "canvasWidth": 3000,
+    "canvasHeight": 2000,
+    "backgroundColor": "#ffffff",
+    "defaultPipeStyle": {
+      "strokeColor": "#000000",
+      "strokeWidth": 2,
+      "lineType": "solid"
+    },
+    "showLabels": true,
+    "showPorts": false
+  },
+  "components": {
+    "10JNG50BB001": {
+      "type": "hydraulicaccumulator-1768564445723",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1260,
+        "y": 640
+      },
+      "rotation": 0,
+      "size": {
+        "width": 600,
+        "height": 600
+      },
+      "ports": [
+        {
+          "id": "port-1768564220576-uo68j0moy",
+          "name": "port2",
+          "position": {
+            "x": 0.5,
+            "y": 1.075
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768564328917-9eiifdiui",
+          "name": "port3",
+          "position": {
+            "x": 0.3525468969932797,
+            "y": 1.024021312403361
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768564403312-zfmtgohl8",
+          "name": "port4",
+          "position": {
+            "x": 0.688760964068696,
+            "y": 0.08623903593130393
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768564404684-h4cjhrnkl",
+          "name": "port5",
+          "position": {
+            "x": 0.3112390359313039,
+            "y": 0.08623903593130393
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768568974556-gn85z30bq",
+          "name": "port5",
+          "position": {
+            "x": 0.5,
+            "y": 0.05
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {
+        "showKksTooltip": false
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10JNG50BB001"
+    },
+    "10JNG50AA101": {
+      "type": "manualValve1-1767425136723",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1260,
+        "y": 1100
+      },
+      "rotation": 270,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767422976640",
+          "name": "Left",
+          "position": {
+            "x": -0.00026647730625398933,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767422978253",
+          "name": "Right",
+          "position": {
+            "x": 1.000066654819027,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKSMY16AC3W"
+        }
+      ],
+      "properties": {
+        "showKksTooltip": false
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10JNG50AA101",
+      "wrapLabel": true
+    },
+    "10JNG51AP001": {
+      "type": "centrifugalpump-1767540010585",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1120,
+        "y": 1240
+      },
+      "rotation": 0,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767539865399-ptcjupuhl",
+          "name": "inport",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767539866756-f46eqrjx2",
+          "name": "outport",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKSN7VDAN88"
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10JNG51AP001"
+    },
+    "10KBA89AA101-16782": {
+      "type": "terminals:system-terminal",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1700,
+        "y": 1240
+      },
+      "rotation": 0,
+      "size": {
+        "width": 140,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "left",
+          "name": "Left",
+          "position": {
+            "x": 0.05,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ],
+          "connectionKks": "CONNMKKSNB0WRWLW"
+        },
+        {
+          "id": "right",
+          "name": "Right",
+          "position": {
+            "x": 0.95,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "top",
+          "name": "Top",
+          "position": {
+            "x": 0.5,
+            "y": 0.15
+          },
+          "direction": "bidirectional",
+          "angle": 270,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "bottom",
+          "name": "Bottom",
+          "position": {
+            "x": 0.5,
+            "y": 0.85
+          },
+          "direction": "bidirectional",
+          "angle": 90,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        }
+      ],
+      "properties": {
+        "terminalId": "16782"
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10KBA89AA101-16782"
+    },
+    "10JNA51SB001": {
+      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1260,
+        "y": 1240
+      },
+      "rotation": 0,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767437248466",
+          "name": "Port 1",
+          "position": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKSNB0WRWLW"
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10JNA51SB001"
+    },
+    "CMPMKKT1F9UZCKZ": {
+      "type": "hydraulicaccumulator-1768564445723",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 2180,
+        "y": 660
+      },
+      "rotation": 0,
+      "size": {
+        "width": 600,
+        "height": 600
+      },
+      "ports": [
+        {
+          "id": "port-1768564220576-uo68j0moy",
+          "name": "port2",
+          "position": {
+            "x": 0.5,
+            "y": 1.075
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKT1FCESX12"
+        },
+        {
+          "id": "port-1768564328917-9eiifdiui",
+          "name": "port3",
+          "position": {
+            "x": 0.3525468969932797,
+            "y": 1.024021312403361
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768564403312-zfmtgohl8",
+          "name": "port4",
+          "position": {
+            "x": 0.688760964068696,
+            "y": 0.08623903593130393
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768564404684-h4cjhrnkl",
+          "name": "port5",
+          "position": {
+            "x": 0.3112390359313039,
+            "y": 0.08623903593130393
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1768568974556-gn85z30bq",
+          "name": "port5",
+          "position": {
+            "x": 0.5,
+            "y": 0.05
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {
+        "showKksTooltip": false
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPMKKT1F9UZCKZ"
+    },
+    "CMPMKKT1FA4P1SF": {
+      "type": "manualValve1-1767425136723",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 2180,
+        "y": 1120
+      },
+      "rotation": 270,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767422976640",
+          "name": "Left",
+          "position": {
+            "x": -0.00026647730625398933,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKT1FCMQGES"
+        },
+        {
+          "id": "port-1767422978253",
+          "name": "Right",
+          "position": {
+            "x": 1.000066654819027,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKT1FCESX12"
+        }
+      ],
+      "properties": {
+        "showKksTooltip": false
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "wrapLabel": true,
+      "kks": "CMPMKKT1FA4P1SF"
+    },
+    "CMPMKKT1FA82X3P": {
+      "type": "centrifugalpump-1767540010585",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 2040,
+        "y": 1260
+      },
+      "rotation": 0,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767539865399-ptcjupuhl",
+          "name": "inport",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767539866756-f46eqrjx2",
+          "name": "outport",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKT1FCQX5O9"
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPMKKT1FA82X3P"
+    },
+    "CMPMKKT1FACL67Y": {
+      "type": "terminals:system-terminal",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 2620,
+        "y": 1260
+      },
+      "rotation": 0,
+      "size": {
+        "width": 140,
+        "height": 40
+      },
+      "ports": [
+        {
+          "id": "left",
+          "name": "Left",
+          "position": {
+            "x": 0.05,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 180,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ],
+          "connectionKks": "CONNMKKT1FCUJ8Z2"
+        },
+        {
+          "id": "right",
+          "name": "Right",
+          "position": {
+            "x": 0.95,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "top",
+          "name": "Top",
+          "position": {
+            "x": 0.5,
+            "y": 0.15
+          },
+          "direction": "bidirectional",
+          "angle": 270,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        },
+        {
+          "id": "bottom",
+          "name": "Bottom",
+          "position": {
+            "x": 0.5,
+            "y": 0.85
+          },
+          "direction": "bidirectional",
+          "angle": 90,
+          "allowedConnectionTypes": [
+            "pipe",
+            "signal"
+          ]
+        }
+      ],
+      "properties": {
+        "terminalId": "16782"
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPMKKT1FACL67Y"
+    },
+    "CMPMKKT1FAH4PBQ": {
+      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "systemKks": "10JNG2",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 2180,
+        "y": 1260
+      },
+      "rotation": 0,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767437248466",
+          "name": "Port 1",
+          "position": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKKT1FCUJ8Z2"
+        }
+      ],
+      "properties": {},
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "CMPMKKT1FAH4PBQ"
+    }
+  },
+  "connections": {
+    "CONNMKKSMY16AC3W": {
+      "type": "pipe",
+      "sourceComponentKks": "10JNG50BB001",
+      "sourcePortId": "port-1768564220576-uo68j0moy",
+      "targetComponentKks": "10JNG50AA101",
+      "targetPortId": "port-1767422978253",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10JNG2",
+      "targetSystemKks": "10JNG2",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKSMY16AC3W"
+    },
+    "CONNMKKSN6RKJT3M": {
+      "type": "pipe",
+      "sourceComponentKks": "10JNG50AA101",
+      "sourcePortId": "port-1767422976640",
+      "targetComponentKks": "10JNA51SB001",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10JNG2",
+      "targetSystemKks": "10JNG2",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKSN6RKJT3M"
+    },
+    "CONNMKKSN7VDAN88": {
+      "type": "pipe",
+      "sourceComponentKks": "10JNA51SB001",
+      "sourcePortId": "port-1767437248466",
+      "targetComponentKks": "10JNG51AP001",
+      "targetPortId": "port-1767539866756-f46eqrjx2",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10JNG2",
+      "targetSystemKks": "10JNG2",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKSN7VDAN88"
+    },
+    "CONNMKKSNB0WRWLW": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA89AA101-16782",
+      "sourcePortId": "left",
+      "targetComponentKks": "10JNA51SB001",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10JNG2",
+      "targetSystemKks": "10JNG2",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKSNB0WRWLW"
+    },
+    "CONNMKKT1FCESX12": {
+      "sourceComponentKks": "CMPMKKT1F9UZCKZ",
+      "sourcePortId": "port-1768564220576-uo68j0moy",
+      "targetComponentKks": "CMPMKKT1FA4P1SF",
+      "targetPortId": "port-1767422978253",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "isCrossSystem": false,
+      "properties": {
+        "custom": {}
+      },
+      "type": "pipe",
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKT1FCESX12"
+    },
+    "CONNMKKT1FCMQGES": {
+      "sourceComponentKks": "CMPMKKT1FA4P1SF",
+      "sourcePortId": "port-1767422976640",
+      "targetComponentKks": "CMPMKKT1FAH4PBQ",
+      "targetPortId": "port-1767437248466",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "isCrossSystem": false,
+      "properties": {
+        "custom": {}
+      },
+      "type": "pipe",
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKT1FCMQGES"
+    },
+    "CONNMKKT1FCQX5O9": {
+      "sourceComponentKks": "CMPMKKT1FAH4PBQ",
+      "sourcePortId": "port-1767437248466",
+      "targetComponentKks": "CMPMKKT1FA82X3P",
+      "targetPortId": "port-1767539866756-f46eqrjx2",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "isCrossSystem": false,
+      "properties": {
+        "custom": {}
+      },
+      "type": "pipe",
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKT1FCQX5O9"
+    },
+    "CONNMKKT1FCUJ8Z2": {
+      "sourceComponentKks": "CMPMKKT1FACL67Y",
+      "sourcePortId": "left",
+      "targetComponentKks": "CMPMKKT1FAH4PBQ",
+      "targetPortId": "port-1767437248466",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "isCrossSystem": false,
+      "properties": {
+        "custom": {}
+      },
+      "type": "pipe",
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKKT1FCUJ8Z2"
+    }
+  },
+  "buildings": {},
+  "createdAt": "2026-01-18T16:18:23.385Z",
+  "modifiedAt": "2026-01-19T06:49:28.319Z"
+}

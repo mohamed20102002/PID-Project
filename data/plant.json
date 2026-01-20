@@ -16,23 +16,21 @@
           "qualityClass": "QC1",
           "seismicCategory": "SC1"
         },
-        "10JEC": {
-          "kks": "10JEC",
-          "name": "10JEC system",
+        "10JNG2": {
+          "kks": "10JNG2",
+          "name": "10JNG2 System",
           "description": "",
           "unitKks": "1",
           "code": {
             "mainGroup": "1",
             "subGroup1": "0",
             "subGroup2": "J",
-            "number": "EC"
+            "number": "NG2"
           },
           "diagrams": [],
           "safetyClass": "N/A",
           "seismicClass": "N/A",
-          "systemTypes": [
-            "NOS"
-          ],
+          "systemTypes": [],
           "connectedSystems": []
         }
       },
@@ -116,5 +114,5 @@
     }
   },
   "createdAt": "2026-01-09T14:04:08.698Z",
-  "modifiedAt": "2026-01-12T07:47:57.715Z"
+  "modifiedAt": "2026-01-18T17:27:19.322Z"
 }

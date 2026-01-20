@@ -37,7 +37,16 @@
       "Bash(cmd //c \"dir /s /b \"E:Flowmark versions3-1-2026Flowmarkdatasystems*.json\"\")",
       "Bash(git pull:*)",
       "Bash(git checkout:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "Bash(powershell:*)",
+      "Bash(ping:*)",
+      "Bash(wsl tail:*)",
+      "Bash(for pid in 11104 18684 11796 3980)",
+      "Bash(do taskkill //F //PID $pid)",
+      "Bash(done)",
+      "Bash(Select-Object -Last 50)"
     ]
   }
 }

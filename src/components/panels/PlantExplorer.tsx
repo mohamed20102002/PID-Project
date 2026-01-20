@@ -40,6 +40,7 @@ export const PlantExplorer: React.FC<PlantExplorerProps> = ({ className = '' }) 
   const addUnit = usePlantStore((state) => state.addUnit);
   const addSystem = usePlantStore((state) => state.addSystem);
   const updateSystem = usePlantStore((state) => state.updateSystem);
+  const renameSystem = usePlantStore((state) => state.renameSystem);
   const deleteUnit = usePlantStore((state) => state.deleteUnit);
   const deleteSystem = usePlantStore((state) => state.deleteSystem);
   const addBuilding = usePlantStore((state) => state.addBuilding);
@@ -169,19 +170,30 @@ export const PlantExplorer: React.FC<PlantExplorerProps> = ({ className = '' }) 
   }, [editingUnitKks, newItemKks, newItemName, newItemDescription, newSafetyClass, newSeismicClass, selectedSystemTypes, selectedConnections, addSystem, addSystemConnection, resetDialogState]);
 
   // Handle edit system
-  const handleEditSystem = useCallback(() => {
-    if (editingSystemKks && newItemName) {
-      updateSystem(editingSystemKks, {
-        name: newItemName,
-        description: newItemDescription,
-        safetyClass: newSafetyClass,
-        seismicClass: newSeismicClass,
-        systemTypes: selectedSystemTypes,
-        connectedSystems: selectedConnections,
-      });
-      resetDialogState();
+  const handleEditSystem = useCallback(async () => {
+    if (editingSystemKks && newItemKks && newItemName) {
+      try {
+        // If KKS changed, rename the system first
+        if (newItemKks !== editingSystemKks) {
+          await renameSystem(editingSystemKks, newItemKks);
+        }
+
+        // Then update the other properties
+        updateSystem(newItemKks, {
+          name: newItemName,
+          description: newItemDescription,
+          safetyClass: newSafetyClass,
+          seismicClass: newSeismicClass,
+          systemTypes: selectedSystemTypes,
+          connectedSystems: selectedConnections,
+        });
+        resetDialogState();
+      } catch (error) {
+        console.error('Failed to rename system:', error);
+        alert(`Failed to rename system: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
     }
-  }, [editingSystemKks, newItemName, newItemDescription, newSafetyClass, newSeismicClass, selectedSystemTypes, selectedConnections, updateSystem, resetDialogState]);
+  }, [editingSystemKks, newItemKks, newItemName, newItemDescription, newSafetyClass, newSeismicClass, selectedSystemTypes, selectedConnections, updateSystem, renameSystem, resetDialogState]);
 
   // Add connection to list
   const handleAddConnection = useCallback(() => {
@@ -858,8 +870,23 @@ export const PlantExplorer: React.FC<PlantExplorerProps> = ({ className = '' }) 
       {activeDialog === 'editSystem' && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl p-4 w-96 max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-medium mb-4">Edit System: {editingSystemKks}</h3>
+            <h3 className="text-lg font-medium mb-4">Edit System</h3>
             <div className="space-y-3">
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">System KKS *</label>
+                <input
+                  type="text"
+                  value={newItemKks}
+                  onChange={(e) => setNewItemKks(e.target.value.toUpperCase())}
+                  className="w-full px-3 py-2 border border-gray-300 rounded font-mono"
+                  placeholder="e.g., 10KBA"
+                />
+                {newItemKks !== editingSystemKks && (
+                  <p className="text-xs text-amber-600 mt-1">
+                    KKS will be renamed from {editingSystemKks} to {newItemKks}
+                  </p>
+                )}
+              </div>
               <div>
                 <label className="block text-sm text-gray-600 mb-1">Name *</label>
                 <input
@@ -985,7 +1012,7 @@ export const PlantExplorer: React.FC<PlantExplorerProps> = ({ className = '' }) 
               <button
                 className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
                 onClick={handleEditSystem}
-                disabled={!newItemName}
+                disabled={!newItemKks || !newItemName}
               >
                 Save Changes
               </button>

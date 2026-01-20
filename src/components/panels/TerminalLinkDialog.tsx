@@ -52,8 +52,9 @@ export const TerminalLinkDialog: React.FC<TerminalLinkDialogProps> = ({
   const getAllSystems = usePlantStore((state) => state.getAllSystems);
   const getAllUnits = usePlantStore((state) => state.getAllUnits);
 
-  // Get diagram cache - we'll load diagrams directly via StorageService
+  // Get diagram cache and current diagram - we'll load diagrams directly via StorageService
   const diagramCache = useDiagramStore((state) => state.diagramCache);
+  const currentDiagram = useDiagramStore((state) => state.diagram);
 
   // Use ref to store loaded diagrams to avoid stale closure issues
   const loadedDiagramsRef = useRef<Record<string, Diagram>>({});
@@ -68,9 +69,14 @@ export const TerminalLinkDialog: React.FC<TerminalLinkDialogProps> = ({
         const systems = getAllSystems();
         const newlyLoaded: Record<string, Diagram> = {};
 
-        // Load diagrams for systems not already in cache
+        // Load diagrams for all systems (including current system for same-system terminal linking)
         for (const system of systems) {
-          if (system.kks !== currentSystemKks) {
+          if (system.kks === currentSystemKks) {
+            // Use the current active diagram for the current system
+            if (currentDiagram) {
+              newlyLoaded[system.kks] = currentDiagram;
+            }
+          } else {
             // Check cache first
             if (diagramCache[system.kks]) {
               newlyLoaded[system.kks] = diagramCache[system.kks];
@@ -92,7 +98,7 @@ export const TerminalLinkDialog: React.FC<TerminalLinkDialogProps> = ({
 
       loadAllDiagrams();
     }
-  }, [isOpen, getAllSystems, currentSystemKks, diagramCache]);
+  }, [isOpen, getAllSystems, currentSystemKks, currentDiagram, diagramCache]);
 
   // Build list of systems with their terminals
   const systemsWithTerminals = useMemo((): SystemTerminals[] => {
@@ -110,15 +116,19 @@ export const TerminalLinkDialog: React.FC<TerminalLinkDialogProps> = ({
     });
 
     return systems
-      .filter(sys => sys.kks !== currentSystemKks) // Exclude current system
       .map(system => {
         // Use loadedDiagrams which contains both cached and freshly loaded diagrams
         const diagram = loadedDiagrams[system.kks];
         const terminals: TerminalInfo[] = [];
+        const isCurrentSystem = system.kks === currentSystemKks;
 
         if (diagram?.components) {
           Object.values(diagram.components).forEach((comp: Component) => {
             if (comp.type.startsWith('terminals:')) {
+              // Exclude the current terminal being linked (can't link to itself)
+              if (isCurrentSystem && comp.kks === currentTerminalKks) {
+                return;
+              }
               const props = comp.properties as Record<string, string>;
               terminals.push({
                 kks: comp.kks,
@@ -140,13 +150,13 @@ export const TerminalLinkDialog: React.FC<TerminalLinkDialogProps> = ({
 
         return {
           systemKks: system.kks,
-          systemName: system.name,
+          systemName: system.name + (isCurrentSystem ? ' (Current)' : ''),
           unitKks,
           terminals,
         };
       })
       .filter(sys => sys.terminals.length > 0 || searchQuery.length === 0); // Show systems with terminals, or all if no search
-  }, [getAllSystems, getAllUnits, loadedDiagrams, currentSystemKks, searchQuery]);
+  }, [getAllSystems, getAllUnits, loadedDiagrams, currentSystemKks, currentTerminalKks, searchQuery]);
 
   // Filter by search query
   const filteredSystems = useMemo(() => {

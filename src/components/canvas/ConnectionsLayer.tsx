@@ -707,9 +707,11 @@ export const ConnectionsLayer: React.FC = () => {
       segments.push({ segment: previewSegment, color: kksHighlightColor });
     }
 
-    // Add saved segments (uppercase for case-insensitive matching)
+    // Add saved segments (uppercase for case-insensitive matching) - only if enabled
     kksHighlightSegments.forEach(seg => {
-      segments.push({ segment: seg.segment.toUpperCase(), color: seg.color });
+      if (seg.enabled) {
+        segments.push({ segment: seg.segment.toUpperCase(), color: seg.color });
+      }
     });
 
     return segments;

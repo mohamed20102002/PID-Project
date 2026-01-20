@@ -6,7 +6,8 @@
  */
 
 import React, { useCallback, useRef, useState, useMemo } from 'react';
-import { Layer, Group, Rect, Line } from 'react-konva';
+import { Layer, Group, Rect, Line, Circle } from 'react-konva';
+import Konva from 'konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import { MemoizedBaseSymbol } from '../symbols/base/BaseSymbol';
 import { useDiagramStore } from '../../store/diagramStore';
@@ -39,6 +40,8 @@ interface ComponentItemProps {
   tool: string;
   darkMode: boolean;
   kksOpacity: number;
+  typeHighlightColor?: string; // Color for type-based highlighting
+  availableSystemKks: Set<string>; // Set of available system KKS for terminal link validation
   onDragStart: (e: KonvaEventObject<DragEvent>, component: Component) => void;
   onDragMove: (e: KonvaEventObject<DragEvent>) => void;
   onDragEnd: (e: KonvaEventObject<DragEvent>, component: Component) => void;
@@ -63,6 +66,8 @@ const ComponentItem = React.memo<ComponentItemProps>(({
   tool,
   darkMode,
   kksOpacity,
+  typeHighlightColor,
+  availableSystemKks,
   onDragStart,
   onDragMove,
   onDragEnd,
@@ -107,12 +112,32 @@ const ComponentItem = React.memo<ComponentItemProps>(({
     onPortClick(component.kks, portId);
   }, [onPortClick, component.kks]);
 
+  // Use ref to access the Group node for stopping drag
+  const groupRef = React.useRef<Konva.Group>(null);
+
+  // Prevent drag on middle mouse button but allow event to bubble for panning
+  const handleMouseDown = useCallback((e: KonvaEventObject<MouseEvent>) => {
+    if (e.evt.button === 1 && groupRef.current) {
+      // Temporarily disable dragging on this node
+      groupRef.current.draggable(false);
+      // Re-enable after a short delay (after the drag detection window)
+      setTimeout(() => {
+        if (groupRef.current) {
+          groupRef.current.draggable(mode === 'draw' && tool === 'select');
+        }
+      }, 0);
+      // Don't stop propagation - let event bubble to Stage for panning
+    }
+  }, [mode, tool]);
+
   return (
     <Group
+      ref={groupRef}
       x={component.position.x + offsetX}
       y={component.position.y + offsetY}
       opacity={kksOpacity}
       draggable={mode === 'draw' && tool === 'select'}
+      onMouseDown={handleMouseDown}
       onDragStart={handleDragStart}
       onDragMove={onDragMove}
       onDragEnd={handleDragEnd}
@@ -133,8 +158,75 @@ const ComponentItem = React.memo<ComponentItemProps>(({
         showPorts={showPorts}
         mode={mode}
         darkMode={darkMode}
+        typeHighlightColor={typeHighlightColor}
         onPortClick={handlePortClick}
       />
+      {/* Terminal link status indicator */}
+      {component.type.startsWith('terminals:') && (
+        (() => {
+          const props = component.properties as Record<string, string> | undefined;
+          const targetSystemKks = props?.targetSystemKks;
+          const hasLink = !!targetSystemKks;
+          const width = definition?.defaultSize?.width || 60;
+          const height = definition?.defaultSize?.height || 60;
+          const cpX = definition?.centerPoint?.x ?? 0.5;
+          const cpY = definition?.centerPoint?.y ?? 0.5;
+          const rotation = component.rotation || 0;
+
+          // Determine circle color:
+          // - Green: has link AND target system exists
+          // - Yellow: has link BUT target system doesn't exist
+          // - Red: no link
+          let circleColor = '#ef4444'; // Red - no link
+          if (hasLink && targetSystemKks) {
+            // Check if target system exists (exact match first, then case-insensitive)
+            const systemExists = availableSystemKks.has(targetSystemKks) ||
+              Array.from(availableSystemKks).some(kks =>
+                kks && kks.toUpperCase().trim() === targetSystemKks.toUpperCase().trim()
+              );
+            circleColor = systemExists ? '#22c55e' : '#eab308'; // Green or Yellow
+          }
+
+          // Calculate circle position based on rotation
+          // Circle should always appear at the visual top of the terminal
+          let circleX = 0;
+          let circleY = 0;
+
+          switch (rotation) {
+            case 0:
+              // Top is up, place circle at top-right
+              circleX = width * (0.5 - cpX);
+              circleY = -height * cpY - 6;
+              break;
+            case 90:
+              // Top is now on the right (rotated clockwise)
+              circleX = height * (1 - cpY) + 6;
+              circleY = width * (0.5 - cpX);
+              break;
+            case 180:
+              // Top is now at bottom
+              circleX = width * (0.5 - cpX);
+              circleY = height * (1 - cpY) + 6;
+              break;
+            case 270:
+              // Top is now on the left
+              circleX = -height * cpY - 6;
+              circleY = width * (0.5 - cpX);
+              break;
+          }
+
+          return (
+            <Circle
+              x={circleX}
+              y={circleY}
+              radius={4}
+              fill={circleColor}
+              stroke={darkMode ? '#1f2937' : '#ffffff'}
+              strokeWidth={1.5}
+            />
+          );
+        })()
+      )}
     </Group>
   );
 });
@@ -171,8 +263,9 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   // History Store - for undo/redo
   const executeCommand = useHistoryStore((state) => state.execute);
 
-  // Plant store for system selection
+  // Plant store for system selection and available systems
   const selectSystem = usePlantStore((state) => state.selectSystem);
+  const plant = usePlantStore((state) => state.plant);
 
   // Custom symbols store - all symbols are now here
   const customSymbols = useCustomSymbolStore((state) => state.customSymbols);
@@ -215,13 +308,16 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   const highlightedComponentKks = useUIStore((state) => state.highlightedComponentKks);
   const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
 
-  // KKS Pipe Highlighting state
+  // KKS Pipe Highlighting state (Segments tab)
   const kksHighlightEnabled = useUIStore((state) => state.kksHighlightEnabled);
   const kksHighlightSegments = useUIStore((state) => state.kksHighlightSegments);
   const kksHighlightSegment = useUIStore((state) => state.kksHighlightSegment);
   const kksHighlightColor = useUIStore((state) => state.kksHighlightColor);
   const kksHideNonMatching = useUIStore((state) => state.kksHideNonMatching);
   const kksHideFadeOpacity = useUIStore((state) => state.kksHideFadeOpacity);
+
+  // Type Highlighting state (Types tab)
+  const kksHighlightTypes = useUIStore((state) => state.kksHighlightTypes);
 
   // UI Store actions
   const select = useUIStore((state) => state.select);
@@ -264,9 +360,11 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
       segments.push(previewSegment);
     }
 
-    // Add saved segments
+    // Add saved segments - only if enabled
     kksHighlightSegments.forEach(seg => {
-      segments.push(seg.segment.toUpperCase());
+      if (seg.enabled) {
+        segments.push(seg.segment.toUpperCase());
+      }
     });
 
     return segments;
@@ -319,6 +417,44 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
 
     return connectedKks;
   }, [kksHighlightEnabled, kksHideNonMatching, kksMatchingComponents, connections]);
+
+  // Compute type highlight colors for components (Types tab)
+  // Returns a map of componentKks -> highlight color
+  const typeHighlightColors = useMemo(() => {
+    const colorMap = new Map<string, string>();
+
+    // Get enabled type highlights
+    const enabledTypes = kksHighlightTypes.filter(t => t.enabled);
+    if (enabledTypes.length === 0) return colorMap;
+
+    components.forEach((comp) => {
+      // Check if component type matches any enabled type highlight
+      for (const typeHighlight of enabledTypes) {
+        if (comp.type === typeHighlight.symbolId) {
+          colorMap.set(comp.kks, typeHighlight.color);
+          break; // First match wins
+        }
+      }
+    });
+
+    return colorMap;
+  }, [kksHighlightTypes, components]);
+
+  // Compute set of available system KKS for terminal link validation
+  const availableSystemKks = useMemo(() => {
+    if (!plant) return new Set<string>();
+    const systemKksSet = new Set<string>();
+    // Iterate through all units and their systems
+    for (const unit of Object.values(plant.units)) {
+      for (const system of Object.values(unit.systems)) {
+        // System uses 'kks' property, not 'systemKks'
+        if (system.kks) {
+          systemKksSet.add(system.kks);
+        }
+      }
+    }
+    return systemKksSet;
+  }, [plant]);
 
   // Helper: Get component bounding box
   // Note: Component position is at the centerPoint of the symbol (due to offsetX/offsetY in BaseSymbol)
@@ -531,7 +667,10 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
   // Handle component drag start
   const handleDragStart = useCallback(
     (e: KonvaEventObject<DragEvent>, component: Component) => {
-      if (mode === 'view' || tool !== 'select') {
+      // Prevent drag on middle mouse button (used for panning) or in view mode
+      // button === 1 is middle click, buttons & 4 checks if middle is currently pressed
+      const isMiddleButton = e.evt.button === 1 || (e.evt.buttons & 4) !== 0;
+      if (mode === 'view' || tool !== 'select' || isMiddleButton) {
         e.target.stopDrag();
         return;
       }
@@ -697,7 +836,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
 
   // Handle double-click for terminal navigation
   const handleDoubleClick = useCallback(
-    (component: Component) => {
+    async (component: Component) => {
       // Check if this is a terminal component
       if (!component.type.startsWith('terminals:')) return;
 
@@ -711,40 +850,44 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         return;
       }
 
-      // Check if target system exists in the diagram cache BEFORE switching
-      // If the system hasn't been implemented yet, show a message instead of navigating
-      const targetDiagram = diagramCache[targetSystemKks];
-      if (!targetDiagram) {
-        // Show alert message that the system doesn't exist yet
-        alert(`System "${targetSystemKks}" does not exist yet.\n\nThe target system has not been implemented.`);
-        return;
-      }
+      // Store current system KKS before switching
+      const currentSystemKks = diagram?.systemKks;
 
       // Save current viewport before switching
-      if (diagram?.systemKks) {
-        saveViewportForSystem(diagram.systemKks);
+      if (currentSystemKks) {
+        saveViewportForSystem(currentSystemKks);
       }
 
-      // Switch to target system
+      // Switch to target system - DON'T create if not found
       selectSystem(targetSystemKks);
-      switchToSystem(targetSystemKks);
+      const result = await switchToSystem(targetSystemKks, { createIfNotFound: false });
+
+      if (!result.success) {
+        // Show error message - system doesn't exist
+        alert(`Target system "${targetSystemKks}" not found. The linked system may have been renamed or deleted.`);
+        return;
+      }
 
       // After switching, restore viewport and highlight terminal
       setTimeout(() => {
         // Try to restore saved viewport for target system
         restoreViewportForSystem(targetSystemKks);
 
+        // Get the loaded diagram from cache (it's now loaded after switchToSystem)
+        const loadedDiagram = useDiagramStore.getState().diagramCache[targetSystemKks];
+        if (!loadedDiagram) return;
+
         // Find the target terminal component
         let targetComponent = targetTerminalKks
-          ? targetDiagram.components[targetTerminalKks]
+          ? loadedDiagram.components[targetTerminalKks]
           : null;
 
         // If no specific terminal, find any terminal that links back to this system
         if (!targetComponent) {
-          targetComponent = Object.values(targetDiagram.components).find((c) => {
+          targetComponent = Object.values(loadedDiagram.components).find((c) => {
             if (!c.type.startsWith('terminals:')) return false;
             const cProps = c.properties as Record<string, string>;
-            return cProps.targetSystemKks === diagram?.systemKks;
+            return cProps.targetSystemKks === currentSystemKks;
           }) || null;
         }
 
@@ -757,7 +900,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         }
       }, 100);
     },
-    [diagram, diagramCache, selectSystem, switchToSystem, select, highlightComponent, saveViewportForSystem, restoreViewportForSystem]
+    [diagram, selectSystem, switchToSystem, select, highlightComponent, saveViewportForSystem, restoreViewportForSystem]
   );
 
   // Handle selection rectangle drag
@@ -881,6 +1024,9 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
         const isVisibleForKks = isKksMatching || isKksConnected || componentIsSelected;
         const kksOpacity = shouldHideForKks && !isVisibleForKks ? kksHideFadeOpacity : 1;
 
+        // Get type highlight color if applicable
+        const componentTypeHighlightColor = typeHighlightColors.get(component.kks);
+
         return (
           <ComponentItem
             key={component.kks}
@@ -897,6 +1043,8 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
             tool={tool}
             darkMode={canvasDarkMode}
             kksOpacity={kksOpacity}
+            typeHighlightColor={componentTypeHighlightColor}
+            availableSystemKks={availableSystemKks}
             onDragStart={handleDragStart}
             onDragMove={handleDragMove}
             onDragEnd={handleDragEnd}

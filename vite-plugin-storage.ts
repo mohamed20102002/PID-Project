@@ -8,12 +8,16 @@
 import type { Plugin } from 'vite';
 import fs from 'fs';
 import path from 'path';
+import XLSX from 'xlsx';
 
 const DATA_DIR = './data';
 const SYSTEMS_DIR = './data/systems';
+const REFERENCES_DIR = './data/references';
+const KKS_REFERENCES_DIR = './data/references/kks';
 const PLANT_FILE = './data/plant.json';
 const CUSTOM_SYMBOLS_FILE = './data/custom-symbols.json';
 const SETTINGS_FILE = './data/settings.json';
+const KKS_ID_FILE = './data/references/kks/KKSID.xlsx';
 
 // Ensure directories exist
 function ensureDirectories() {
@@ -22,6 +26,12 @@ function ensureDirectories() {
   }
   if (!fs.existsSync(SYSTEMS_DIR)) {
     fs.mkdirSync(SYSTEMS_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(REFERENCES_DIR)) {
+    fs.mkdirSync(REFERENCES_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(KKS_REFERENCES_DIR)) {
+    fs.mkdirSync(KKS_REFERENCES_DIR, { recursive: true });
   }
 }
 
@@ -308,6 +318,151 @@ export function storagePlugin(): Plugin {
               res.end(JSON.stringify({ success: false, error: String(error) }));
             }
           });
+        } else {
+          next();
+        }
+      });
+
+      // Rename system (move folder and update diagram)
+      server.middlewares.use('/api/storage/rename-system', async (req, res, next) => {
+        if (req.method === 'POST') {
+          let body = '';
+          req.on('data', chunk => { body += chunk; });
+          req.on('end', () => {
+            try {
+              const { oldKks, newKks } = JSON.parse(body);
+              console.log(`[Storage] Rename request: ${oldKks} -> ${newKks}`);
+
+              if (!oldKks || !newKks) {
+                res.statusCode = 400;
+                res.end(JSON.stringify({ success: false, error: 'Missing oldKks or newKks' }));
+                return;
+              }
+
+              const oldDir = getSystemDir(oldKks);
+              const newDir = getSystemDir(newKks);
+              console.log(`[Storage] Old dir: ${oldDir} (exists: ${fs.existsSync(oldDir)})`);
+              console.log(`[Storage] New dir: ${newDir} (exists: ${fs.existsSync(newDir)})`);
+
+              // Check if old directory exists
+              if (!fs.existsSync(oldDir)) {
+                console.log(`[Storage] Old folder does not exist, returning success with message`);
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ success: true, message: 'Old system folder does not exist' }));
+                return;
+              }
+
+              // Check if new directory already exists
+              if (fs.existsSync(newDir)) {
+                console.log(`[Storage] New folder already exists, returning error`);
+                res.statusCode = 400;
+                res.end(JSON.stringify({ success: false, error: `System ${newKks} already exists` }));
+                return;
+              }
+
+              // Rename the folder
+              console.log(`[Storage] Renaming folder: ${oldDir} -> ${newDir}`);
+              fs.renameSync(oldDir, newDir);
+
+              // Update the diagram.json with new systemKks
+              const diagramPath = path.join(newDir, 'diagram.json');
+              if (fs.existsSync(diagramPath)) {
+                console.log(`[Storage] Updating diagram.json with new systemKks`);
+                const diagramData = JSON.parse(fs.readFileSync(diagramPath, 'utf-8'));
+                diagramData.systemKks = newKks;
+                // Also update any component systemKks references
+                if (diagramData.components) {
+                  Object.values(diagramData.components).forEach((comp: Record<string, unknown>) => {
+                    if (comp.systemKks === oldKks) {
+                      comp.systemKks = newKks;
+                    }
+                  });
+                }
+                fs.writeFileSync(diagramPath, JSON.stringify(diagramData, null, 2), 'utf-8');
+              }
+
+              console.log(`[Storage] Rename complete: ${oldKks} -> ${newKks}`);
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true }));
+            } catch (error) {
+              console.error('[Storage] Rename system error:', error);
+              res.statusCode = 500;
+              res.end(JSON.stringify({ success: false, error: String(error) }));
+            }
+          });
+        } else {
+          next();
+        }
+      });
+
+      // KKS References (Excel file)
+      server.middlewares.use('/api/storage/references/kks', async (req, res, next) => {
+        if (req.method === 'GET') {
+          try {
+            // Check if file exists
+            if (!fs.existsSync(KKS_ID_FILE)) {
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({
+                success: false,
+                error: 'KKS reference file not found',
+                fileExists: false,
+                expectedPath: KKS_ID_FILE
+              }));
+              return;
+            }
+
+            // Read and parse Excel file
+            const workbook = XLSX.readFile(KKS_ID_FILE);
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            // Convert to JSON - assume first row is header
+            const rawData = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet, { header: 1 });
+
+            if (rawData.length < 2) {
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({
+                success: false,
+                error: 'Excel file is empty or has no data rows',
+                fileExists: true
+              }));
+              return;
+            }
+
+            // Parse rows - first column is KKS, second is System Name, third is Segments
+            const entries: Array<{ kks: string; systemName: string; segments?: string[] }> = [];
+            for (let i = 1; i < rawData.length; i++) {
+              const row = rawData[i] as unknown[];
+              if (row && row.length >= 2) {
+                const kks = String(row[0] || '').trim();
+                const systemName = String(row[1] || '').trim();
+                // Read column C for segments (comma-separated list)
+                const segmentsStr = row.length >= 3 ? String(row[2] || '').trim() : '';
+
+                if (kks) {
+                  // Parse segments from comma-separated string
+                  const segments = segmentsStr
+                    ? segmentsStr.split(',').map(s => s.trim()).filter(Boolean)
+                    : undefined;
+
+                  entries.push({ kks, systemName, segments });
+                }
+              }
+            }
+
+            console.log(`[Storage] Loaded ${entries.length} KKS reference entries`);
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({
+              success: true,
+              fileExists: true,
+              entries,
+              totalCount: entries.length
+            }));
+          } catch (error) {
+            console.error('[Storage] Load KKS references error:', error);
+            res.statusCode = 500;
+            res.end(JSON.stringify({ success: false, error: String(error), fileExists: false }));
+          }
         } else {
           next();
         }

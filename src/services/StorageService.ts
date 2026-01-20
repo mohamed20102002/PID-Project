@@ -139,6 +139,30 @@ class StorageServiceClass {
     }
   }
 
+  async renameSystem(oldKks: string, newKks: string): Promise<{ success: boolean; error?: string; message?: string }> {
+    if (!oldKks || !newKks) {
+      return { success: false, error: 'Invalid oldKks or newKks' };
+    }
+
+    try {
+      const response = await fetch('/api/storage/rename-system', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ oldKks, newKks }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        console.log(`[StorageService] Renamed system: ${oldKks} -> ${newKks}`, result.message || '');
+      }
+      return result;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Rename failed';
+      console.error('[StorageService] Rename error:', error);
+      return { success: false, error: errorMsg };
+    }
+  }
+
   // ========== Plant Operations ==========
 
   async savePlant(plant: Plant): Promise<{ success: boolean; error?: string }> {
