@@ -17,6 +17,7 @@ import { BuildingsLayer } from './BuildingsLayer';
 import { CanvasBoundary } from './CanvasBoundary';
 import { AxisOverlay } from './AxisOverlay';
 import { KKSHoverTooltip } from './KKSHoverTooltip';
+import { CopyKKSButton } from './CopyKKSButton';
 import { useUIStore } from '../../store/uiStore';
 import { useDiagramStore } from '../../store/diagramStore';
 import { usePlantStore } from '../../store/plantStore';
@@ -750,8 +751,17 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't capture if typing in an input
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      // Don't capture if typing in an input or contentEditable element
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target instanceof HTMLElement && e.target.isContentEditable)
+      ) {
+        return;
+      }
+
+      // Don't capture if inside the description editor modal
+      if (e.target instanceof HTMLElement && e.target.closest('[data-description-editor="true"]')) {
         return;
       }
 
@@ -1034,6 +1044,16 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({ width, height, onS
       <KKSHoverTooltip
         containerRef={containerRef as React.RefObject<HTMLElement>}
         onOpenSystem={onOpenSystem}
+        onOpenDescription={(componentKks, viewOnly) => {
+          // Select the component and signal to open description
+          select([componentKks], []);
+          useUIStore.getState().setPendingDescriptionOpen(componentKks, viewOnly);
+        }}
+      />
+
+      {/* Copy KKS Button - appears when components are selected */}
+      <CopyKKSButton
+        containerRef={containerRef as React.RefObject<HTMLElement>}
       />
     </div>
   );

@@ -1,8 +1,8 @@
 /**
  * Auto-Save Hook
  *
- * Automatically saves the diagram to localStorage when changes are detected.
- * Uses debouncing to prevent excessive saves.
+ * Automatically saves the diagram to both localStorage and the project folder
+ * when changes are detected. Uses debouncing to prevent excessive saves.
  */
 
 import { useEffect, useRef, useCallback, useState } from 'react';
@@ -65,14 +65,21 @@ export const useAutoSave = (
   const diagram = useDiagramStore((state) => state.diagram);
   const isDirty = useDiagramStore((state) => state.isDirty);
   const loadDiagram = useDiagramStore((state) => state.loadDiagram);
+  const saveCurrentDiagram = useDiagramStore((state) => state.saveCurrentDiagram);
 
-  // Perform save
+  // Perform save - saves to both localStorage (for recovery) and project folder (for persistence)
   const performSave = useCallback(async (): Promise<boolean> => {
     if (!diagram) return false;
 
     setIsSaving(true);
     try {
-      const success = saveToLocalStorage(diagram);
+      // Save to localStorage for quick recovery
+      const localStorageSuccess = saveToLocalStorage(diagram);
+
+      // Save to project folder for persistence (includes media processing)
+      const fileResult = await saveCurrentDiagram();
+
+      const success = localStorageSuccess && fileResult.success;
       if (success) {
         setLastSaveTime(new Date().toISOString());
       }
@@ -81,7 +88,7 @@ export const useAutoSave = (
     } finally {
       setIsSaving(false);
     }
-  }, [diagram, onSave]);
+  }, [diagram, onSave, saveCurrentDiagram]);
 
   // Debounced save on changes
   useEffect(() => {

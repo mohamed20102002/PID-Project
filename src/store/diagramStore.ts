@@ -270,6 +270,9 @@ export interface DiagramActions {
   markClean: () => void;
   markDirty: () => void;
   setError: (error: string | null) => void;
+
+  // Statistics
+  loadAllDiagramsForStats: (systemKksList: string[]) => Promise<void>;
 }
 
 // ============================================================================
@@ -374,7 +377,17 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
         }
       });
 
-      const result = await StorageService.saveDiagram(diagram.systemKks, get().diagram!);
+      // Process media (extract base64 images and save as files)
+      const diagramToSave = await StorageService.processDiagramMedia(diagram.systemKks, get().diagram!);
+
+      // Update the diagram in state with processed media paths
+      set((state) => {
+        if (state.diagram) {
+          state.diagram = diagramToSave;
+        }
+      });
+
+      const result = await StorageService.saveDiagram(diagram.systemKks, diagramToSave);
 
       if (result.success) {
         set((state) => {
@@ -403,8 +416,14 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
 
       // Save current diagram to file first
       if (currentState.diagram && currentState.diagram.systemKks) {
+        // Process media (extract base64 images and save as files)
+        const processedDiagram = await StorageService.processDiagramMedia(
+          currentState.diagram.systemKks,
+          currentState.diagram
+        );
+
         const diagramToSave = {
-          ...currentState.diagram,
+          ...processedDiagram,
           modifiedAt: new Date().toISOString(),
         };
 
@@ -483,12 +502,16 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
         return { success: false, error: 'No diagram to save' };
       }
 
+      // Process media (extract base64 images and save as files)
+      const processedDiagram = await StorageService.processDiagramMedia(diagram.systemKks, diagram);
+
       const diagramToSave = {
-        ...diagram,
+        ...processedDiagram,
         modifiedAt: new Date().toISOString(),
       };
 
       set((state) => {
+        state.diagram = diagramToSave;
         state.diagramCache[diagram.systemKks] = diagramToSave;
       });
 
@@ -497,6 +520,11 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
       if (result.success) {
         set((state) => {
           state.isDirty = false;
+        });
+
+        // Clean up orphaned media files (images that were deleted from descriptions)
+        StorageService.cleanupOrphanedMedia(diagram.systemKks, diagramToSave).catch((err) => {
+          console.warn('[diagramStore] Failed to cleanup orphaned media:', err);
         });
       }
 
@@ -944,6 +972,24 @@ export const useDiagramStore = create<DiagramState & DiagramActions>()(
     markClean: () => set((state) => { state.isDirty = false; }),
     markDirty: () => set((state) => { state.isDirty = true; }),
     setError: (error) => set((state) => { state.error = error; }),
+
+    // ========== Statistics ==========
+
+    loadAllDiagramsForStats: async (systemKksList) => {
+      const { diagramCache } = get();
+
+      // Load diagrams that aren't in cache yet
+      for (const systemKks of systemKksList) {
+        if (!diagramCache[systemKks]) {
+          const loadResult = await StorageService.loadDiagram(systemKks);
+          if (loadResult.success && loadResult.diagram) {
+            set((state) => {
+              state.diagramCache[systemKks] = loadResult.diagram!;
+            });
+          }
+        }
+      }
+    },
   })),
   {
     name: 'flowmark_diagrams',

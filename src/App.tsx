@@ -132,6 +132,10 @@ function App() {
   const canvasDarkMode = useUIStore((state) => state.canvasDarkMode);
   const toggleCanvasDarkMode = useUIStore((state) => state.toggleCanvasDarkMode);
   const pasteSegmentDialogOpen = useUIStore((state) => state.pasteSegmentDialogOpen);
+  const quickSearchOpen = useUIStore((state) => state.quickSearchOpen);
+  const toggleQuickSearch = useUIStore((state) => state.toggleQuickSearch);
+  const closeQuickSearch = useUIStore((state) => state.closeQuickSearch);
+  const openQuickSearch = useUIStore((state) => state.openQuickSearch);
 
   // Diagram Store
   const diagram = useDiagramStore((state) => state.diagram);
@@ -163,8 +167,7 @@ function App() {
   const [isVisualDesignerOpen, setIsVisualDesignerOpen] = useState(false);
   const [editingSymbolId, setEditingSymbolId] = useState<string | null>(null);
 
-  // Quick System Search state
-  const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
+  // Quick System Search state is now in uiStore
 
   // Edit Mode Login state
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -260,13 +263,13 @@ function App() {
       // Ctrl+K for quick system search
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        setIsQuickSearchOpen((prev) => !prev);
+        toggleQuickSearch();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleSave, handleOpen]);
+  }, [handleSave, handleOpen, toggleQuickSearch]);
 
   // Auto-save is handled silently via localStorage persistence
   // No restore dialog - data is automatically persisted
@@ -373,9 +376,8 @@ function App() {
       switchToSystem(matchedSystemKks);
       return { success: true };
     } else {
-      const errorMsg = `System "${systemKks}" not found. Available: ${allSystems.join(', ')}`;
-      console.warn(`[App.handleOpenSystem] FAILED - ${errorMsg}`);
-      return { success: false, error: errorMsg };
+      console.warn(`[App.handleOpenSystem] FAILED - System "${systemKks}" not found. Available: ${allSystems.join(', ')}`);
+      return { success: false, error: 'System not found' };
     }
   }, [plant, selectSystem, switchToSystem]);
 
@@ -630,7 +632,7 @@ function App() {
         {/* Center: Search */}
         <button
           className="px-3 py-1 text-xs text-gray-500 bg-gray-50 hover:bg-gray-100 rounded border border-gray-200 flex items-center gap-2"
-          onClick={() => setIsQuickSearchOpen(true)}
+          onClick={openQuickSearch}
           title="Quick Search (Ctrl+K)"
         >
           <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -1030,10 +1032,10 @@ function App() {
         )}
 
         {/* Quick System Search (Ctrl+K) */}
-        {isQuickSearchOpen && (
+        {quickSearchOpen && (
           <QuickSystemSearch
-            isOpen={isQuickSearchOpen}
-            onClose={() => setIsQuickSearchOpen(false)}
+            isOpen={quickSearchOpen}
+            onClose={closeQuickSearch}
           />
         )}
 

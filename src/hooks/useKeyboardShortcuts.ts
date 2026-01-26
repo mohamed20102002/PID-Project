@@ -236,7 +236,9 @@ export const useKeyboardShortcuts = () => {
 
       // Show segment replacement dialog if there are pasted components
       if (newComponentKksList.length > 0) {
-        useUIStore.getState().showPasteSegmentDialog(newComponentKksList, kksMap);
+        // Pass the original clipboard KKS values for segment detection
+        const originalKksList = clipboard.components.map((c: any) => c.kks);
+        useUIStore.getState().showPasteSegmentDialog(newComponentKksList, kksMap, originalKksList);
       }
     }, 50);
   }, [mode, diagram, getClipboard, execute]);
@@ -244,11 +246,17 @@ export const useKeyboardShortcuts = () => {
   // Handle keyboard events
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      // Don't handle if focus is in an input
+      // Don't handle if focus is in an input or contentEditable element
       if (
         e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target instanceof HTMLElement && e.target.isContentEditable)
       ) {
+        return;
+      }
+
+      // Don't handle if inside the description editor modal
+      if (e.target instanceof HTMLElement && e.target.closest('[data-description-editor="true"]')) {
         return;
       }
 

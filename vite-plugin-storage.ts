@@ -19,6 +19,12 @@ const CUSTOM_SYMBOLS_FILE = './data/custom-symbols.json';
 const SETTINGS_FILE = './data/settings.json';
 const KKS_ID_FILE = './data/references/kks/KKSID.xlsx';
 
+// Get media directory path for a system
+function getMediaDir(systemKks: string): string {
+  const safeKks = systemKks.replace(/[^a-zA-Z0-9_-]/g, '_');
+  return path.join(SYSTEMS_DIR, safeKks, 'media');
+}
+
 // Ensure directories exist
 function ensureDirectories() {
   if (!fs.existsSync(DATA_DIR)) {
@@ -386,6 +392,219 @@ export function storagePlugin(): Plugin {
               res.end(JSON.stringify({ success: true }));
             } catch (error) {
               console.error('[Storage] Rename system error:', error);
+              res.statusCode = 500;
+              res.end(JSON.stringify({ success: false, error: String(error) }));
+            }
+          });
+        } else {
+          next();
+        }
+      });
+
+      // IMPORTANT: More specific routes must be registered BEFORE more general routes!
+      // The middleware matching uses prefix matching, so /api/storage/media would match /api/storage/media/file
+
+      // Serve media files directly (for img src) - MUST be first
+      server.middlewares.use('/api/storage/media/file', async (req, res, next) => {
+        if (req.method === 'GET') {
+          try {
+            const url = new URL(req.url || '', `http://${req.headers.host}`);
+            const systemKks = url.searchParams.get('systemKks');
+            const filename = url.searchParams.get('filename');
+
+            if (!systemKks || !filename) {
+              res.statusCode = 400;
+              res.end('Missing systemKks or filename');
+              return;
+            }
+
+            const mediaDir = getMediaDir(systemKks);
+            const filePath = path.join(mediaDir, filename);
+
+            if (fs.existsSync(filePath)) {
+              const data = fs.readFileSync(filePath);
+
+              // Determine mime type from extension
+              const ext = path.extname(filename).toLowerCase();
+              const mimeTypes: Record<string, string> = {
+                '.png': 'image/png',
+                '.jpg': 'image/jpeg',
+                '.jpeg': 'image/jpeg',
+                '.gif': 'image/gif',
+                '.webp': 'image/webp',
+                '.svg': 'image/svg+xml',
+              };
+              const mimeType = mimeTypes[ext] || 'application/octet-stream';
+
+              res.setHeader('Content-Type', mimeType);
+              res.setHeader('Cache-Control', 'max-age=31536000');
+              res.end(data);
+            } else {
+              res.statusCode = 404;
+              res.end('File not found');
+            }
+          } catch (error) {
+            console.error('[Storage] Serve media error:', error);
+            res.statusCode = 500;
+            res.end('Server error');
+          }
+        } else {
+          next();
+        }
+      });
+
+      // List all media files for a system - MUST be before /api/storage/media
+      server.middlewares.use('/api/storage/media/list', async (req, res, next) => {
+        if (req.method === 'GET') {
+          try {
+            const url = new URL(req.url || '', `http://${req.headers.host}`);
+            const systemKks = url.searchParams.get('systemKks');
+
+            if (!systemKks) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ success: false, error: 'Missing systemKks' }));
+              return;
+            }
+
+            const mediaDir = getMediaDir(systemKks);
+
+            if (!fs.existsSync(mediaDir)) {
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, files: [] }));
+              return;
+            }
+
+            const files = fs.readdirSync(mediaDir).filter(name => {
+              const ext = path.extname(name).toLowerCase();
+              return ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'].includes(ext);
+            });
+
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ success: true, files }));
+          } catch (error) {
+            console.error('[Storage] List media error:', error);
+            res.statusCode = 500;
+            res.end(JSON.stringify({ success: false, error: String(error) }));
+          }
+        } else {
+          next();
+        }
+      });
+
+      // Save/Load/Delete media file (image) for a system - general route last
+      server.middlewares.use('/api/storage/media', async (req, res, next) => {
+        if (req.method === 'POST') {
+          let body = '';
+          req.on('data', chunk => { body += chunk; });
+          req.on('end', () => {
+            try {
+              const { systemKks, filename, data, mimeType } = JSON.parse(body);
+
+              if (!systemKks || !filename || !data) {
+                res.statusCode = 400;
+                res.end(JSON.stringify({ success: false, error: 'Missing systemKks, filename, or data' }));
+                return;
+              }
+
+              // Ensure media directory exists
+              const mediaDir = getMediaDir(systemKks);
+              if (!fs.existsSync(mediaDir)) {
+                fs.mkdirSync(mediaDir, { recursive: true });
+              }
+
+              // Extract base64 data (remove data URL prefix if present)
+              let base64Data = data;
+              if (data.includes(',')) {
+                base64Data = data.split(',')[1];
+              }
+
+              // Save the file
+              const filePath = path.join(mediaDir, filename);
+              fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));
+
+              console.log(`[Storage] Saved media file: ${systemKks}/media/${filename}`);
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({
+                success: true,
+                path: `media/${filename}`,
+                fullPath: filePath
+              }));
+            } catch (error) {
+              console.error('[Storage] Save media error:', error);
+              res.statusCode = 500;
+              res.end(JSON.stringify({ success: false, error: String(error) }));
+            }
+          });
+        } else if (req.method === 'GET') {
+          try {
+            const url = new URL(req.url || '', `http://${req.headers.host}`);
+            const systemKks = url.searchParams.get('systemKks');
+            const filename = url.searchParams.get('filename');
+
+            if (!systemKks || !filename) {
+              res.statusCode = 400;
+              res.end(JSON.stringify({ success: false, error: 'Missing systemKks or filename' }));
+              return;
+            }
+
+            const mediaDir = getMediaDir(systemKks);
+            const filePath = path.join(mediaDir, filename);
+
+            if (fs.existsSync(filePath)) {
+              const data = fs.readFileSync(filePath);
+              const base64 = data.toString('base64');
+
+              // Determine mime type from extension
+              const ext = path.extname(filename).toLowerCase();
+              const mimeTypes: Record<string, string> = {
+                '.png': 'image/png',
+                '.jpg': 'image/jpeg',
+                '.jpeg': 'image/jpeg',
+                '.gif': 'image/gif',
+                '.webp': 'image/webp',
+                '.svg': 'image/svg+xml',
+              };
+              const mimeType = mimeTypes[ext] || 'application/octet-stream';
+
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({
+                success: true,
+                data: `data:${mimeType};base64,${base64}`,
+                mimeType
+              }));
+            } else {
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: false, error: 'Media file not found' }));
+            }
+          } catch (error) {
+            console.error('[Storage] Load media error:', error);
+            res.statusCode = 500;
+            res.end(JSON.stringify({ success: false, error: String(error) }));
+          }
+        } else if (req.method === 'DELETE') {
+          let body = '';
+          req.on('data', chunk => { body += chunk; });
+          req.on('end', () => {
+            try {
+              const { systemKks, filename } = JSON.parse(body);
+
+              if (!systemKks || !filename) {
+                res.statusCode = 400;
+                res.end(JSON.stringify({ success: false, error: 'Missing systemKks or filename' }));
+                return;
+              }
+
+              const mediaDir = getMediaDir(systemKks);
+              const filePath = path.join(mediaDir, filename);
+
+              if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+              }
+
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true }));
+            } catch (error) {
+              console.error('[Storage] Delete media error:', error);
               res.statusCode = 500;
               res.end(JSON.stringify({ success: false, error: String(error) }));
             }

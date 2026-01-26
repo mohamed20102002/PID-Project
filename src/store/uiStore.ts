@@ -127,6 +127,9 @@ export interface UIState {
   // Per-system viewport storage
   systemViewports: Record<string, Viewport>;
 
+  // Per-system selection storage
+  systemSelections: Record<string, Selection>;
+
   // Building drawing state
   isDrawingBuilding: boolean;
   buildingPreviewPoints: Point[];
@@ -181,6 +184,12 @@ export interface UIState {
   pastedComponentKks: string[];
   pastedKksMap: Map<string, string>; // old KKS -> new KKS
   clipboardComponentKks: string[]; // Original KKS from clipboard
+
+  // Quick System Search
+  quickSearchOpen: boolean;
+
+  // Pending description open (triggered from tooltip)
+  pendingDescriptionOpen: { kks: string; viewOnly: boolean } | null;
 }
 
 export interface UIActions {
@@ -251,6 +260,10 @@ export interface UIActions {
   saveViewportForSystem: (systemKks: string) => void;
   restoreViewportForSystem: (systemKks: string) => boolean;
 
+  // Per-system selection management
+  saveSelectionForSystem: (systemKks: string) => void;
+  restoreSelectionForSystem: (systemKks: string) => boolean;
+
   // Building drawing
   startBuildingDrawing: () => void;
   addBuildingVertex: (point: Point) => void;
@@ -318,6 +331,14 @@ export interface UIActions {
   // Paste Segment Dialog
   showPasteSegmentDialog: (pastedKks: string[], kksMap: Map<string, string>, clipboardKks: string[]) => void;
   closePasteSegmentDialog: () => void;
+
+  // Quick System Search
+  openQuickSearch: () => void;
+  closeQuickSearch: () => void;
+  toggleQuickSearch: () => void;
+
+  // Pending Description Open
+  setPendingDescriptionOpen: (componentKks: string | null, viewOnly?: boolean) => void;
 }
 
 // ============================================================================
@@ -360,6 +381,7 @@ const initialState: UIState = {
   highlightedComponentKks: null,
   highlightStartTime: null,
   systemViewports: {},
+  systemSelections: {},
   isDrawingBuilding: false,
   buildingPreviewPoints: [],
   editingBuildingId: null,
@@ -396,6 +418,13 @@ const initialState: UIState = {
   pasteSegmentDialogOpen: false,
   pastedComponentKks: [],
   pastedKksMap: new Map(),
+  clipboardComponentKks: [],
+
+  // Quick System Search
+  quickSearchOpen: false,
+
+  // Pending Description Open
+  pendingDescriptionOpen: null,
 };
 
 // ============================================================================
@@ -681,6 +710,39 @@ export const useUIStore = create<UIState & UIActions>()(
       return false;
     },
 
+    // Save current selection for a system
+    saveSelectionForSystem: (systemKks) => set((state) => {
+      state.systemSelections[systemKks] = {
+        componentKks: [...state.selection.componentKks],
+        connectionKks: [...state.selection.connectionKks],
+        type: state.selection.type,
+      };
+    }),
+
+    // Restore selection for a system (returns true if found)
+    restoreSelectionForSystem: (systemKks) => {
+      const saved = get().systemSelections[systemKks];
+      if (saved) {
+        set((state) => {
+          state.selection = {
+            componentKks: [...saved.componentKks],
+            connectionKks: [...saved.connectionKks],
+            type: saved.type,
+          };
+        });
+        return true;
+      }
+      // Clear selection if no saved state
+      set((state) => {
+        state.selection = {
+          componentKks: [],
+          connectionKks: [],
+          type: 'none',
+        };
+      });
+      return false;
+    },
+
     // Building drawing
     startBuildingDrawing: () => set((state) => {
       state.isDrawingBuilding = true;
@@ -921,16 +983,36 @@ export const useUIStore = create<UIState & UIActions>()(
     }),
 
     // Paste Segment Dialog
-    showPasteSegmentDialog: (componentKks, kksMap) => set((state) => {
+    showPasteSegmentDialog: (componentKks, kksMap, clipboardKks) => set((state) => {
       state.pasteSegmentDialogOpen = true;
       state.pastedComponentKks = componentKks;
       state.pastedKksMap = kksMap;
+      state.clipboardComponentKks = clipboardKks;
     }),
 
     closePasteSegmentDialog: () => set((state) => {
       state.pasteSegmentDialogOpen = false;
       state.pastedComponentKks = [];
       state.pastedKksMap = new Map();
+      state.clipboardComponentKks = [];
+    }),
+
+    // Quick System Search
+    openQuickSearch: () => set((state) => {
+      state.quickSearchOpen = true;
+    }),
+
+    closeQuickSearch: () => set((state) => {
+      state.quickSearchOpen = false;
+    }),
+
+    toggleQuickSearch: () => set((state) => {
+      state.quickSearchOpen = !state.quickSearchOpen;
+    }),
+
+    // Pending Description Open
+    setPendingDescriptionOpen: (componentKks, viewOnly = false) => set((state) => {
+      state.pendingDescriptionOpen = componentKks ? { kks: componentKks, viewOnly } : null;
     }),
   })),
   {

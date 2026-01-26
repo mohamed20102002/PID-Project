@@ -46,7 +46,9 @@
       "Bash(for pid in 11104 18684 11796 3980)",
       "Bash(do taskkill //F //PID $pid)",
       "Bash(done)",
-      "Bash(Select-Object -Last 50)"
+      "Bash(Select-Object -Last 50)",
+      "Bash(tasklist:*)",
+      "Bash(git clone:*)"
     ]
   }
 }

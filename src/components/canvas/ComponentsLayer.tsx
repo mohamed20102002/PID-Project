@@ -42,6 +42,7 @@ interface ComponentItemProps {
   kksOpacity: number;
   typeHighlightColor?: string; // Color for type-based highlighting
   availableSystemKks: Set<string>; // Set of available system KKS for terminal link validation
+  diagramCache: Record<string, unknown>; // Diagram cache for terminal existence validation
   onDragStart: (e: KonvaEventObject<DragEvent>, component: Component) => void;
   onDragMove: (e: KonvaEventObject<DragEvent>) => void;
   onDragEnd: (e: KonvaEventObject<DragEvent>, component: Component) => void;
@@ -68,6 +69,7 @@ const ComponentItem = React.memo<ComponentItemProps>(({
   kksOpacity,
   typeHighlightColor,
   availableSystemKks,
+  diagramCache,
   onDragStart,
   onDragMove,
   onDragEnd,
@@ -130,6 +132,19 @@ const ComponentItem = React.memo<ComponentItemProps>(({
     }
   }, [mode, tool]);
 
+  // Calculate component bounds for hit region
+  const compWidth = component.size?.width || definition?.defaultSize?.width || 60;
+  const compHeight = component.size?.height || definition?.defaultSize?.height || 60;
+  const centerX = definition?.centerPoint?.x ?? 0.5;
+  const centerY = definition?.centerPoint?.y ?? 0.5;
+
+  // Use hitBounds if defined, otherwise use full component bounds
+  const hitBounds = (definition as any)?.hitBounds;
+  const hitX = hitBounds ? hitBounds.x * compWidth : 0;
+  const hitY = hitBounds ? hitBounds.y * compHeight : 0;
+  const hitWidth = hitBounds ? hitBounds.width * compWidth : compWidth;
+  const hitHeight = hitBounds ? hitBounds.height * compHeight : compHeight;
+
   return (
     <Group
       ref={groupRef}
@@ -148,6 +163,14 @@ const ComponentItem = React.memo<ComponentItemProps>(({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={onMouseLeave}
     >
+      {/* Invisible hit region rect - constrains clickable area to visual bounds */}
+      <Rect
+        x={hitX - centerX * compWidth}
+        y={hitY - centerY * compHeight}
+        width={hitWidth}
+        height={hitHeight}
+        fill="transparent"
+      />
       <MemoizedBaseSymbol
         definition={definition}
         component={componentWithZeroPosition}
@@ -166,6 +189,7 @@ const ComponentItem = React.memo<ComponentItemProps>(({
         (() => {
           const props = component.properties as Record<string, string> | undefined;
           const targetSystemKks = props?.targetSystemKks;
+          const targetTerminalKks = props?.targetTerminalKks;
           const hasLink = !!targetSystemKks;
           const width = definition?.defaultSize?.width || 60;
           const height = definition?.defaultSize?.height || 60;
@@ -174,17 +198,34 @@ const ComponentItem = React.memo<ComponentItemProps>(({
           const rotation = component.rotation || 0;
 
           // Determine circle color:
-          // - Green: has link AND target system exists
-          // - Yellow: has link BUT target system doesn't exist
-          // - Red: no link
-          let circleColor = '#ef4444'; // Red - no link
-          if (hasLink && targetSystemKks) {
-            // Check if target system exists (exact match first, then case-insensitive)
+          // - Green: has BOTH targetSystemKks AND targetTerminalKks, and both exist
+          // - Orange: has BOTH but target system or terminal doesn't exist
+          // - Yellow: incomplete data (only one of targetSystemKks or targetTerminalKks provided)
+          // - Red: no link at all
+          const hasSystemKks = !!targetSystemKks;
+          const hasTerminalKks = !!targetTerminalKks;
+
+          let circleColor = '#ef4444'; // Red - no link at all
+
+          if (hasSystemKks && hasTerminalKks) {
+            // Both fields provided - check if they exist
             const systemExists = availableSystemKks.has(targetSystemKks) ||
               Array.from(availableSystemKks).some(kks =>
                 kks && kks.toUpperCase().trim() === targetSystemKks.toUpperCase().trim()
               );
-            circleColor = systemExists ? '#22c55e' : '#eab308'; // Green or Yellow
+
+            if (!systemExists) {
+              // System doesn't exist - orange
+              circleColor = '#f97316'; // Orange
+            } else {
+              // System exists, check if target terminal exists
+              const targetDiagram = diagramCache[targetSystemKks] as { components?: Record<string, unknown> } | undefined;
+              const terminalExists = targetDiagram?.components && targetTerminalKks in targetDiagram.components;
+              circleColor = terminalExists ? '#22c55e' : '#f97316'; // Green or Orange
+            }
+          } else if (hasSystemKks || hasTerminalKks) {
+            // Only one field provided - incomplete data - yellow
+            circleColor = '#eab308'; // Yellow
           }
 
           // Calculate circle position based on rotation
@@ -1045,6 +1086,7 @@ export const ComponentsLayer: React.FC<ComponentsLayerProps> = ({ snapEngine, on
             kksOpacity={kksOpacity}
             typeHighlightColor={componentTypeHighlightColor}
             availableSystemKks={availableSystemKks}
+            diagramCache={diagramCache}
             onDragStart={handleDragStart}
             onDragMove={handleDragMove}
             onDragEnd={handleDragEnd}

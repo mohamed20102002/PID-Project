@@ -40,29 +40,39 @@ const AlertIcon = () => (
 );
 
 /**
- * Extract numeric segments from a KKS string
- * Looks for patterns like "JNG10", "LAA41" and extracts the numbers (10, 41)
- * These are typically the differentiating numbers within a component category
+ * Extract system segment numbers from a KKS string
+ * Looks for the system segment number (1-2 digits) that comes after the system code letters
+ *
+ * KKS Structure: [Unit][SystemCode][SystemSegment][ComponentType][SequentialNumber]
+ * Example: 10KBA10AA001
+ *   - 10 = Unit number
+ *   - KBA = System code (2-3 letters)
+ *   - 10 = System segment (1-2 digits) <- THIS IS WHAT WE DETECT
+ *   - AA = Component type (2 letters)
+ *   - 001 = Sequential number (3 digits) <- NOT this
+ *
+ * We only detect 1-2 digit numbers after 2-3 letter system codes,
+ * ignoring 3-digit sequential numbers (like 001, 002)
  */
 function extractNumericSegments(kks: string): { prefix: string; number: string }[] {
   const segments: { prefix: string; number: string }[] = [];
+  const seen = new Set<string>();
 
-  // Split by dashes to analyze each part
-  const parts = kks.split('-');
+  // Match system codes (2-3 letters) followed by system segment numbers (1-2 digits)
+  // The (?!\d) ensures we don't match if there are more digits (which would be sequential numbers)
+  // The (?=[A-Z]|$|-) ensures the segment is followed by letters (component type), end of string, or dash
+  const regex = /([A-Z]{2,3})(\d{1,2})(?=[A-Z]|$|-)/gi;
+  let match;
 
-  for (const part of parts) {
-    // Look for patterns: letters followed by numbers (e.g., "JNG10", "LAA41", "AA001")
-    // We want to find segments where letters are followed by numbers
-    const match = part.match(/^([A-Z]+)(\d+)$/i);
-    if (match) {
-      const prefix = match[1].toUpperCase();
-      const number = match[2];
+  while ((match = regex.exec(kks)) !== null) {
+    const prefix = match[1].toUpperCase();
+    const number = match[2];
+    const key = `${prefix}${number}`;
 
-      // Skip very long numbers (like sequential IDs "001", "002") - focus on meaningful segments
-      // Also skip single digit numbers that might be unit identifiers
-      if (number.length >= 1 && number.length <= 3) {
-        segments.push({ prefix, number });
-      }
+    // Avoid duplicates
+    if (!seen.has(key)) {
+      seen.add(key);
+      segments.push({ prefix, number });
     }
   }
 
@@ -93,6 +103,8 @@ export const PasteSegmentDialog: React.FC = () => {
   const {
     pasteSegmentDialogOpen,
     pastedComponentKks,
+    clipboardComponentKks,
+    pastedKksMap,
     closePasteSegmentDialog,
   } = useUIStore();
 
@@ -101,9 +113,11 @@ export const PasteSegmentDialog: React.FC = () => {
   // State for segment replacements: "PREFIX+NUMBER" -> new number
   const [replacements, setReplacements] = useState<Record<string, string>>({});
 
-  // Detect unique segments from pasted components
+  // Detect unique segments from ORIGINAL clipboard components (not the auto-generated ones)
   const detectedSegments = useMemo(() => {
-    const segmentsMap = getUniqueSegments(pastedComponentKks);
+    // Use clipboardComponentKks (original) for segment detection
+    const sourceKks = clipboardComponentKks.length > 0 ? clipboardComponentKks : pastedComponentKks;
+    const segmentsMap = getUniqueSegments(sourceKks);
     return Array.from(segmentsMap.entries())
       .map(([key, value]) => ({ key, ...value }))
       .sort((a, b) => {
@@ -111,7 +125,7 @@ export const PasteSegmentDialog: React.FC = () => {
         if (a.prefix !== b.prefix) return a.prefix.localeCompare(b.prefix);
         return parseInt(a.number) - parseInt(b.number);
       });
-  }, [pastedComponentKks]);
+  }, [clipboardComponentKks, pastedComponentKks]);
 
   // Initialize replacements when dialog opens
   React.useEffect(() => {
@@ -134,25 +148,41 @@ export const PasteSegmentDialog: React.FC = () => {
     }));
   }, []);
 
-  // Preview what the new KKS will look like
-  const previewKks = useCallback((originalKks: string) => {
-    let newKks = originalKks;
+  // Build reverse map: new auto-generated KKS -> original clipboard KKS
+  const reverseKksMap = useMemo(() => {
+    const reverse = new Map<string, string>();
+    pastedKksMap.forEach((newKks, oldKks) => {
+      reverse.set(newKks, oldKks);
+    });
+    return reverse;
+  }, [pastedKksMap]);
+
+  // Apply segment replacements to a KKS string
+  const applySegmentReplacements = useCallback((kks: string) => {
+    let newKks = kks;
 
     // For each detected segment, replace PREFIX+OLDNUMBER with PREFIX+NEWNUMBER
     detectedSegments.forEach(seg => {
       const newNumber = replacements[seg.key];
       if (newNumber && newNumber !== seg.number) {
-        // Replace the exact pattern (e.g., "JNG10" -> "JNG41")
-        const oldPattern = `${seg.prefix}${seg.number}`;
-        const newPattern = `${seg.prefix}${newNumber}`;
-        // Use word boundary-aware replacement to avoid partial matches
-        const regex = new RegExp(`(^|-)${oldPattern}(-|$)`, 'gi');
-        newKks = newKks.replace(regex, `$1${newPattern}$2`);
+        // Replace the system segment pattern (e.g., "KBA10" -> "KBA41")
+        // Must be followed by letters (component type), end of string, or dash
+        // This ensures we only replace system segments, not sequential numbers
+        const regex = new RegExp(`(${seg.prefix})(${seg.number})(?=[A-Z]|$|-)`, 'gi');
+        newKks = newKks.replace(regex, `$1${newNumber}`);
       }
     });
 
     return newKks;
   }, [replacements, detectedSegments]);
+
+  // Preview what the new KKS will look like (shows original -> target)
+  const previewKks = useCallback((currentKks: string) => {
+    // Find the original KKS from clipboard
+    const originalKks = reverseKksMap.get(currentKks) || currentKks;
+    // Apply segment replacements to the original KKS
+    return applySegmentReplacements(originalKks);
+  }, [reverseKksMap, applySegmentReplacements]);
 
   // Check if any replacements are different
   const hasChanges = useMemo(() => {
@@ -169,14 +199,15 @@ export const PasteSegmentDialog: React.FC = () => {
       return;
     }
 
-    // Build replacement map: old pattern -> new pattern
-    const patternReplacements: { oldPattern: string; newPattern: string }[] = [];
+    // Build replacement map with prefix, old number, and new number
+    const patternReplacements: { prefix: string; oldNumber: string; newNumber: string }[] = [];
     detectedSegments.forEach(seg => {
       const newNumber = replacements[seg.key];
       if (newNumber && newNumber !== seg.number) {
         patternReplacements.push({
-          oldPattern: `${seg.prefix}${seg.number}`,
-          newPattern: `${seg.prefix}${newNumber}`,
+          prefix: seg.prefix,
+          oldNumber: seg.number,
+          newNumber: newNumber,
         });
       }
     });
@@ -185,13 +216,17 @@ export const PasteSegmentDialog: React.FC = () => {
     const newKksList: string[] = [];
 
     // For each pasted component, rename its KKS and update properties
+    // pastedComponentKks contains the current (auto-generated) KKS values
     const sortedKks = [...pastedComponentKks].sort();
 
-    sortedKks.forEach(oldKks => {
-      const newKks = previewKks(oldKks);
+    sortedKks.forEach(currentKks => {
+      // Find the original KKS from clipboard
+      const originalKks = reverseKksMap.get(currentKks) || currentKks;
+      // Apply segment replacements to the original KKS to get target KKS
+      const targetKks = applySegmentReplacements(originalKks);
 
-      if (newKks !== oldKks) {
-        const component = getComponent(oldKks);
+      if (targetKks !== currentKks) {
+        const component = getComponent(currentKks);
         if (component) {
           // First update any properties that might contain the segment patterns
           const updatedProperties: Record<string, unknown> = {};
@@ -199,30 +234,32 @@ export const PasteSegmentDialog: React.FC = () => {
             Object.entries(component.properties).forEach(([key, value]) => {
               if (typeof value === 'string') {
                 let newValue = value;
-                patternReplacements.forEach(({ oldPattern, newPattern }) => {
-                  const regex = new RegExp(`(^|-)${oldPattern}(-|$)`, 'gi');
-                  newValue = newValue.replace(regex, `$1${newPattern}$2`);
+                patternReplacements.forEach(({ prefix, oldNumber, newNumber }) => {
+                  // Match system segment pattern and replace
+                  // Must be followed by letters, end of string, or dash
+                  const regex = new RegExp(`(${prefix})(${oldNumber})(?=[A-Z]|$|-)`, 'gi');
+                  newValue = newValue.replace(regex, `$1${newNumber}`);
                 });
                 updatedProperties[key] = newValue;
               } else {
                 updatedProperties[key] = value;
               }
             });
-            updateComponent(oldKks, { properties: updatedProperties });
+            updateComponent(currentKks, { properties: updatedProperties });
           }
 
-          // Then rename the component KKS
-          const renamed = renameComponent(oldKks, newKks);
+          // Then rename the component KKS from current to target
+          const renamed = renameComponent(currentKks, targetKks);
           if (renamed) {
-            newKksList.push(newKks);
+            newKksList.push(targetKks);
           } else {
-            // If rename failed, keep old KKS in selection
-            newKksList.push(oldKks);
+            // If rename failed, keep current KKS in selection
+            newKksList.push(currentKks);
           }
         }
       } else {
         // No change needed, keep in selection
-        newKksList.push(oldKks);
+        newKksList.push(currentKks);
       }
     });
 
@@ -232,7 +269,7 @@ export const PasteSegmentDialog: React.FC = () => {
     }
 
     closePasteSegmentDialog();
-  }, [hasChanges, diagram, pastedComponentKks, previewKks, getComponent, updateComponent, renameComponent, closePasteSegmentDialog, detectedSegments, replacements]);
+  }, [hasChanges, diagram, pastedComponentKks, reverseKksMap, applySegmentReplacements, getComponent, updateComponent, renameComponent, closePasteSegmentDialog, detectedSegments, replacements]);
 
   // Close without applying
   const handleClose = useCallback(() => {
@@ -327,18 +364,18 @@ export const PasteSegmentDialog: React.FC = () => {
                     Preview (first 5 components)
                   </h3>
                   <div className="space-y-1 text-xs font-mono">
-                    {pastedComponentKks.slice(0, 5).map(kks => {
-                      const newKks = previewKks(kks);
-                      const changed = kks !== newKks;
+                    {clipboardComponentKks.slice(0, 5).map((originalKks, index) => {
+                      const targetKks = applySegmentReplacements(originalKks);
+                      const changed = originalKks !== targetKks;
                       return (
-                        <div key={kks} className={changed ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500'}>
-                          {kks} → {newKks}
+                        <div key={index} className={changed ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500'}>
+                          {originalKks} → {targetKks}
                         </div>
                       );
                     })}
-                    {pastedComponentKks.length > 5 && (
+                    {clipboardComponentKks.length > 5 && (
                       <div className="text-gray-400">
-                        ... and {pastedComponentKks.length - 5} more
+                        ... and {clipboardComponentKks.length - 5} more
                       </div>
                     )}
                   </div>

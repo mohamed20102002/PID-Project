@@ -44,3 +44,8 @@ Thumbs.db
 
 # Vite
 .vite
+
+# Dev server manager
+.devserver_logs/
+.devservers.json
+nul

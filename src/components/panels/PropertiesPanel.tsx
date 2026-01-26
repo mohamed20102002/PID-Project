@@ -5,7 +5,7 @@
  * Dynamically generates form fields based on symbol property schema.
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUIStore } from '../../store/uiStore';
 import { useDiagramStore } from '../../store/diagramStore';
 import { usePlantStore } from '../../store/plantStore';
@@ -15,6 +15,7 @@ import { Component, ComponentRotation, Connection, BuildingPolygon } from '../..
 import { PropertySchema, PropertyFieldDefinition } from '../../types/symbol.types';
 import { nanoid } from 'nanoid';
 import { TerminalLinkDialog } from './TerminalLinkDialog';
+import { RichDescriptionEditor } from './RichDescriptionEditor';
 
 interface PropertiesPanelProps {
   className?: string;
@@ -1431,11 +1432,24 @@ const BuildingProperties: React.FC<{
  * Properties Panel Component
  */
 export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = '' }) => {
+  // Description editor state - now tracks the component being edited independently
+  const [isDescriptionEditorOpen, setIsDescriptionEditorOpen] = useState(false);
+  const [isDescriptionViewOnly, setIsDescriptionViewOnly] = useState(false);
+  const [editingDescriptionKks, setEditingDescriptionKks] = useState<string | null>(null);
+  const [editingDescriptionSystemKks, setEditingDescriptionSystemKks] = useState<string | null>(null);
+  const [editingDescriptionValue, setEditingDescriptionValue] = useState<string>('');
+
   // Get selection state
   const selection = useUIStore((state) => state.selection);
   const clearSelection = useUIStore((state) => state.clearSelection);
   const selectedBuildingId = useUIStore((state) => state.selectedBuildingId);
   const selectBuilding = useUIStore((state) => state.selectBuilding);
+  const highlightComponent = useUIStore((state) => state.highlightComponent);
+  const setViewport = useUIStore((state) => state.setViewport);
+  const viewport = useUIStore((state) => state.viewport);
+  const setHoveredComponent = useUIStore((state) => state.setHoveredComponent);
+  const pendingDescriptionOpen = useUIStore((state) => state.pendingDescriptionOpen);
+  const setPendingDescriptionOpen = useUIStore((state) => state.setPendingDescriptionOpen);
 
   // Get diagram store
   const diagram = useDiagramStore((state) => state.diagram);
@@ -1494,6 +1508,26 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
 
   // Selection handling (needed for property changes that rename components)
   const select = useUIStore((state) => state.select);
+
+  // Auto-open description editor when pendingDescriptionOpen is set
+  useEffect(() => {
+    if (pendingDescriptionOpen && diagram) {
+      const component = diagram.components[pendingDescriptionOpen.kks];
+      if (component) {
+        const props = component.properties as Record<string, unknown> | undefined;
+        const description = props?.description as string || '';
+
+        setEditingDescriptionKks(pendingDescriptionOpen.kks);
+        setEditingDescriptionSystemKks(diagram.systemKks);
+        setEditingDescriptionValue(description);
+        setIsDescriptionViewOnly(pendingDescriptionOpen.viewOnly);
+        setIsDescriptionEditorOpen(true);
+
+        // Clear the pending state
+        setPendingDescriptionOpen(null);
+      }
+    }
+  }, [pendingDescriptionOpen, diagram, setPendingDescriptionOpen]);
 
   // Handle property change
   const handlePropertyChange = useCallback(
@@ -1632,6 +1666,89 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
     [selectedConnection, updateConnection]
   );
 
+  // Handle navigation to component from description link
+  // NOTE: This does NOT select the target component to avoid changing the description editor context
+  const handleNavigateToComponent = useCallback(
+    async (targetKks: string, targetSystemKks?: string) => {
+      // Clear hover state to prevent tooltip from showing stale data from previous system
+      setHoveredComponent(null);
+
+      // If navigating to a system (empty targetKks)
+      if (!targetKks && targetSystemKks) {
+        await switchToSystem(targetSystemKks);
+        // Don't clear selection - keep current component selected
+        return;
+      }
+
+      // Determine which system the target component belongs to
+      let componentSystemKks = targetSystemKks;
+      let targetComponent: Component | undefined;
+
+      // Search in current diagram first
+      if (diagram && diagram.components[targetKks]) {
+        componentSystemKks = diagram.systemKks;
+        targetComponent = diagram.components[targetKks];
+      } else if (targetSystemKks) {
+        // Component is in a specific system
+        componentSystemKks = targetSystemKks;
+        const cachedDiagram = diagramCache[targetSystemKks];
+        if (cachedDiagram) {
+          targetComponent = cachedDiagram.components[targetKks];
+        }
+      } else {
+        // Search through all cached diagrams
+        for (const [sysKks, cachedDiagram] of Object.entries(diagramCache)) {
+          if (cachedDiagram && cachedDiagram.components[targetKks]) {
+            componentSystemKks = sysKks;
+            targetComponent = cachedDiagram.components[targetKks];
+            break;
+          }
+        }
+      }
+
+      // If component not found, show alert
+      if (!targetComponent || !componentSystemKks) {
+        console.warn(`Component ${targetKks} not found`);
+        return;
+      }
+
+      // Switch to target system if needed
+      if (componentSystemKks !== diagram?.systemKks) {
+        await switchToSystem(componentSystemKks);
+        // After switching, get the updated component from the new diagram
+        const newDiagram = useDiagramStore.getState().diagram;
+        if (newDiagram) {
+          targetComponent = newDiagram.components[targetKks];
+        }
+      }
+
+      // DON'T select the component - this would change the description editor context
+      // Just highlight it so user can see where it is
+      // select([targetKks], []);
+
+      // Pan viewport to center on the component
+      if (targetComponent) {
+        const componentX = targetComponent.position.x;
+        const componentY = targetComponent.position.y;
+
+        // Get window dimensions (approximate canvas center)
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // Calculate new viewport position to center the component
+        setViewport({
+          x: centerX - componentX * viewport.scale,
+          y: centerY - componentY * viewport.scale,
+          scale: viewport.scale,
+        });
+      }
+
+      // Highlight the component with flashing effect
+      highlightComponent(targetKks, 3000);
+    },
+    [diagram, diagramCache, switchToSystem, highlightComponent, setViewport, viewport.scale, setHoveredComponent]
+  );
+
   // Handle connection delete
   const handleDeleteConnection = useCallback(() => {
     if (!selectedConnection) return;
@@ -1655,14 +1772,58 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
     selectBuilding(null);
   }, [selectedBuildingId, deleteBuilding, selectBuilding]);
 
+  // Get updateComponentInSystem for cross-system description updates
+  const updateComponentInSystem = useDiagramStore((state) => state.updateComponentInSystem);
+
+  // Handle description change for any component (even in other systems)
+  const handleDescriptionChange = useCallback(
+    async (value: string) => {
+      if (!editingDescriptionKks || !editingDescriptionSystemKks) return;
+
+      // Update the local state
+      setEditingDescriptionValue(value);
+
+      // If the component is in the current system, use regular update
+      if (diagram?.systemKks === editingDescriptionSystemKks) {
+        const component = diagram.components[editingDescriptionKks];
+        if (component) {
+          updateComponent(editingDescriptionKks, {
+            properties: {
+              ...(component.properties || {}),
+              description: value,
+            },
+          });
+        }
+      } else {
+        // Component is in another system - use cross-system update
+        await updateComponentInSystem(editingDescriptionSystemKks, editingDescriptionKks, {
+          properties: {
+            description: value,
+          },
+        });
+      }
+    },
+    [editingDescriptionKks, editingDescriptionSystemKks, diagram, updateComponent, updateComponentInSystem]
+  );
+
+  // Handle description editor close
+  const handleDescriptionEditorClose = useCallback(() => {
+    setIsDescriptionEditorOpen(false);
+    setEditingDescriptionKks(null);
+    setEditingDescriptionSystemKks(null);
+    setEditingDescriptionValue('');
+  }, []);
 
   // Check if component is a terminal
   const isTerminal = selectedComponent?.type.startsWith('terminals:');
 
   // Render based on selection state
+  // Determine what content to show (but always render the description editor at the end)
+  let panelContent: React.ReactNode = null;
+
   // Show connection properties if a connection is selected
   if (selectedConnection) {
-    return (
+    panelContent = (
       <div className={`flex flex-col h-full overflow-y-auto ${className}`}>
         <ConnectionProperties
           connection={selectedConnection}
@@ -1672,10 +1833,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
       </div>
     );
   }
-
   // Show building properties if a building is selected
-  if (selectedBuilding) {
-    return (
+  else if (selectedBuilding) {
+    panelContent = (
       <div className={`flex flex-col h-full overflow-y-auto ${className}`}>
         <BuildingProperties
           building={selectedBuilding}
@@ -1685,17 +1845,15 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
       </div>
     );
   }
-
-  if (selection.componentKks.length === 0 && selection.connectionKks.length === 0) {
-    return (
+  else if (selection.componentKks.length === 0 && selection.connectionKks.length === 0) {
+    panelContent = (
       <div className={`flex flex-col h-full ${className}`}>
         <NoSelection />
       </div>
     );
   }
-
-  if (selection.componentKks.length > 1) {
-    return (
+  else if (selection.componentKks.length > 1) {
+    panelContent = (
       <div className={`flex flex-col h-full ${className}`}>
         <MultiSelectionInfo
           count={selection.componentKks.length}
@@ -1704,19 +1862,38 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
       </div>
     );
   }
-
-  if (!selectedComponent || !symbolDefinition) {
-    return (
+  else if (!selectedComponent || !symbolDefinition) {
+    panelContent = (
       <div className={`flex flex-col h-full ${className}`}>
         <NoSelection />
       </div>
     );
   }
 
+  // If we have panel content from above, return it with the description editor
+  if (panelContent) {
+    return (
+      <>
+        {panelContent}
+        {/* Rich Description Editor - always rendered so it persists across system switches */}
+        <RichDescriptionEditor
+          isOpen={isDescriptionEditorOpen}
+          onClose={handleDescriptionEditorClose}
+          value={editingDescriptionValue}
+          onChange={handleDescriptionChange}
+          componentKks={editingDescriptionKks || ''}
+          onNavigateToComponent={handleNavigateToComponent}
+          readOnly={isDescriptionViewOnly}
+        />
+      </>
+    );
+  }
+
   const propertySchema = symbolDefinition.propertySchema;
 
   return (
-    <div className={`flex flex-col h-full overflow-y-auto ${className}`}>
+    <>
+      <div className={`flex flex-col h-full overflow-y-auto ${className}`}>
       {/* Component Info */}
       <ComponentInfo
         component={selectedComponent}
@@ -1773,6 +1950,38 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
         <p className="text-xs text-gray-400 mt-1">Display KKS code and system name tooltip when hovering</p>
       </div>
 
+      {/* Description Section */}
+      <div className="mb-3 border-t border-gray-200 pt-3">
+        <label className="block text-xs font-medium text-gray-600 mb-2">Description</label>
+        <button
+          onClick={() => {
+            // Store which component we're editing
+            setEditingDescriptionKks(selectedComponent.kks);
+            setEditingDescriptionSystemKks(diagram?.systemKks || null);
+            setEditingDescriptionValue((selectedComponent.properties as Record<string, unknown>).description as string || '');
+            setIsDescriptionViewOnly(false);
+            setIsDescriptionEditorOpen(true);
+          }}
+          className="w-full px-3 py-2 text-sm text-left border border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors flex items-center gap-2"
+        >
+          <svg className="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+          </svg>
+          <span className="flex-1 truncate text-gray-600">
+            {(selectedComponent.properties as Record<string, unknown>).description
+              ? 'Edit description...'
+              : 'Add description...'}
+          </span>
+          {(selectedComponent.properties as Record<string, unknown>).description && (
+            <span className="text-xs text-green-600 bg-green-100 px-1.5 py-0.5 rounded">Has content</span>
+          )}
+        </button>
+        <p className="text-xs text-gray-400 mt-1">Add detailed notes with formatting, images, and links</p>
+      </div>
+
+      {/* Rich Description Editor Modal is rendered at the end of the component, outside selectedComponent check */}
+
       {/* Terminal Link Settings - only for terminals */}
       {isTerminal && diagram && (
         <TerminalSettings
@@ -1816,7 +2025,19 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ className = ''
           Delete Component
         </button>
       </div>
-    </div>
+      </div>
+
+      {/* Rich Description Editor - always rendered so it persists across system switches */}
+      <RichDescriptionEditor
+        isOpen={isDescriptionEditorOpen}
+        onClose={handleDescriptionEditorClose}
+        value={editingDescriptionValue}
+        onChange={handleDescriptionChange}
+        componentKks={editingDescriptionKks || ''}
+        onNavigateToComponent={handleNavigateToComponent}
+        readOnly={isDescriptionViewOnly}
+      />
+    </>
   );
 };
 

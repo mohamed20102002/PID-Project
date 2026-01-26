@@ -14,6 +14,7 @@ import { ReferencesService, KKSEntry } from '../../services/ReferencesService';
 interface KKSHoverTooltipProps {
   containerRef: React.RefObject<HTMLElement>;
   onOpenSystem?: (systemKks: string) => { success: boolean; error?: string };
+  onOpenDescription?: (componentKks: string, viewOnly: boolean) => void;
 }
 
 /**
@@ -83,6 +84,7 @@ function extractBaseSystemCode(fullKks: string): string | null {
 export const KKSHoverTooltip: React.FC<KKSHoverTooltipProps> = ({
   containerRef,
   onOpenSystem,
+  onOpenDescription,
 }) => {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -353,38 +355,78 @@ export const KKSHoverTooltip: React.FC<KKSHoverTooltipProps> = ({
                 </div>
               )}
 
-              {/* Quick Open Button */}
+              {/* Action Buttons Row */}
               {onOpenSystem && systemKks && (
-                <button
-                  onClick={handleQuickOpen}
-                  disabled={isLoading}
-                  className={`w-full mt-2 px-3 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1.5 transition-colors ${
-                    isLoading
-                      ? 'bg-gray-500 cursor-wait'
-                      : 'bg-blue-600 hover:bg-blue-500'
-                  }`}
-                >
-                  {isLoading ? (
-                    <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
-                      <path d="M12 2a10 10 0 0110 10" />
-                    </svg>
-                  ) : (
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                  )}
-                  {isLoading ? 'Opening...' : `Open ${matchedEntry.kks}`}
-                </button>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={handleQuickOpen}
+                    disabled={isLoading}
+                    className={`flex-1 px-4 py-2 rounded text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+                      isLoading
+                        ? 'bg-gray-500 cursor-wait'
+                        : 'bg-blue-600 hover:bg-blue-500'
+                    }`}
+                  >
+                    {isLoading ? (
+                      <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                        <path d="M12 2a10 10 0 0110 10" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                    )}
+                    {isLoading ? 'Opening...' : `Open ${matchedEntry.kks}`}
+                  </button>
+                  {/* Description Icon */}
+                  {(() => {
+                    const component = diagram?.components[componentKks];
+                    const props = component?.properties as Record<string, unknown> | undefined;
+                    const description = props?.description as string | undefined;
+                    const hasDescription = description && description.replace(/<[^>]*>/g, '').trim().length > 0;
+                    if (!hasDescription) return null;
+                    return (
+                      <button
+                        onClick={() => {
+                          if (onOpenDescription) {
+                            onOpenDescription(componentKks, true);
+                            setVisible(false);
+                            setIsTooltipHovered(false);
+                          }
+                        }}
+                        title="View description"
+                        className="p-2 bg-gray-700 hover:bg-amber-600 rounded transition-colors"
+                      >
+                        <svg className="w-4 h-4 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zM8 12h8v2H8v-2zm0 4h8v2H8v-2z"/>
+                        </svg>
+                      </button>
+                    );
+                  })()}
+                </div>
               )}
 
               {/* Error Message */}
               {errorMessage && (
                 <div className="mt-2 p-2 bg-red-500/20 border border-red-500/50 rounded text-xs text-red-200">
-                  <div className="font-medium mb-1">System not found:</div>
-                  <div className="break-words">{errorMessage}</div>
+                  <div className="font-medium">System not found</div>
+                  <button
+                    onClick={() => {
+                      useUIStore.getState().openQuickSearch();
+                      setVisible(false);
+                      setIsTooltipHovered(false);
+                    }}
+                    className="mt-1.5 w-full px-2 py-1 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded text-xs flex items-center justify-center gap-1.5"
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="M21 21l-4.35-4.35" />
+                    </svg>
+                    Show Systems (Ctrl+K)
+                  </button>
                 </div>
               )}
             </div>
@@ -401,38 +443,78 @@ export const KKSHoverTooltip: React.FC<KKSHoverTooltipProps> = ({
               <div className="text-xs text-gray-400 italic">
                 No matching system found in references
               </div>
-              {/* Still show Open button even without reference match */}
+              {/* Action Buttons Row */}
               {onOpenSystem && systemKks && (
-                <button
-                  onClick={handleQuickOpen}
-                  disabled={isLoading}
-                  className={`w-full mt-2 px-3 py-1.5 rounded text-xs font-medium flex items-center justify-center gap-1.5 transition-colors ${
-                    isLoading
-                      ? 'bg-gray-700 cursor-wait'
-                      : 'bg-gray-600 hover:bg-gray-500'
-                  }`}
-                >
-                  {isLoading ? (
-                    <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
-                      <path d="M12 2a10 10 0 0110 10" />
-                    </svg>
-                  ) : (
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                  )}
-                  {isLoading ? 'Opening...' : `Open ${systemKks}`}
-                </button>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={handleQuickOpen}
+                    disabled={isLoading}
+                    className={`flex-1 px-4 py-2 rounded text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+                      isLoading
+                        ? 'bg-gray-700 cursor-wait'
+                        : 'bg-gray-600 hover:bg-gray-500'
+                    }`}
+                  >
+                    {isLoading ? (
+                      <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                        <path d="M12 2a10 10 0 0110 10" />
+                      </svg>
+                    ) : (
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                    )}
+                    {isLoading ? 'Opening...' : `Open ${systemKks}`}
+                  </button>
+                  {/* Description Icon */}
+                  {(() => {
+                    const component = diagram?.components[componentKks];
+                    const props = component?.properties as Record<string, unknown> | undefined;
+                    const description = props?.description as string | undefined;
+                    const hasDescription = description && description.replace(/<[^>]*>/g, '').trim().length > 0;
+                    if (!hasDescription) return null;
+                    return (
+                      <button
+                        onClick={() => {
+                          if (onOpenDescription) {
+                            onOpenDescription(componentKks, true);
+                            setVisible(false);
+                            setIsTooltipHovered(false);
+                          }
+                        }}
+                        title="View description"
+                        className="p-2 bg-gray-700 hover:bg-amber-600 rounded transition-colors"
+                      >
+                        <svg className="w-4 h-4 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zM8 12h8v2H8v-2zm0 4h8v2H8v-2z"/>
+                        </svg>
+                      </button>
+                    );
+                  })()}
+                </div>
               )}
 
               {/* Error Message */}
               {errorMessage && (
                 <div className="mt-2 p-2 bg-red-500/20 border border-red-500/50 rounded text-xs text-red-200">
-                  <div className="font-medium mb-1">System not found:</div>
-                  <div className="break-words">{errorMessage}</div>
+                  <div className="font-medium">System not found</div>
+                  <button
+                    onClick={() => {
+                      useUIStore.getState().openQuickSearch();
+                      setVisible(false);
+                      setIsTooltipHovered(false);
+                    }}
+                    className="mt-1.5 w-full px-2 py-1 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded text-xs flex items-center justify-center gap-1.5"
+                  >
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="M21 21l-4.35-4.35" />
+                    </svg>
+                    Show Systems (Ctrl+K)
+                  </button>
                 </div>
               )}
             </div>

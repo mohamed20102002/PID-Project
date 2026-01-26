@@ -1655,6 +1655,12 @@
       "width": 600,
       "height": 600
     },
+    "hitBounds": {
+      "x": 0.25,
+      "y": 0.05,
+      "width": 0.5,
+      "height": 0.9
+    },
     "minSize": {
       "width": 30,
       "height": 30
@@ -2322,6 +2328,12 @@
     "defaultSize": {
       "width": 600,
       "height": 600
+    },
+    "hitBounds": {
+      "x": 0.25,
+      "y": 0.05,
+      "width": 0.5,
+      "height": 0.9
     },
     "minSize": {
       "width": 30,
@@ -7094,6 +7106,12 @@
     "defaultSize": {
       "width": 600,
       "height": 600
+    },
+    "hitBounds": {
+      "x": 0.3,
+      "y": 0.05,
+      "width": 0.4,
+      "height": 0.8
     },
     "minSize": {
       "width": 30,

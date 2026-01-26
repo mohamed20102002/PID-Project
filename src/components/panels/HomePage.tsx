@@ -4,7 +4,7 @@
  * Displays project information, developer credits, and quick actions.
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { usePlantStore } from '../../store/plantStore';
 import { useDiagramStore } from '../../store/diagramStore';
 import { useCustomSymbolStore } from '../../store/customSymbolStore';
@@ -20,9 +20,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenSystem }) => {
   const selectSystem = usePlantStore((state) => state.selectSystem);
   const switchToSystem = useDiagramStore((state) => state.switchToSystem);
   const diagramCache = useDiagramStore((state) => state.diagramCache);
+  const loadAllDiagramsForStats = useDiagramStore((state) => state.loadAllDiagramsForStats);
   const customSymbols = useCustomSymbolStore((state) => state.customSymbols);
 
   const systems = getAllSystems();
+
+  // Load all diagrams for accurate statistics
+  useEffect(() => {
+    const systemKksList = systems.map((s) => s.kks);
+    if (systemKksList.length > 0) {
+      loadAllDiagramsForStats(systemKksList);
+    }
+  }, [systems, loadAllDiagramsForStats]);
 
   // Get settings
   const homepageSettings = useSettingsStore((state) => state.homepage);
@@ -38,37 +47,54 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenSystem }) => {
     let heatExchangers = 0;
     let pipes = 0;
 
-    // Iterate through all cached diagrams
+    // Get set of valid system KKS codes to filter out stale cached diagrams
+    const validSystemKks = new Set(systems.map((s) => s.kks));
+
+    // Iterate through cached diagrams, but only count those belonging to current systems
     Object.values(diagramCache).forEach((diagram) => {
-      if (diagram && diagram.components) {
+      // Skip diagrams that don't belong to current plant systems (stale cache entries)
+      if (!diagram || !diagram.systemKks || !validSystemKks.has(diagram.systemKks)) {
+        return;
+      }
+
+      if (diagram.components) {
         Object.values(diagram.components).forEach((component) => {
           totalComponents++;
           const type = component.type.toLowerCase();
 
-          // Categorize by symbol type/category
-          // Check custom symbols first
+          // Get symbol definition for category-based classification
           const symbolDef = customSymbols[component.type];
           const category = symbolDef?.category || '';
 
-          // Valves (AA category or type contains valve)
-          if (category === 'AA' || type.includes('valve') || type.includes('gate') || type.includes('globe') || type.includes('check') || type.includes('ball') || type.includes('butterfly')) {
-            valves++;
-          }
-          // Pumps (AP category or type contains pump)
-          else if (category === 'AP' || type.includes('pump')) {
-            pumps++;
-          }
-          // Sensors (C* categories or type contains sensor/transmitter/indicator)
-          else if (category.startsWith('C') || type.includes('sensor') || type.includes('transmitter') || type.includes('indicator') || type.includes('gauge')) {
-            sensors++;
-          }
-          // Vessels (BB category or type contains tank/vessel)
-          else if (category === 'BB' || type.includes('tank') || type.includes('vessel') || type.includes('container')) {
-            vessels++;
-          }
-          // Heat Exchangers (AC category)
-          else if (category === 'AC' || type.includes('exchanger') || type.includes('heater') || type.includes('cooler')) {
-            heatExchangers++;
+          // If symbol has a defined category, use ONLY category for classification
+          // This prevents misclassification when a symbol ID contains misleading words
+          // (e.g., a flow sensor with ID "centrifugalpump-...-copy-..." should be counted as sensor, not pump)
+          if (category) {
+            // Categorize by KKS equipment category
+            if (category === 'AA') {
+              valves++;
+            } else if (category === 'AP') {
+              pumps++;
+            } else if (category.startsWith('C')) {
+              sensors++;
+            } else if (category === 'BB') {
+              vessels++;
+            } else if (category === 'AC') {
+              heatExchangers++;
+            }
+          } else {
+            // Fallback: use type name matching only when no category is defined
+            if (type.includes('valve') || type.includes('gate') || type.includes('globe') || type.includes('check') || type.includes('ball') || type.includes('butterfly')) {
+              valves++;
+            } else if (type.includes('pump')) {
+              pumps++;
+            } else if (type.includes('sensor') || type.includes('transmitter') || type.includes('indicator') || type.includes('gauge')) {
+              sensors++;
+            } else if (type.includes('tank') || type.includes('vessel') || type.includes('container')) {
+              vessels++;
+            } else if (type.includes('exchanger') || type.includes('heater') || type.includes('cooler')) {
+              heatExchangers++;
+            }
           }
         });
 
@@ -89,7 +115,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenSystem }) => {
       pipes,
       systems: systems.length,
     };
-  }, [diagramCache, customSymbols, systems.length]);
+  }, [diagramCache, customSymbols, systems]);
 
   const handleOpenSystem = async (systemKks: string) => {
     selectSystem(systemKks);

@@ -798,58 +798,6 @@
       "kks": "10KBA95AA103",
       "wrapLabel": true
     },
-    "10KBA90AA110": {
-      "type": "shutoffvalve-1767428891387",
-      "systemKks": "10KBA",
-      "buildingKks": "10UJA",
-      "position": {
-        "x": 1460,
-        "y": 2160
-      },
-      "rotation": 270,
-      "size": {
-        "width": 60,
-        "height": 60
-      },
-      "ports": [
-        {
-          "id": "port-1767434407692",
-          "name": "Left",
-          "position": {
-            "x": 0,
-            "y": 0.5
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMK8YA70SSZTP"
-        },
-        {
-          "id": "port-1767434409350",
-          "name": "Right",
-          "position": {
-            "x": 1,
-            "y": 0.5
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMK8YAC98Y1ZC"
-        }
-      ],
-      "properties": {},
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "fillColor": "#ffffff",
-        "opacity": 1
-      },
-      "kks": "10KBA90AA110",
-      "wrapLabel": true
-    },
     "10KBA90AA109": {
       "type": "shutoffvalve-1767428891387",
       "systemKks": "10KBA",
@@ -1470,7 +1418,7 @@
       "buildingKks": "10UJA",
       "position": {
         "x": 1760,
-        "y": 1940
+        "y": 1920
       },
       "rotation": 90,
       "size": {
@@ -1506,7 +1454,7 @@
       "buildingKks": "10UJA",
       "position": {
         "x": 1880,
-        "y": 1940
+        "y": 1920
       },
       "rotation": 90,
       "size": {
@@ -1542,7 +1490,7 @@
       "buildingKks": "10UJA",
       "position": {
         "x": 2000,
-        "y": 1940
+        "y": 1920
       },
       "rotation": 90,
       "size": {
@@ -1578,7 +1526,7 @@
       "buildingKks": "10UJA",
       "position": {
         "x": 2120,
-        "y": 1940
+        "y": 1920
       },
       "rotation": 90,
       "size": {
@@ -1967,7 +1915,9 @@
           "connectionKks": "CONNMK8YGPNSFPWR"
         }
       ],
-      "properties": {},
+      "properties": {
+        "description": "This is called <b><font color=\"#16a34a\">Breach Connection</font></b>, it's only used when there is any pipe, wire or and object that is going in or out of the UJA building, it's function is to ensure that the pressure difference between the buildings are the maintained and ...."
+      },
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -2722,7 +2672,9 @@
           "connectionKks": "CONNMK9F2LLMVG98"
         }
       ],
-      "properties": {},
+      "properties": {
+        "description": "This is called&nbsp;<span style=\"font-weight: bolder;\"><font color=\"#16a34a\">Breach Connection</font></span>, it's only used when there is any pipe, wire or and object that is going in or out of the UJA building, it's function is to ensure that the pressure difference between the buildings are the maintained and ...."
+      },
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -18937,7 +18889,9 @@
           "connectionKks": "CONNMKCCC65CGY91"
         }
       ],
-      "properties": {},
+      "properties": {
+        "description": "This is called&nbsp;<span style=\"font-weight: bolder;\"><font color=\"#16a34a\">Breach Connection</font></span>, it's only used when there is any pipe, wire or and object that is going in or out of the UJA building, it's function is to ensure that the pressure difference between the buildings are the maintained and ...."
+      },
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -19016,7 +18970,9 @@
           "connectionKks": "CONNMKCCCW0J4PHL"
         }
       ],
-      "properties": {},
+      "properties": {
+        "description": "This is called&nbsp;<span style=\"font-weight: bolder;\"><font color=\"#16a34a\">Breach Connection</font></span>, it's only used when there is any pipe, wire or and object that is going in or out of the UJA building, it's function is to ensure that the pressure difference between the buildings are the maintained and ...."
+      },
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -31512,7 +31468,9 @@
           "connectionKks": "CONNMKCPG6TYL47Y"
         }
       ],
-      "properties": {},
+      "properties": {
+        "description": "This is called&nbsp;<span style=\"font-weight: bolder;\"><font color=\"#16a34a\">Breach Connection</font></span>, it's only used when there is any pipe, wire or and object that is going in or out of the UJA building, it's function is to ensure that the pressure difference between the buildings are the maintained and ...."
+      },
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -32925,236 +32883,6 @@
       "kks": "10KBA10AA404",
       "wrapLabel": true
     },
-    "10KBA10BB001": {
-      "type": "deaeratorprimarycircuit-1767548140606",
-      "systemKks": "10KBA",
-      "buildingKks": "10UJA",
-      "position": {
-        "x": 7360,
-        "y": 880
-      },
-      "rotation": 0,
-      "size": {
-        "width": 400,
-        "height": 400
-      },
-      "ports": [
-        {
-          "id": "port-1767547891587-070mgx5o4",
-          "name": "port1",
-          "position": {
-            "x": 0.575,
-            "y": 0.2
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKGK4KUOLL8U"
-        },
-        {
-          "id": "port-1767547892140-7u8trv3bd",
-          "name": "port2",
-          "position": {
-            "x": 0.5375,
-            "y": 0.2
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ]
-        },
-        {
-          "id": "port-1767547892628-q311veav6",
-          "name": "port3",
-          "position": {
-            "x": 0.5,
-            "y": 0.2
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKGK8OZWNDTL"
-        },
-        {
-          "id": "port-1767547893109-hqtc854ec",
-          "name": "port4",
-          "position": {
-            "x": 0.4625,
-            "y": 0.2
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKGK8S25L2A6"
-        },
-        {
-          "id": "port-1767547893602-2563caxf5",
-          "name": "port5",
-          "position": {
-            "x": 0.425,
-            "y": 0.2
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKGK8U9XAWQI"
-        },
-        {
-          "id": "port-1767547899410-jh5sgqxuc",
-          "name": "port6",
-          "position": {
-            "x": 0.8,
-            "y": 0.6875
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKE4R58NMVJZ"
-        },
-        {
-          "id": "port-1767547900310-jtxzj0al9",
-          "name": "port7",
-          "position": {
-            "x": 0.8,
-            "y": 0.78125
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKE4RF81XMS4"
-        },
-        {
-          "id": "port-1767547901960-pvkshm1n6",
-          "name": "port8",
-          "position": {
-            "x": 0.2,
-            "y": 0.77
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKCQD9F2GNOV"
-        },
-        {
-          "id": "port-1767547914259-cp7pkx1ep",
-          "name": "port9",
-          "position": {
-            "x": 0.8,
-            "y": 0.6
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKE4R00QE3DY"
-        },
-        {
-          "id": "port-1767547919466-bzciabkf6",
-          "name": "port10",
-          "position": {
-            "x": 0.2,
-            "y": 0.61
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKE4X5WEEB5Y"
-        },
-        {
-          "id": "port-1767548076174-1o3lzbmi2",
-          "name": "port11",
-          "position": {
-            "x": 0.5,
-            "y": 0.8125
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKCQ8MIS8KT7"
-        },
-        {
-          "id": "port-1767548080224-n225pqjhj",
-          "name": "port12",
-          "position": {
-            "x": 0.36,
-            "y": 0.8125
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ],
-          "connectionKks": "CONNMKCQA6ZUIDG9"
-        },
-        {
-          "id": "port-1767548115221-al0ml514r",
-          "name": "port13",
-          "position": {
-            "x": 0.4225,
-            "y": 0.275
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ]
-        },
-        {
-          "id": "port-1767548117987-b6vcy65nc",
-          "name": "port14",
-          "position": {
-            "x": 0.575,
-            "y": 0.275
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ]
-        },
-        {
-          "id": "port-1767548122441-y6c7sqmdi",
-          "name": "port15",
-          "position": {
-            "x": 0.6875,
-            "y": 0.5625
-          },
-          "direction": "bidirectional",
-          "angle": 0,
-          "allowedConnectionTypes": [
-            "pipe"
-          ]
-        }
-      ],
-      "properties": {},
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "fillColor": "#ffffff",
-        "opacity": 1
-      },
-      "kks": "10KBA10BB001",
-      "wrapLabel": true
-    },
     "10KBA17AA002": {
       "type": "manualValve1-1767425136723",
       "systemKks": "10KBA",
@@ -33414,7 +33142,8 @@
         }
       ],
       "properties": {
-        "rightPortDirection": "in"
+        "rightPortDirection": "in",
+        "showKksTooltip": false
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -35960,7 +35689,9 @@
           "connectionKks": "CONNMKCRQEBRW8O5"
         }
       ],
-      "properties": {},
+      "properties": {
+        "description": "test"
+      },
       "style": {
         "strokeColor": "#1a1a1a",
         "fillColor": "#ffffff",
@@ -40386,7 +40117,8 @@
       ],
       "properties": {
         "leftPortDirection": "out",
-        "terminalId": "18798"
+        "terminalId": "18798",
+        "showKksTooltip": true
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -41279,7 +41011,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKE4TEQ4DI47"
+          "connectionKks": "CONNMKE4R00QE3DY"
         }
       ],
       "properties": {},
@@ -41316,7 +41048,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKE4TGV0MD8I"
+          "connectionKks": "CONNMKE4R58NMVJZ"
         }
       ],
       "properties": {},
@@ -41353,7 +41085,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKE4TJLXNR07"
+          "connectionKks": "CONNMKE4RF81XMS4"
         }
       ],
       "properties": {},
@@ -41581,7 +41313,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKGK55CNATUK"
+          "connectionKks": "CONNMKGK4KUOLL8U"
         }
       ],
       "properties": {},
@@ -41692,7 +41424,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKGKEJJ63KOU"
+          "connectionKks": "CONNMKGK8OZWNDTL"
         }
       ],
       "properties": {},
@@ -41729,7 +41461,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKGKX45VTTWR"
+          "connectionKks": "CONNMKGK8S25L2A6"
         }
       ],
       "properties": {},
@@ -41766,7 +41498,7 @@
           "allowedConnectionTypes": [
             "pipe"
           ],
-          "connectionKks": "CONNMKGKXA7VKCZQ"
+          "connectionKks": "CONNMKGK8U9XAWQI"
         }
       ],
       "properties": {},
@@ -42985,7 +42717,8 @@
         "leftPortDirection": "in",
         "terminalId": "17013",
         "showKksTooltip": true,
-        "targetTerminalKks": "CMPMKJZUIJAN1VN"
+        "targetTerminalKks": "CMPMKJZUIJAN1VN",
+        "description": ""
       },
       "style": {
         "strokeColor": "#1a1a1a",
@@ -43594,6 +43327,293 @@
         "opacity": 1
       },
       "kks": "10KBA-187792"
+    },
+    "10KBA90AA110": {
+      "type": "shutoffvalve-1767428891387",
+      "systemKks": "10KBA",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 1460,
+        "y": 2160
+      },
+      "rotation": 270,
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "ports": [
+        {
+          "id": "port-1767434407692",
+          "name": "Left",
+          "position": {
+            "x": 0,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMK8YA70SSZTP"
+        },
+        {
+          "id": "port-1767434409350",
+          "name": "Right",
+          "position": {
+            "x": 1,
+            "y": 0.5
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMK8YAC98Y1ZC"
+        }
+      ],
+      "properties": {
+        "description": "test"
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10KBA90AA110",
+      "wrapLabel": true
+    },
+    "10KBA10BB001": {
+      "type": "deaeratorprimarycircuit-1767548140606",
+      "systemKks": "10KBA",
+      "buildingKks": "10UJA",
+      "position": {
+        "x": 7360,
+        "y": 880
+      },
+      "rotation": 0,
+      "size": {
+        "width": 400,
+        "height": 400
+      },
+      "ports": [
+        {
+          "id": "port-1767547891587-070mgx5o4",
+          "name": "port1",
+          "position": {
+            "x": 0.575,
+            "y": 0.2
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKGK4KUOLL8U"
+        },
+        {
+          "id": "port-1767547892140-7u8trv3bd",
+          "name": "port2",
+          "position": {
+            "x": 0.5375,
+            "y": 0.2
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767547892628-q311veav6",
+          "name": "port3",
+          "position": {
+            "x": 0.5,
+            "y": 0.2
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKGK8OZWNDTL"
+        },
+        {
+          "id": "port-1767547893109-hqtc854ec",
+          "name": "port4",
+          "position": {
+            "x": 0.4625,
+            "y": 0.2
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKGK8S25L2A6"
+        },
+        {
+          "id": "port-1767547893602-2563caxf5",
+          "name": "port5",
+          "position": {
+            "x": 0.425,
+            "y": 0.2
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKGK8U9XAWQI"
+        },
+        {
+          "id": "port-1767547899410-jh5sgqxuc",
+          "name": "port6",
+          "position": {
+            "x": 0.8,
+            "y": 0.6875
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKE4R58NMVJZ"
+        },
+        {
+          "id": "port-1767547900310-jtxzj0al9",
+          "name": "port7",
+          "position": {
+            "x": 0.8,
+            "y": 0.78125
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKE4RF81XMS4"
+        },
+        {
+          "id": "port-1767547901960-pvkshm1n6",
+          "name": "port8",
+          "position": {
+            "x": 0.2,
+            "y": 0.77
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKCQD9F2GNOV"
+        },
+        {
+          "id": "port-1767547914259-cp7pkx1ep",
+          "name": "port9",
+          "position": {
+            "x": 0.8,
+            "y": 0.6
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKE4R00QE3DY"
+        },
+        {
+          "id": "port-1767547919466-bzciabkf6",
+          "name": "port10",
+          "position": {
+            "x": 0.2,
+            "y": 0.61
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKE4X5WEEB5Y"
+        },
+        {
+          "id": "port-1767548076174-1o3lzbmi2",
+          "name": "port11",
+          "position": {
+            "x": 0.5,
+            "y": 0.8125
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKCQ8MIS8KT7"
+        },
+        {
+          "id": "port-1767548080224-n225pqjhj",
+          "name": "port12",
+          "position": {
+            "x": 0.36,
+            "y": 0.8125
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ],
+          "connectionKks": "CONNMKCQA6ZUIDG9"
+        },
+        {
+          "id": "port-1767548115221-al0ml514r",
+          "name": "port13",
+          "position": {
+            "x": 0.4225,
+            "y": 0.275
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767548117987-b6vcy65nc",
+          "name": "port14",
+          "position": {
+            "x": 0.575,
+            "y": 0.275
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        },
+        {
+          "id": "port-1767548122441-y6c7sqmdi",
+          "name": "port15",
+          "position": {
+            "x": 0.6875,
+            "y": 0.5625
+          },
+          "direction": "bidirectional",
+          "angle": 0,
+          "allowedConnectionTypes": [
+            "pipe"
+          ]
+        }
+      ],
+      "properties": {
+        "description": "<h1><b style=\"\"><u style=\"\"><font color=\"#0891b2\" style=\"background-color: rgb(254, 240, 138);\">Deaerator</font></u></b></h1><div>This vessel is designed to remove dissolved non-condensable gases from the primary-circuit water. Degassing is achieved by heating the water to near saturation conditions under reduced pressure, causing partial evaporation and a corresponding decrease in gas solubility. The released gases are separated and vented, resulting in deaerated liquid water suitable for system operation.</div><div><a href=\"kks://10JNG50BB001\" class=\"text-blue-600 underline hover:text-blue-800\" data-link-type=\"component\">HA Tanks</a><font color=\"oklch(0.278 0.033 256.848)\"></font></div><div><p data-start=\"212\" data-end=\"306\">This is the <strong data-start=\"224\" data-end=\"241\">main equation</strong> that explains why oxygen and CO₂ leave the water in a deaerator:</p>\n<span class=\"katex-display\"><span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\"><semantics><mrow><mi><b>C</b></mi><mo><b>=</b></mo><msub><mi><b>k</b></mi><mi><b>H</b></mi></msub><mo><b>⋅</b></mo><mi><b>P</b></mi></mrow></semantics></math></span></span></span><p data-start=\"331\" data-end=\"337\">Where:</p>\n<ul data-start=\"338\" data-end=\"512\">\n<li data-start=\"338\" data-end=\"403\">\n<p data-start=\"340\" data-end=\"403\"><span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>C</mi></mrow><annotation encoding=\"application/x-tex\">C</annotation></semantics></math></span></span>&nbsp;= concentration of dissolved gas in water (e.g., O₂, CO₂)</p>\n</li>\n<li data-start=\"404\" data-end=\"457\">\n<p data-start=\"406\" data-end=\"457\"><span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>k</mi><mi>H</mi></msub></mrow><annotation encoding=\"application/x-tex\">k_H</annotation></semantics></math></span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"mord\"><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist-s\">​</span></span><span class=\"vlist-r\"><span class=\"vlist\"></span></span></span></span></span></span></span></span> = Henry’s constant (depends on temperature)</p>\n</li>\n<li data-start=\"458\" data-end=\"512\">\n<p data-start=\"460\" data-end=\"512\"><span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>P</mi></mrow><annotation encoding=\"application/x-tex\">P</annotation></semantics></math></span></span>&nbsp;= partial pressure of the gas above the liquid</p></li></ul><div><br></div><div><div class=\"rich-editor-image-wrapper\" data-image-id=\"img-1769356517889\" style=\"margin: 8px; cursor: move;\">\n      <img src=\"/api/storage/media/file?systemKks=10KBA&filename=10KBA10BB001_1769357271060_0.jpg\" data-image-id=\"img-1769356517889\" style=\"width: 200px; pointer-events: auto;\">\n    </div><p><br></p></div><div><br></div></div>",
+        "showKksTooltip": true
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "fillColor": "#ffffff",
+        "opacity": 1
+      },
+      "kks": "10KBA10BB001",
+      "wrapLabel": true
     }
   },
   "connections": {
@@ -44615,62 +44635,6 @@
         "lineType": "solid"
       },
       "kks": "CONNMK8YA0A0ZVQW"
-    },
-    "CONNMK8YA70SSZTP": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA90AA110",
-      "sourcePortId": "port-1767434407692",
-      "targetComponentKks": "CMP-XUYF5G-",
-      "targetPortId": "port2",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [
-        {
-          "x": 1460,
-          "y": 2240
-        }
-      ],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMK8YA70SSZTP"
-    },
-    "CONNMK8YAC98Y1ZC": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA90AA110",
-      "sourcePortId": "port-1767434409350",
-      "targetComponentKks": "CMPE1SJLDDNKBA90",
-      "targetPortId": "port2",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [
-        {
-          "x": 1460,
-          "y": 2080
-        }
-      ],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMK8YAC98Y1ZC"
     },
     "CONNMK8YBVUBAMPP": {
       "type": "pipe",
@@ -53717,29 +53681,6 @@
       },
       "kks": "CONNMKCQ6WVMOFUY"
     },
-    "CONNMKCQ8MIS8KT7": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767548076174-1o3lzbmi2",
-      "targetComponentKks": "CMPMKCQ81WMBRT5KBA10",
-      "targetPortId": "port3",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKCQ8MIS8KT7"
-    },
     "CONNMKCQ8R3MYFVJ": {
       "type": "pipe",
       "sourceComponentKks": "CMPMKCQ81WMBRT5KBA10",
@@ -53785,57 +53726,6 @@
         "lineType": "solid"
       },
       "kks": "CONNMKCQ8TI8SKWQ"
-    },
-    "CONNMKCQA6ZUIDG9": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767548080224-n225pqjhj",
-      "targetComponentKks": "10KBA17AA001",
-      "targetPortId": "port-1767422978253",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKCQA6ZUIDG9"
-    },
-    "CONNMKCQD9F2GNOV": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547901960-pvkshm1n6",
-      "targetComponentKks": "CMPMKCQCT82S2M5KBA17",
-      "targetPortId": "port3",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [
-        {
-          "x": 7220,
-          "y": 990
-        }
-      ],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKCQD9F2GNOV"
     },
     "CONNMKCQDCJKL507": {
       "type": "pipe",
@@ -56005,75 +55895,6 @@
       },
       "kks": "CONNMKCMSZESL7KJ"
     },
-    "CONNMKE4R00QE3DY": {
-      "type": "pipe",
-      "sourceComponentKks": "CMPMKE4QBE677LV",
-      "sourcePortId": "port-1767437248466",
-      "targetComponentKks": "10KBA10BB001",
-      "targetPortId": "port-1767547914259-cp7pkx1ep",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKE4R00QE3DY"
-    },
-    "CONNMKE4R58NMVJZ": {
-      "type": "pipe",
-      "sourceComponentKks": "CMPMKE4QLJXF9V0",
-      "sourcePortId": "port-1767437248466",
-      "targetComponentKks": "10KBA10BB001",
-      "targetPortId": "port-1767547899410-jh5sgqxuc",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKE4R58NMVJZ"
-    },
-    "CONNMKE4RF81XMS4": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547900310-jtxzj0al9",
-      "targetComponentKks": "CMPMKE4QP6VQ88U",
-      "targetPortId": "port-1767437248466",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKE4RF81XMS4"
-    },
     "CONNMKE4TEQ4DI47": {
       "type": "pipe",
       "sourceComponentKks": "10KBB-18783",
@@ -56143,29 +55964,6 @@
       },
       "kks": "CONNMKE4TJLXNR07"
     },
-    "CONNMKE4X5WEEB5Y": {
-      "type": "pipe",
-      "sourceComponentKks": "CMPMKCRPHU4ZYZ2",
-      "sourcePortId": "port2",
-      "targetComponentKks": "10KBA10BB001",
-      "targetPortId": "port-1767547919466-bzciabkf6",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKE4X5WEEB5Y"
-    },
     "CONNMKE52OFW7896": {
       "type": "pipe",
       "sourceComponentKks": "10KBA-187791",
@@ -56193,29 +55991,6 @@
         "lineType": "solid"
       },
       "kks": "CONNMKE52OFW7896"
-    },
-    "CONNMKGK4KUOLL8U": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547891587-070mgx5o4",
-      "targetComponentKks": "CMPMKGK454AM6JV",
-      "targetPortId": "port-1767437248466",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKGK4KUOLL8U"
     },
     "CONNMKGK4OD55EXV": {
       "type": "pipe",
@@ -56313,98 +56088,6 @@
         "lineType": "solid"
       },
       "kks": "CONNMKGK6M13GDTK"
-    },
-    "CONNMKGK6YNHO0QN": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547892628-q311veav6",
-      "targetComponentKks": "CMPMKGK61TGO8NH",
-      "targetPortId": "port-1767437248466",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKGK6YNHO0QN"
-    },
-    "CONNMKGK8OZWNDTL": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547892628-q311veav6",
-      "targetComponentKks": "CMPMKGK7DGGDXFW",
-      "targetPortId": "port-1767437248466",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKGK8OZWNDTL"
-    },
-    "CONNMKGK8S25L2A6": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547893109-hqtc854ec",
-      "targetComponentKks": "CMPMKGK7ELP4XOZ",
-      "targetPortId": "port-1767437248466",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKGK8S25L2A6"
-    },
-    "CONNMKGK8U9XAWQI": {
-      "type": "pipe",
-      "sourceComponentKks": "10KBA10BB001",
-      "sourcePortId": "port-1767547893602-2563caxf5",
-      "targetComponentKks": "CMPMKGK7FTVRWIR",
-      "targetPortId": "port-1767437248466",
-      "isCrossSystem": false,
-      "sourceSystemKks": "10KBA",
-      "targetSystemKks": "10KBA",
-      "waypoints": [],
-      "routingType": "orthogonal",
-      "visible": true,
-      "locked": false,
-      "properties": {
-        "custom": {}
-      },
-      "style": {
-        "strokeColor": "#1a1a1a",
-        "strokeWidth": 2,
-        "lineType": "solid"
-      },
-      "kks": "CONNMKGK8U9XAWQI"
     },
     "CONNMKGKEJJ63KOU": {
       "type": "pipe",
@@ -56650,6 +56333,343 @@
         "lineType": "solid"
       },
       "kks": "CONNMKJVN69EGDHF"
+    },
+    "CONNMK8YA70SSZTP": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA90AA110",
+      "sourcePortId": "port-1767434407692",
+      "targetComponentKks": "CMP-XUYF5G-",
+      "targetPortId": "port2",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [
+        {
+          "x": 1460,
+          "y": 2240
+        }
+      ],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMK8YA70SSZTP"
+    },
+    "CONNMK8YAC98Y1ZC": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA90AA110",
+      "sourcePortId": "port-1767434409350",
+      "targetComponentKks": "CMPE1SJLDDNKBA90",
+      "targetPortId": "port2",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [
+        {
+          "x": 1460,
+          "y": 2080
+        }
+      ],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMK8YAC98Y1ZC"
+    },
+    "CONNMKCQ8MIS8KT7": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767548076174-1o3lzbmi2",
+      "targetComponentKks": "CMPMKCQ81WMBRT5KBA10",
+      "targetPortId": "port3",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKCQ8MIS8KT7"
+    },
+    "CONNMKCQA6ZUIDG9": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767548080224-n225pqjhj",
+      "targetComponentKks": "10KBA17AA001",
+      "targetPortId": "port-1767422978253",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKCQA6ZUIDG9"
+    },
+    "CONNMKCQD9F2GNOV": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547901960-pvkshm1n6",
+      "targetComponentKks": "CMPMKCQCT82S2M5KBA17",
+      "targetPortId": "port3",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [
+        {
+          "x": 7220,
+          "y": 990
+        }
+      ],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKCQD9F2GNOV"
+    },
+    "CONNMKE4R00QE3DY": {
+      "type": "pipe",
+      "sourceComponentKks": "CMPMKE4QBE677LV",
+      "sourcePortId": "port-1767437248466",
+      "targetComponentKks": "10KBA10BB001",
+      "targetPortId": "port-1767547914259-cp7pkx1ep",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKE4R00QE3DY"
+    },
+    "CONNMKE4R58NMVJZ": {
+      "type": "pipe",
+      "sourceComponentKks": "CMPMKE4QLJXF9V0",
+      "sourcePortId": "port-1767437248466",
+      "targetComponentKks": "10KBA10BB001",
+      "targetPortId": "port-1767547899410-jh5sgqxuc",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKE4R58NMVJZ"
+    },
+    "CONNMKE4RF81XMS4": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547900310-jtxzj0al9",
+      "targetComponentKks": "CMPMKE4QP6VQ88U",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKE4RF81XMS4"
+    },
+    "CONNMKE4X5WEEB5Y": {
+      "type": "pipe",
+      "sourceComponentKks": "CMPMKCRPHU4ZYZ2",
+      "sourcePortId": "port2",
+      "targetComponentKks": "10KBA10BB001",
+      "targetPortId": "port-1767547919466-bzciabkf6",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKE4X5WEEB5Y"
+    },
+    "CONNMKGK4KUOLL8U": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547891587-070mgx5o4",
+      "targetComponentKks": "CMPMKGK454AM6JV",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKGK4KUOLL8U"
+    },
+    "CONNMKGK6YNHO0QN": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547892628-q311veav6",
+      "targetComponentKks": "CMPMKGK61TGO8NH",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKGK6YNHO0QN"
+    },
+    "CONNMKGK8OZWNDTL": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547892628-q311veav6",
+      "targetComponentKks": "CMPMKGK7DGGDXFW",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKGK8OZWNDTL"
+    },
+    "CONNMKGK8S25L2A6": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547893109-hqtc854ec",
+      "targetComponentKks": "CMPMKGK7ELP4XOZ",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKGK8S25L2A6"
+    },
+    "CONNMKGK8U9XAWQI": {
+      "type": "pipe",
+      "sourceComponentKks": "10KBA10BB001",
+      "sourcePortId": "port-1767547893602-2563caxf5",
+      "targetComponentKks": "CMPMKGK7FTVRWIR",
+      "targetPortId": "port-1767437248466",
+      "isCrossSystem": false,
+      "sourceSystemKks": "10KBA",
+      "targetSystemKks": "10KBA",
+      "waypoints": [],
+      "routingType": "orthogonal",
+      "visible": true,
+      "locked": false,
+      "properties": {
+        "custom": {}
+      },
+      "style": {
+        "strokeColor": "#1a1a1a",
+        "strokeWidth": 2,
+        "lineType": "solid"
+      },
+      "kks": "CONNMKGK8U9XAWQI"
     }
   },
   "buildings": {
@@ -56923,5 +56943,5 @@
     }
   },
   "createdAt": "2026-01-08T22:55:21.961Z",
-  "modifiedAt": "2026-01-19T06:39:26.505Z"
+  "modifiedAt": "2026-01-25T16:43:31.002Z"
 }

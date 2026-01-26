@@ -30,9 +30,11 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
   const plant = usePlantStore((state) => state.plant);
   const selectSystem = usePlantStore((state) => state.selectSystem);
 
-  // UI Store for viewport management
+  // UI Store for viewport and selection management
   const saveViewportForSystem = useUIStore((state) => state.saveViewportForSystem);
   const restoreViewportForSystem = useUIStore((state) => state.restoreViewportForSystem);
+  const saveSelectionForSystem = useUIStore((state) => state.saveSelectionForSystem);
+  const restoreSelectionForSystem = useUIStore((state) => state.restoreSelectionForSystem);
 
   // Build tabs from diagramCache
   const tabs: SystemTab[] = Object.entries(diagramCache)
@@ -74,9 +76,10 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
     async (systemKks: string) => {
       if (diagram?.systemKks === systemKks) return; // Already active
 
-      // Save current viewport before switching
+      // Save current viewport and selection before switching
       if (diagram?.systemKks) {
         saveViewportForSystem(diagram.systemKks);
+        saveSelectionForSystem(diagram.systemKks);
       }
 
       // Save current diagram first
@@ -86,12 +89,13 @@ export const SystemTabs: React.FC<SystemTabsProps> = ({ className = '' }) => {
       selectSystem(systemKks);
       await switchToSystem(systemKks);
 
-      // Restore viewport for target system after a brief delay
+      // Restore viewport and selection for target system after a brief delay
       setTimeout(() => {
         restoreViewportForSystem(systemKks);
+        restoreSelectionForSystem(systemKks);
       }, 50);
     },
-    [diagram, saveCurrentDiagram, selectSystem, switchToSystem, saveViewportForSystem, restoreViewportForSystem]
+    [diagram, saveCurrentDiagram, selectSystem, switchToSystem, saveViewportForSystem, restoreViewportForSystem, saveSelectionForSystem, restoreSelectionForSystem]
   );
 
   // Handle tab close
