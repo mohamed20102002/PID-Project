@@ -464,9 +464,9 @@ export const useCustomSymbolStore = create<CustomSymbolState & CustomSymbolActio
             continue;
           }
 
-          // Skip special symbols like piping:corner
-          if (!oldId.startsWith('custom:') && oldId !== 'piping:corner') {
-            console.log(`[customSymbolStore] Skipping non-custom symbol: ${oldId}`);
+          // Skip special terminal symbols - they have their own naming convention
+          if (oldId.startsWith('terminals:')) {
+            console.log(`[customSymbolStore] Skipping terminal symbol: ${oldId}`);
             continue;
           }
 

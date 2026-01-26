@@ -27,7 +27,7 @@
   },
   "components": {
     "10JNG10AA101": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10JNG2",
       "buildingKks": "10UJA",
       "position": {
@@ -81,7 +81,7 @@
       "kks": "10JNG10AA101"
     },
     "10JNG60AP001": {
-      "type": "centrifugalpump-1767540010585",
+      "type": "custom:centrifugal-pump",
       "systemKks": "10JNG2",
       "buildingKks": "10UJA",
       "position": {
@@ -213,7 +213,7 @@
       "kks": "10KBA10AA101-16782"
     },
     "10JNA10SB001": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10JNG2",
       "buildingKks": "10UJA",
       "position": {
@@ -250,7 +250,7 @@
       "kks": "10JNA10SB001"
     },
     "10JNG10AA102": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10JNG2",
       "buildingKks": "10UJA",
       "position": {
@@ -304,7 +304,7 @@
       "kks": "10JNG10AA102"
     },
     "10JNG50BB001": {
-      "type": "hydraulicaccumulator-1768564445723",
+      "type": "custom:hydraulic-accumulator",
       "systemKks": "10JNG2",
       "buildingKks": "10UJA",
       "position": {

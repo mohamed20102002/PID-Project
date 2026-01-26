@@ -27,7 +27,7 @@
   },
   "components": {
     "10KBA96AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -81,7 +81,7 @@
       "wrapLabel": true
     },
     "10KBA93AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -133,7 +133,7 @@
       "wrapLabel": true
     },
     "10KBA95AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -185,7 +185,7 @@
       "wrapLabel": true
     },
     "10KBA94AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -237,7 +237,7 @@
       "wrapLabel": true
     },
     "10KBA96AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -289,7 +289,7 @@
       "wrapLabel": true
     },
     "10KBA93AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -341,7 +341,7 @@
       "wrapLabel": true
     },
     "10KBA95AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -393,7 +393,7 @@
       "wrapLabel": true
     },
     "10KBA94AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -445,7 +445,7 @@
       "wrapLabel": true
     },
     "10KBA96AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -497,7 +497,7 @@
       "wrapLabel": true
     },
     "10KBA93AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -549,7 +549,7 @@
       "wrapLabel": true
     },
     "10KBA94AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -601,7 +601,7 @@
       "wrapLabel": true
     },
     "CMPRWDLGKJ_": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -638,7 +638,7 @@
       "kks": "CMPRWDLGKJ_"
     },
     "CMP-SO1SOAY": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -674,7 +674,7 @@
       "kks": "CMP-SO1SOAY"
     },
     "CMP9MKCVWZ2": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -711,7 +711,7 @@
       "kks": "CMP9MKCVWZ2"
     },
     "CMPZ0QITHUU": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -747,7 +747,7 @@
       "kks": "CMPZ0QITHUU"
     },
     "10KBA95AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -799,7 +799,7 @@
       "wrapLabel": true
     },
     "10KBA90AA109": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -851,7 +851,7 @@
       "wrapLabel": true
     },
     "10KBA90BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1053,7 +1053,7 @@
       "wrapLabel": false
     },
     "CMPGYHBSCGQ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1089,7 +1089,7 @@
       "kks": "CMPGYHBSCGQ"
     },
     "CMPMMTDLE9G": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1125,7 +1125,7 @@
       "kks": "CMPMMTDLE9G"
     },
     "CMPUSVE3DKO": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1161,7 +1161,7 @@
       "kks": "CMPUSVE3DKO"
     },
     "CMPXL3BUQ7Z": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1197,7 +1197,7 @@
       "kks": "CMPXL3BUQ7Z"
     },
     "CMPI5XGK2ME": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1233,7 +1233,7 @@
       "kks": "CMPI5XGK2ME"
     },
     "CMPW0WGQSWA": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1269,7 +1269,7 @@
       "kks": "CMPW0WGQSWA"
     },
     "CMPFAVVLF3S": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1305,7 +1305,7 @@
       "kks": "CMPFAVVLF3S"
     },
     "CMPPXA0UWX5": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1341,7 +1341,7 @@
       "kks": "CMPPXA0UWX5"
     },
     "CMPAG6Q0YYL": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1377,7 +1377,7 @@
       "kks": "CMPAG6Q0YYL"
     },
     "CMP1Q_5HT2M": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1413,7 +1413,7 @@
       "kks": "CMP1Q_5HT2M"
     },
     "CMPZM6ME4YQ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1449,7 +1449,7 @@
       "kks": "CMPZM6ME4YQ"
     },
     "CMPO78D2-T4": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1485,7 +1485,7 @@
       "kks": "CMPO78D2-T4"
     },
     "CMPAUR78DFI": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1521,7 +1521,7 @@
       "kks": "CMPAUR78DFI"
     },
     "CMPZSOGB_XH": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1557,7 +1557,7 @@
       "kks": "CMPZSOGB_XH"
     },
     "CMPOE5ZXGMJ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1593,7 +1593,7 @@
       "kks": "CMPOE5ZXGMJ"
     },
     "CMPGBR7R_PC": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1629,7 +1629,7 @@
       "kks": "CMPGBR7R_PC"
     },
     "CMPTECJXWVC": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1665,7 +1665,7 @@
       "kks": "CMPTECJXWVC"
     },
     "CMPZ0OFNICF": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1701,7 +1701,7 @@
       "kks": "CMPZ0OFNICF"
     },
     "CMPLV4DABK-": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1737,7 +1737,7 @@
       "kks": "CMPLV4DABK-"
     },
     "CMPVASMP9GO": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1774,7 +1774,7 @@
       "kks": "CMPVASMP9GO"
     },
     "CMP8OGVGDVD": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1810,7 +1810,7 @@
       "kks": "CMP8OGVGDVD"
     },
     "CMPKEHHYFAI": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1846,7 +1846,7 @@
       "kks": "CMPKEHHYFAI"
     },
     "CMPTB75BB5S": {
-      "type": "buildingbreach-1767531232143",
+      "type": "custom:building-breach",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -1926,7 +1926,7 @@
       "kks": "CMPTB75BB5S"
     },
     "10KBA90AA802": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2056,7 +2056,7 @@
       "kks": "CMPMEGS-HR1"
     },
     "10KBA90AA810": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2122,7 +2122,7 @@
       "wrapLabel": true
     },
     "CMP9SN_X44J": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2158,7 +2158,7 @@
       "kks": "CMP9SN_X44J"
     },
     "CMPR65ZZSW8": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2194,7 +2194,7 @@
       "kks": "CMPR65ZZSW8"
     },
     "CMPOL0FKSOG": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2230,7 +2230,7 @@
       "kks": "CMPOL0FKSOG"
     },
     "10KBA90AA801": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2282,7 +2282,7 @@
       "wrapLabel": true
     },
     "CMPTAPLYLOQ": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2318,7 +2318,7 @@
       "kks": "CMPTAPLYLOQ"
     },
     "CMPNSPTK6HT": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2354,7 +2354,7 @@
       "kks": "CMPNSPTK6HT"
     },
     "CMPV7KREZI0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2390,7 +2390,7 @@
       "kks": "CMPV7KREZI0"
     },
     "CMPNBHSCSVN": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2426,7 +2426,7 @@
       "kks": "CMPNBHSCSVN"
     },
     "CMPGDVEZSIG": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2462,7 +2462,7 @@
       "kks": "CMPGDVEZSIG"
     },
     "10KBA90AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2514,7 +2514,7 @@
       "wrapLabel": true
     },
     "CMPAY_YQMW8": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2550,7 +2550,7 @@
       "kks": "CMPAY_YQMW8"
     },
     "10KBA90AA105": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2602,7 +2602,7 @@
       "wrapLabel": true
     },
     "CMPSQKDHGXN": {
-      "type": "buildingbreach-1767531232143",
+      "type": "custom:building-breach",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2683,7 +2683,7 @@
       "kks": "CMPSQKDHGXN"
     },
     "10KBA90AA811": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2747,7 +2747,7 @@
       "wrapLabel": true
     },
     "10KBA90AA804": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2799,7 +2799,7 @@
       "wrapLabel": true
     },
     "10KBA90AA803": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2851,7 +2851,7 @@
       "wrapLabel": true
     },
     "CMPLJ9C54T2": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2887,7 +2887,7 @@
       "kks": "CMPLJ9C54T2"
     },
     "CMPMZRW5YEK": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2923,7 +2923,7 @@
       "kks": "CMPMZRW5YEK"
     },
     "CMPWYBDBJQU": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -2959,7 +2959,7 @@
       "kks": "CMPWYBDBJQU"
     },
     "CMPM9VGSMKH": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3079,7 +3079,7 @@
       "kks": "10KWA60AA101"
     },
     "CMP1MGIU0IE": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3115,7 +3115,7 @@
       "kks": "CMP1MGIU0IE"
     },
     "10KBA90AA106": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3167,7 +3167,7 @@
       "wrapLabel": true
     },
     "10KBA90AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3219,7 +3219,7 @@
       "wrapLabel": true
     },
     "CMPC_IRLINX": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3255,7 +3255,7 @@
       "kks": "CMPC_IRLINX"
     },
     "10KBA90AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3307,7 +3307,7 @@
       "wrapLabel": true
     },
     "CMPUTCX-XGQ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3343,7 +3343,7 @@
       "kks": "CMPUTCX-XGQ"
     },
     "CMPFPGP5ZI_": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3379,7 +3379,7 @@
       "kks": "CMPFPGP5ZI_"
     },
     "CMPDTNPRNJG": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3415,7 +3415,7 @@
       "kks": "CMPDTNPRNJG"
     },
     "10KBA90AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3467,7 +3467,7 @@
       "wrapLabel": true
     },
     "10KBA90AA104": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3519,7 +3519,7 @@
       "wrapLabel": true
     },
     "CMPL5CX0JWL": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3555,7 +3555,7 @@
       "kks": "CMPL5CX0JWL"
     },
     "10KBA90BP002": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3593,7 +3593,7 @@
       "wrapLabel": true
     },
     "10KBA90BP003": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3631,7 +3631,7 @@
       "wrapLabel": true
     },
     "CMPKHE8XYPJ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3667,7 +3667,7 @@
       "kks": "CMPKHE8XYPJ"
     },
     "CMPXO4SSXUM": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3704,7 +3704,7 @@
       "kks": "CMPXO4SSXUM"
     },
     "CMPOJ3FDHW_": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3740,7 +3740,7 @@
       "kks": "CMPOJ3FDHW_"
     },
     "CMPBWUUWQQU": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3776,7 +3776,7 @@
       "kks": "CMPBWUUWQQU"
     },
     "10KBA90AP001": {
-      "type": "centrifugalpump-1767540010585-copy-1767918102908",
+      "type": "custom:centrifugal-pump-with-actuator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3830,7 +3830,7 @@
       "wrapLabel": true
     },
     "CMP4UJKVWFW": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -3852,7 +3852,7 @@
       "kks": "CMP4UJKVWFW"
     },
     "10KBA90AA005": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4060,7 +4060,7 @@
       "kks": "CMPC4N-3LMLKBA90"
     },
     "10KBA90AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4114,7 +4114,7 @@
       "wrapLabel": true
     },
     "CMPMK9EQJZTV9A7": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4151,7 +4151,7 @@
       "kks": "CMPMK9EQJZTV9A7"
     },
     "10KBA90AA403": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4371,7 +4371,7 @@
       "kks": "CMP6EC1THW5KBA90"
     },
     "10KBA90AA402": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4435,7 +4435,7 @@
       "wrapLabel": true
     },
     "CMPMK9F2SFD0R5C": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4471,7 +4471,7 @@
       "kks": "CMPMK9F2SFD0R5C"
     },
     "CMPMK9F30HSIZJG": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4507,7 +4507,7 @@
       "kks": "CMPMK9F30HSIZJG"
     },
     "CMPMK9F38KU9J7W": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4698,7 +4698,7 @@
       "kks": "CMPMK9F5ZA1A0ZA"
     },
     "CMPMK9F6J9F8EEV": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4734,7 +4734,7 @@
       "kks": "CMPMK9F6J9F8EEV"
     },
     "CMPMK9F6T25W1IK": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4770,7 +4770,7 @@
       "kks": "CMPMK9F6T25W1IK"
     },
     "10KBA50AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4822,7 +4822,7 @@
       "wrapLabel": true
     },
     "10KBA50AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4874,7 +4874,7 @@
       "wrapLabel": true
     },
     "10KBA50AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4926,7 +4926,7 @@
       "wrapLabel": true
     },
     "CMP-QHZLX5SKBA90": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -4977,7 +4977,7 @@
       "kks": "CMP-QHZLX5SKBA90"
     },
     "CMPY4I0WMBPKBA90": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6272,7 +6272,7 @@
       "kks": "CMP5-TMDNOZKBA94"
     },
     "CMPMK9FKI98CSEK": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6386,7 +6386,7 @@
       "kks": "CMPMK9FKSWRA8GQ"
     },
     "10KBA90AA112": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6438,7 +6438,7 @@
       "wrapLabel": true
     },
     "10KBA90AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6490,7 +6490,7 @@
       "wrapLabel": true
     },
     "10KBA90AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6698,7 +6698,7 @@
       "kks": "CMPMK9FY1NN39JYKBA90"
     },
     "10KBA92AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6752,7 +6752,7 @@
       "wrapLabel": true
     },
     "CMPMK9G1DJDTAQZ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6788,7 +6788,7 @@
       "kks": "CMPMK9G1DJDTAQZ"
     },
     "CMPMK9G23VBMJ98": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -6906,7 +6906,7 @@
       "kks": "10KBD-20422"
     },
     "CMPMK9G44INEK7P": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7098,7 +7098,7 @@
       "kks": "CMPMK9FZ6UEL8LGKBA90"
     },
     "CMPMK9G4VWHK9XC": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7134,7 +7134,7 @@
       "kks": "CMPMK9G4VWHK9XC"
     },
     "CMPMK9G7RPTWK8X": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7248,7 +7248,7 @@
       "kks": "CMPCG5HRSNYKBA90"
     },
     "10KBA92AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7302,7 +7302,7 @@
       "flipY": true
     },
     "10KBA92AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7354,7 +7354,7 @@
       "wrapLabel": true
     },
     "10KBA92AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7576,7 +7576,7 @@
       "kks": "10KAB-18766"
     },
     "CMPMKAVMGUAGYD5": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7612,7 +7612,7 @@
       "kks": "CMPMKAVMGUAGYD5"
     },
     "CMPMKAVMNUBV0LS": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7648,7 +7648,7 @@
       "kks": "CMPMKAVMNUBV0LS"
     },
     "CMPMKAVN2U38Q46": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7684,7 +7684,7 @@
       "kks": "CMPMKAVN2U38Q46"
     },
     "10KBA90AA111": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7736,7 +7736,7 @@
       "wrapLabel": true
     },
     "10KBA90AA003": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7873,7 +7873,7 @@
       "wrapLabel": false
     },
     "CMPMKAVS0JTHZKZ": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7909,7 +7909,7 @@
       "kks": "CMPMKAVS0JTHZKZ"
     },
     "CMPMKAVT80FBXB7": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7945,7 +7945,7 @@
       "kks": "CMPMKAVT80FBXB7"
     },
     "CMPMKAVTKU6ODK6": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -7981,7 +7981,7 @@
       "kks": "CMPMKAVTKU6ODK6"
     },
     "CMPMKAVTMPKTSW2": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8017,7 +8017,7 @@
       "kks": "CMPMKAVTMPKTSW2"
     },
     "CMPMKAVTOMEM551": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8053,7 +8053,7 @@
       "kks": "CMPMKAVTOMEM551"
     },
     "CMPMKAVVRWT13HW": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8089,7 +8089,7 @@
       "kks": "CMPMKAVVRWT13HW"
     },
     "CMPMKAVYBX728OW": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8208,7 +8208,7 @@
       "kks": "10JEW10-40AA112"
     },
     "CMPMKAW2Q9K1SYC": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8244,7 +8244,7 @@
       "kks": "CMPMKAW2Q9K1SYC"
     },
     "10KBA92AA003": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8296,7 +8296,7 @@
       "wrapLabel": true
     },
     "10KBA92AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8348,7 +8348,7 @@
       "wrapLabel": true
     },
     "10KBA92AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8400,7 +8400,7 @@
       "wrapLabel": true
     },
     "CMPMKAW65NK7C9K": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8436,7 +8436,7 @@
       "kks": "CMPMKAW65NK7C9K"
     },
     "CMPMKAW6798JZIC": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8472,7 +8472,7 @@
       "kks": "CMPMKAW6798JZIC"
     },
     "CMPMKAW7TRCJBTY": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8508,7 +8508,7 @@
       "kks": "CMPMKAW7TRCJBTY"
     },
     "CMPMKAW7WAA7SB2": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8544,7 +8544,7 @@
       "kks": "CMPMKAW7WAA7SB2"
     },
     "CMPMKAW8EXHQW2S": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8580,7 +8580,7 @@
       "kks": "CMPMKAW8EXHQW2S"
     },
     "CMPMKAW8MQQ0ROZ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8616,7 +8616,7 @@
       "kks": "CMPMKAW8MQQ0ROZ"
     },
     "10KBA91AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -8668,7 +8668,7 @@
       "wrapLabel": true
     },
     "CMPMKAWEEHA2X92": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9250,7 +9250,7 @@
       "kks": "CMPJH54XZWKKBA90"
     },
     "CMPFH6SWOYLKBA90": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9465,7 +9465,7 @@
       "kks": "10KBF-18859"
     },
     "10KBA90AC001": {
-      "type": "heatexchangera-1767541344558-copy-1767546678193-copy-1767547239175",
+      "type": "custom:heat-exchanger-3",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9707,7 +9707,7 @@
       "kks": "CMPMKAXQT5XKWY3KBA50"
     },
     "10KBA51AP001": {
-      "type": "centrifugalpump-1767540010585-copy-1767918102908",
+      "type": "custom:centrifugal-pump-with-actuator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9759,7 +9759,7 @@
       "kks": "10KBA51AP001"
     },
     "10KBA53AP001": {
-      "type": "centrifugalpump-1767540010585-copy-1767918102908",
+      "type": "custom:centrifugal-pump-with-actuator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9811,7 +9811,7 @@
       "kks": "10KBA53AP001"
     },
     "10KBA52AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9863,7 +9863,7 @@
       "wrapLabel": true
     },
     "10KBA51AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9915,7 +9915,7 @@
       "kks": "10KBA51AA002"
     },
     "10KBA53AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -9967,7 +9967,7 @@
       "kks": "10KBA53AA002"
     },
     "10KBA51AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10019,7 +10019,7 @@
       "wrapLabel": true
     },
     "10KBA53AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10225,7 +10225,7 @@
       "kks": "CMPMKAXY7MA990KKBA51"
     },
     "10KBA52AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10355,7 +10355,7 @@
       "kks": "CMPMKAY2KQGX1D3KBA52"
     },
     "10KBA52AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10407,7 +10407,7 @@
       "wrapLabel": true
     },
     "CMPMKAY5ZZ8QSUL": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10443,7 +10443,7 @@
       "kks": "CMPMKAY5ZZ8QSUL"
     },
     "CMPMKAY63N2ZWQB": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10479,7 +10479,7 @@
       "kks": "CMPMKAY63N2ZWQB"
     },
     "10KBA51AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10531,7 +10531,7 @@
       "wrapLabel": true
     },
     "10KBA53AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10583,7 +10583,7 @@
       "kks": "10KBA53AA101"
     },
     "CMPMKAYBSHUT7E0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10619,7 +10619,7 @@
       "kks": "CMPMKAYBSHUT7E0"
     },
     "CMPMKAYBUOZLFVQ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10655,7 +10655,7 @@
       "kks": "CMPMKAYBUOZLFVQ"
     },
     "CMPMKAYC0CRC44H": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10691,7 +10691,7 @@
       "kks": "CMPMKAYC0CRC44H"
     },
     "CMPMKAYC4BOB2JX": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10727,7 +10727,7 @@
       "kks": "CMPMKAYC4BOB2JX"
     },
     "CMPMKAYE9F6P3V8": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10763,7 +10763,7 @@
       "kks": "CMPMKAYE9F6P3V8"
     },
     "CMPMKAYECNODWRE": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10799,7 +10799,7 @@
       "kks": "CMPMKAYECNODWRE"
     },
     "CMPMKAYEL495AD7": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10835,7 +10835,7 @@
       "kks": "CMPMKAYEL495AD7"
     },
     "10KBA50BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10873,7 +10873,7 @@
       "wrapLabel": true
     },
     "CMPMKAYH5RA39OW": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10909,7 +10909,7 @@
       "kks": "CMPMKAYH5RA39OW"
     },
     "CMPMKAYH7J2CTWP": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -10945,7 +10945,7 @@
       "kks": "CMPMKAYH7J2CTWP"
     },
     "CMPMKAYTDMVBQKTKBA50": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11074,7 +11074,7 @@
       "kks": "CMPMKAXYFKQS2HLKBA51"
     },
     "10KBA52AP001": {
-      "type": "centrifugalpump-1767540010585-copy-1767918102908",
+      "type": "custom:centrifugal-pump-with-actuator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11126,7 +11126,7 @@
       "wrapLabel": true
     },
     "10KBA52AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11178,7 +11178,7 @@
       "wrapLabel": true
     },
     "10KBA51AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11230,7 +11230,7 @@
       "wrapLabel": true
     },
     "10KBA53AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11282,7 +11282,7 @@
       "wrapLabel": true
     },
     "CMPMKB677S8YZWB": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11318,7 +11318,7 @@
       "kks": "CMPMKB677S8YZWB"
     },
     "CMPMKB68IWQV8WR": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11354,7 +11354,7 @@
       "kks": "CMPMKB68IWQV8WR"
     },
     "CMPMKB68L67GSCI": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11391,7 +11391,7 @@
       "kks": "CMPMKB68L67GSCI"
     },
     "CMPMKB6C6GA6M2I": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11442,7 +11442,7 @@
       "kks": "CMPMKB6C6GA6M2I"
     },
     "CMPMKB6CD9RXET2": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11493,7 +11493,7 @@
       "kks": "CMPMKB6CD9RXET2"
     },
     "CMPMKB6D5LYHX23": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11685,7 +11685,7 @@
       "kks": "CMPMKAYGCFWRKLZKBA50"
     },
     "CMPMKB6JHHM5T5P": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11721,7 +11721,7 @@
       "kks": "CMPMKB6JHHM5T5P"
     },
     "10KBA61AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11773,7 +11773,7 @@
       "wrapLabel": true
     },
     "10KBA62AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11825,7 +11825,7 @@
       "wrapLabel": true
     },
     "CMPMKB6NNI5L6QD": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11861,7 +11861,7 @@
       "kks": "CMPMKB6NNI5L6QD"
     },
     "10KBA50AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11913,7 +11913,7 @@
       "wrapLabel": true
     },
     "10KBA50AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -11966,7 +11966,7 @@
       "wrapLabel": true
     },
     "10KBA50AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12174,7 +12174,7 @@
       "kks": "CMPMKB6QOQ3QWIBKBA50"
     },
     "CMPMKB6R7STD3VX": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12210,7 +12210,7 @@
       "kks": "CMPMKB6R7STD3VX"
     },
     "CMPMKB6RF79C8BZ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12246,7 +12246,7 @@
       "kks": "CMPMKB6RF79C8BZ"
     },
     "CMPMKB6RI4XCOAK": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12282,7 +12282,7 @@
       "kks": "CMPMKB6RI4XCOAK"
     },
     "10KBA50AA104": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12334,7 +12334,7 @@
       "wrapLabel": true
     },
     "10KBA50AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12386,7 +12386,7 @@
       "wrapLabel": true
     },
     "10KBA50AA603": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12439,7 +12439,7 @@
       "wrapLabel": true
     },
     "CMPMKB6U12Y1R89": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12475,7 +12475,7 @@
       "kks": "CMPMKB6U12Y1R89"
     },
     "CMPMKB6U8FB907G": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12511,7 +12511,7 @@
       "kks": "CMPMKB6U8FB907G"
     },
     "CMPMKB6UAZT2ONB": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12547,7 +12547,7 @@
       "kks": "CMPMKB6UAZT2ONB"
     },
     "CMPMKB6ULVB5OEC": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12583,7 +12583,7 @@
       "kks": "CMPMKB6ULVB5OEC"
     },
     "CMPMKB6UVTOTI4W": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12619,7 +12619,7 @@
       "kks": "CMPMKB6UVTOTI4W"
     },
     "10KBA21AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12671,7 +12671,7 @@
       "wrapLabel": true
     },
     "CMPMKB6XSA49YQQ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12707,7 +12707,7 @@
       "kks": "CMPMKB6XSA49YQQ"
     },
     "10KBA21AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12759,7 +12759,7 @@
       "wrapLabel": true
     },
     "10KBA21AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12812,7 +12812,7 @@
       "wrapLabel": true
     },
     "10KBA21AA003": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12864,7 +12864,7 @@
       "wrapLabel": true
     },
     "CMPMKB709EZWYE5": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -12900,7 +12900,7 @@
       "kks": "CMPMKB709EZWYE5"
     },
     "CMPMKB70JAMHGHV": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13014,7 +13014,7 @@
       "kks": "CMPMKB725W7F245"
     },
     "10KBA21AC001": {
-      "type": "heatexchangera-1767541344558-copy-1767546678193-copy-1767547239175",
+      "type": "custom:heat-exchanger-3",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13095,7 +13095,7 @@
       "flipX": true
     },
     "CMPMKB73R981HDG": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13295,7 +13295,7 @@
       "kks": "10KAB-18833"
     },
     "10KAB21AA401": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13360,7 +13360,7 @@
       "flipX": true
     },
     "10KAB21AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13412,7 +13412,7 @@
       "wrapLabel": true
     },
     "CMPMKB7BX2YVPXK": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13760,7 +13760,7 @@
       "kks": "CMPMKB6TP3HUGXXKBA50"
     },
     "10KBA91AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13812,7 +13812,7 @@
       "wrapLabel": true
     },
     "CMPMKB7OT6LEMPN": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13848,7 +13848,7 @@
       "kks": "CMPMKB7OT6LEMPN"
     },
     "CMPMKB7P3XJLG7M": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -13962,7 +13962,7 @@
       "kks": "CMPMKB6TYEBBUY4H3UKBA50"
     },
     "CMPMKAYBYIXRHLPKBA50": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14076,7 +14076,7 @@
       "kks": "CMPMKAY3JYUGGN2KBA50"
     },
     "CMPMKB7YOJZCH5Z": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14189,7 +14189,7 @@
       "kks": "CMPMKB6IYMP55IFKBA60"
     },
     "CMPMKB828ZV7ZHP": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14225,7 +14225,7 @@
       "kks": "CMPMKB828ZV7ZHP"
     },
     "10KBA21BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14341,7 +14341,7 @@
       "kks": "CMPMKB85Y15XYEV"
     },
     "10KBA20AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14393,7 +14393,7 @@
       "wrapLabel": true
     },
     "10KBA20CF001": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14458,7 +14458,7 @@
       "wrapLabel": true
     },
     "10KBA20AA201": {
-      "type": "shutoffvalve-1767428891387-copy-1767434623733",
+      "type": "custom:control-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14512,7 +14512,7 @@
       "flipX": true
     },
     "10KBA20AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14564,7 +14564,7 @@
       "wrapLabel": true
     },
     "CMPMKB893KY14HF": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14600,7 +14600,7 @@
       "kks": "CMPMKB893KY14HF"
     },
     "CMPMKB89AQOBN8Q": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14636,7 +14636,7 @@
       "kks": "CMPMKB89AQOBN8Q"
     },
     "10KBA20AP001": {
-      "type": "centrifugalpump-1767540010585-copy-1767918102908",
+      "type": "custom:centrifugal-pump-with-actuator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14688,7 +14688,7 @@
       "wrapLabel": true
     },
     "10KBA30AP001": {
-      "type": "centrifugalpump-1767540010585-copy-1767918102908",
+      "type": "custom:centrifugal-pump-with-actuator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14740,7 +14740,7 @@
       "kks": "10KBA30AP001"
     },
     "CMPMKB8AE3OAMH6": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14776,7 +14776,7 @@
       "kks": "CMPMKB8AE3OAMH6"
     },
     "10KBA30AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14828,7 +14828,7 @@
       "kks": "10KBA30AA601"
     },
     "10KBA30CF001": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14893,7 +14893,7 @@
       "kks": "10KBA30CF001"
     },
     "10KBA30AA201": {
-      "type": "shutoffvalve-1767428891387-copy-1767434623733",
+      "type": "custom:control-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -14947,7 +14947,7 @@
       "kks": "10KBA30AA201"
     },
     "10KBA30AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15077,7 +15077,7 @@
       "kks": "CMPMKB8BVAFTT2N"
     },
     "10KBA61AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15129,7 +15129,7 @@
       "wrapLabel": true
     },
     "10KBA61AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15181,7 +15181,7 @@
       "kks": "10KBA61AA101"
     },
     "10KBA62AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15233,7 +15233,7 @@
       "kks": "10KBA62AA101"
     },
     "CMPMKB8ERE7YRRP": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15269,7 +15269,7 @@
       "kks": "CMPMKB8ERE7YRRP"
     },
     "CMPMKB8ETV8AFXN": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15305,7 +15305,7 @@
       "kks": "CMPMKB8ETV8AFXN"
     },
     "10KBA62AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15513,7 +15513,7 @@
       "kks": "CMPMKB8CW1JJAQRKBA60"
     },
     "CMPMKB8G6NE6NSK": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15549,7 +15549,7 @@
       "kks": "CMPMKB8G6NE6NSK"
     },
     "CMPMKB8G8W1ICB4": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15585,7 +15585,7 @@
       "kks": "CMPMKB8G8W1ICB4"
     },
     "CMPMKB8GBOPI0I1": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15621,7 +15621,7 @@
       "kks": "CMPMKB8GBOPI0I1"
     },
     "CMPMKB8GDAH7WDI": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15657,7 +15657,7 @@
       "kks": "CMPMKB8GDAH7WDI"
     },
     "CMPMKB8GQPA379A": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15693,7 +15693,7 @@
       "kks": "CMPMKB8GQPA379A"
     },
     "10KBA20AA401": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15836,7 +15836,7 @@
       "kks": "CMPMKB8HO9GC4K2"
     },
     "CMPMKB8HVNQ1G1Q": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -15872,7 +15872,7 @@
       "kks": "CMPMKB8HVNQ1G1Q"
     },
     "10KBA20AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16002,7 +16002,7 @@
       "kks": "CMPMKB8II7EZI9RKBA20"
     },
     "10KBA20AA003": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16054,7 +16054,7 @@
       "wrapLabel": true
     },
     "CMPMKB8J7LMYYS6": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16090,7 +16090,7 @@
       "kks": "CMPMKB8J7LMYYS6"
     },
     "CMPMKB8JC3O3IIG": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16126,7 +16126,7 @@
       "kks": "CMPMKB8JC3O3IIG"
     },
     "CMPMKB7LMSM875X": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16162,7 +16162,7 @@
       "kks": "CMPMKB7LMSM875X"
     },
     "CMPMKB8LFM0TIS5": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16227,7 +16227,7 @@
       "kks": "CMPMKB8LFM0TIS5"
     },
     "10KBA30AP001KT01": {
-      "type": "trapcatcherfilter-1768229243197",
+      "type": "custom:trap-catcher",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16279,7 +16279,7 @@
       "kks": "10KBA30AP001KT01"
     },
     "10KBA30AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16409,7 +16409,7 @@
       "kks": "CMPMWOEIWEHBHYKBA30"
     },
     "10KBA30AA003": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16461,7 +16461,7 @@
       "kks": "10KBA30AA003"
     },
     "CMPMKBAAZO87WC7": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16497,7 +16497,7 @@
       "kks": "CMPMKBAAZO87WC7"
     },
     "CMPMKBAEC0TCR8TKBA20": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16548,7 +16548,7 @@
       "kks": "CMPMKBAEC0TCR8TKBA20"
     },
     "CMPMKBAEHM9YCBXKBA30": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16599,7 +16599,7 @@
       "kks": "CMPMKBAEHM9YCBXKBA30"
     },
     "CMPMKC6YJ9MPNS2": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16635,7 +16635,7 @@
       "kks": "CMPMKC6YJ9MPNS2"
     },
     "CMPMKC6YLDFUEKH": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16671,7 +16671,7 @@
       "kks": "CMPMKC6YLDFUEKH"
     },
     "CMPMKC71EEEVZSP": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16707,7 +16707,7 @@
       "kks": "CMPMKC71EEEVZSP"
     },
     "CMPMKC75UTNJT8T": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16743,7 +16743,7 @@
       "kks": "CMPMKC75UTNJT8T"
     },
     "CMPMKC75ZVYDYKQ": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16857,7 +16857,7 @@
       "kks": "CMPMKC77FH2P2XP"
     },
     "CMPMKC7A89HSPVS": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16893,7 +16893,7 @@
       "kks": "CMPMKC7A89HSPVS"
     },
     "CMPMKC7B29YEOTK": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -16930,7 +16930,7 @@
       "kks": "CMPMKC7B29YEOTK"
     },
     "CMPMKC7B4RGBXFY": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17200,7 +17200,7 @@
       "kks": "CMPMK9FP2CO43L2KBA9"
     },
     "CMPMKC8H9EQKG2K": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17236,7 +17236,7 @@
       "kks": "CMPMKC8H9EQKG2K"
     },
     "CMPMKC8H9EZQ1NV": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17350,7 +17350,7 @@
       "kks": "CMPMKC8H9GKQOBC"
     },
     "10KBA31BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17388,7 +17388,7 @@
       "kks": "10KBA31BP001"
     },
     "10KBA31AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17440,7 +17440,7 @@
       "kks": "10KBA31AA101"
     },
     "10KBA31AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17492,7 +17492,7 @@
       "kks": "10KBA31AA001"
     },
     "10KBA31AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17545,7 +17545,7 @@
       "kks": "10KBA31AA601"
     },
     "10KBA31AA003": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17597,7 +17597,7 @@
       "kks": "10KBA31AA003"
     },
     "CMPMKC960E3PX8Q": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17711,7 +17711,7 @@
       "kks": "CMPMKC96QGO63YT"
     },
     "CMPMKC9AK6ON7YN": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17825,7 +17825,7 @@
       "kks": "CMPMKC9B79HTJVD"
     },
     "10KBA31AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -17877,7 +17877,7 @@
       "kks": "10KBA31AA002"
     },
     "10KBA31AA401": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18106,7 +18106,7 @@
       "kks": "10KAB-18825"
     },
     "10KBA31AC001": {
-      "type": "heatexchangera-1767541344558-copy-1767546678193-copy-1767547239175",
+      "type": "custom:heat-exchanger-3",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18189,7 +18189,7 @@
       "kks": "10KBA31AC001"
     },
     "CMPMKC9W3NWAH7Q": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18226,7 +18226,7 @@
       "kks": "CMPMKC9W3NWAH7Q"
     },
     "CMPMKC9W65L6TZX": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18263,7 +18263,7 @@
       "kks": "CMPMKC9W65L6TZX"
     },
     "CMPMKC9WTRFFG9X": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18299,7 +18299,7 @@
       "kks": "CMPMKC9WTRFFG9X"
     },
     "CMPMKC9WYGVKYG8": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18336,7 +18336,7 @@
       "kks": "CMPMKC9WYGVKYG8"
     },
     "CMPMKCBVHQ27HYU": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18372,7 +18372,7 @@
       "kks": "CMPMKCBVHQ27HYU"
     },
     "CMPMKCBVNXNTDU2": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18408,7 +18408,7 @@
       "kks": "CMPMKCBVNXNTDU2"
     },
     "CMPMKCBVPW9RERB": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18444,7 +18444,7 @@
       "kks": "CMPMKCBVPW9RERB"
     },
     "CMPMKCBVRMKG4OW": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18480,7 +18480,7 @@
       "kks": "CMPMKCBVRMKG4OW"
     },
     "CMPMKCBW2T3K9FY": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18516,7 +18516,7 @@
       "kks": "CMPMKCBW2T3K9FY"
     },
     "CMPMKCBW5B0RMTH": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18552,7 +18552,7 @@
       "kks": "CMPMKCBW5B0RMTH"
     },
     "CMPMKCC2EP5PGP1": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18603,7 +18603,7 @@
       "kks": "CMPMKCC2EP5PGP1"
     },
     "CMPMKCC5BH56C2C": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18639,7 +18639,7 @@
       "kks": "CMPMKCC5BH56C2C"
     },
     "CMPMKCC5OQ14KJF": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18675,7 +18675,7 @@
       "kks": "CMPMKCC5OQ14KJF"
     },
     "CMPMKCC5QTVL87X": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18711,7 +18711,7 @@
       "kks": "CMPMKCC5QTVL87X"
     },
     "CMPMKCC5SSOEZD9": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18747,7 +18747,7 @@
       "kks": "CMPMKCC5SSOEZD9"
     },
     "CMPMKCC67JQO5M5": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18783,7 +18783,7 @@
       "kks": "CMPMKCC67JQO5M5"
     },
     "CMPMKCC69N6XQUC": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18819,7 +18819,7 @@
       "kks": "CMPMKCC69N6XQUC"
     },
     "CMPMKCC9UO1Z3UW": {
-      "type": "buildingbreach-1767531232143",
+      "type": "custom:building-breach",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18900,7 +18900,7 @@
       "kks": "CMPMKCC9UO1Z3UW"
     },
     "CMPMKCC9ZJ9WT65": {
-      "type": "buildingbreach-1767531232143",
+      "type": "custom:building-breach",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -18981,7 +18981,7 @@
       "kks": "CMPMKCC9ZJ9WT65"
     },
     "10KBA62AA801": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19033,7 +19033,7 @@
       "kks": "10KBA62AA801"
     },
     "CMPMKCCDCHIP6FG": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19069,7 +19069,7 @@
       "kks": "CMPMKCCDCHIP6FG"
     },
     "CMPMKCCDH4TO1SQ": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19269,7 +19269,7 @@
       "kks": "10KUB-12792"
     },
     "CMPMKCCFEUR3BXU": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19306,7 +19306,7 @@
       "kks": "CMPMKCCFEUR3BXU"
     },
     "CMPMKCCFGNFRWPL": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19342,7 +19342,7 @@
       "kks": "CMPMKCCFGNFRWPL"
     },
     "CMPMKCCGF49SK3V": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19378,7 +19378,7 @@
       "kks": "CMPMKCCGF49SK3V"
     },
     "CMPMKCCGJW63EVW": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19414,7 +19414,7 @@
       "kks": "CMPMKCCGJW63EVW"
     },
     "CMPMKCCL8HV7EP7": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19450,7 +19450,7 @@
       "kks": "CMPMKCCL8HV7EP7"
     },
     "CMPMKCCLCZKPT6Y": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -19876,7 +19876,7 @@
       "kks": "CMPMKCCEWZYZ5NVKBA62"
     },
     "10KBA61AA801": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20005,7 +20005,7 @@
       "kks": "CMPMKCCEZBUS3I2KBA61"
     },
     "CMPMKCC39GVJACLKBA62": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20056,7 +20056,7 @@
       "kks": "CMPMKCC39GVJACLKBA62"
     },
     "CMPMKCC4X5WA2AYKBA62": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20107,7 +20107,7 @@
       "kks": "CMPMKCC4X5WA2AYKBA62"
     },
     "10KBA61AA802": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20159,7 +20159,7 @@
       "wrapLabel": true
     },
     "CMPMKCDGCB0EOYC": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20195,7 +20195,7 @@
       "kks": "CMPMKCDGCB0EOYC"
     },
     "CMPMKCDGVI649JV": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20231,7 +20231,7 @@
       "kks": "CMPMKCDGVI649JV"
     },
     "10KBA62AA802": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20283,7 +20283,7 @@
       "kks": "10KBA62AA802"
     },
     "10KBA61AA810": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20347,7 +20347,7 @@
       "wrapLabel": true
     },
     "10KBA62AA810": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20411,7 +20411,7 @@
       "wrapLabel": true
     },
     "CMPMKCH5XS3VAS4": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20447,7 +20447,7 @@
       "kks": "CMPMKCH5XS3VAS4"
     },
     "CMPMKCH6002QSOL": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20483,7 +20483,7 @@
       "kks": "CMPMKCH6002QSOL"
     },
     "CMPMKCH6XWR3NAG": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20519,7 +20519,7 @@
       "kks": "CMPMKCH6XWR3NAG"
     },
     "10KBA60CF001": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20586,7 +20586,7 @@
       "wrapLabel": true
     },
     "CMPMKCH8512J4KT": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20622,7 +20622,7 @@
       "kks": "CMPMKCH8512J4KT"
     },
     "CMPMKCH876QIXAP": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20736,7 +20736,7 @@
       "kks": "CMPMKCH6GQTAFYWKBA60"
     },
     "10KBA60AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20790,7 +20790,7 @@
       "flipX": true
     },
     "10KBA60AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -20842,7 +20842,7 @@
       "wrapLabel": true
     },
     "CMPMKCHATW766M9": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21034,7 +21034,7 @@
       "kks": "CMPMKCHAG1EJDQGKBA60"
     },
     "10KBA60AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21086,7 +21086,7 @@
       "wrapLabel": true
     },
     "10KBA10AC001": {
-      "type": "heatexchangera-1767541344558",
+      "type": "custom:heat-exchanger",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21244,7 +21244,7 @@
       "kks": "CMPMKCHGEJINDAU"
     },
     "CMPMKCHGRPW7BU5": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21280,7 +21280,7 @@
       "kks": "CMPMKCHGRPW7BU5"
     },
     "CMPMKCHGWRJX4CJ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21316,7 +21316,7 @@
       "kks": "CMPMKCHGWRJX4CJ"
     },
     "CMPMKCHH0457UGR": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21353,7 +21353,7 @@
       "kks": "CMPMKCHH0457UGR"
     },
     "CMPMKCHHZZF7LXL": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21389,7 +21389,7 @@
       "kks": "CMPMKCHHZZF7LXL"
     },
     "10KBA10AC002": {
-      "type": "heatexchangera-1767541344558-copy-1767546678193",
+      "type": "custom:heat-exchanger-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21634,7 +21634,7 @@
       "kks": "10KAB-18869"
     },
     "CMPMKCHKODK36NP": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21752,7 +21752,7 @@
       "kks": "10KUB-12790"
     },
     "CMPMKCHMZ4LNEQG": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21788,7 +21788,7 @@
       "kks": "CMPMKCHMZ4LNEQG"
     },
     "CMPMKCHN9XS7T66": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21824,7 +21824,7 @@
       "kks": "CMPMKCHN9XS7T66"
     },
     "CMPMKCHQ3CVWT7K": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21861,7 +21861,7 @@
       "kks": "CMPMKCHQ3CVWT7K"
     },
     "CMPMKCHQA1RMWI2": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21898,7 +21898,7 @@
       "kks": "CMPMKCHQA1RMWI2"
     },
     "10KBA60AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -21951,7 +21951,7 @@
       "flipX": true
     },
     "10KBA60AA110": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22003,7 +22003,7 @@
       "wrapLabel": true
     },
     "10KBA60BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22041,7 +22041,7 @@
       "wrapLabel": true
     },
     "10KBA60AA111": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22093,7 +22093,7 @@
       "kks": "10KBA60AA111"
     },
     "CMPMKCHUHELDEC2": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22129,7 +22129,7 @@
       "kks": "CMPMKCHUHELDEC2"
     },
     "CMPMKCHUJJPGLZ8": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22165,7 +22165,7 @@
       "kks": "CMPMKCHUJJPGLZ8"
     },
     "10KBA69AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22217,7 +22217,7 @@
       "wrapLabel": true
     },
     "10KBA69AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22347,7 +22347,7 @@
       "kks": "CMPMKCHXD8MXXVS"
     },
     "10KBA69AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22481,7 +22481,7 @@
       "kks": "10JEF-17608"
     },
     "10KBA10AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22533,7 +22533,7 @@
       "wrapLabel": true
     },
     "CMPMKCI0NBRHDPM": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22569,7 +22569,7 @@
       "kks": "CMPMKCI0NBRHDPM"
     },
     "10KBA12AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22621,7 +22621,7 @@
       "wrapLabel": true
     },
     "10KBA12AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22673,7 +22673,7 @@
       "wrapLabel": true
     },
     "10KBA11AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22725,7 +22725,7 @@
       "kks": "10KBA11AA101"
     },
     "10KBA11AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22777,7 +22777,7 @@
       "kks": "10KBA11AA102"
     },
     "10KBA14AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22829,7 +22829,7 @@
       "kks": "10KBA14AA101"
     },
     "10KBA14AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22881,7 +22881,7 @@
       "kks": "10KBA14AA102"
     },
     "10KBA13AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22933,7 +22933,7 @@
       "kks": "10KBA13AA101"
     },
     "10KBA13AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -22985,7 +22985,7 @@
       "kks": "10KBA13AA102"
     },
     "CMPMKCIBGILWH1Z": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23036,7 +23036,7 @@
       "kks": "CMPMKCIBGILWH1Z"
     },
     "10KBA10BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23074,7 +23074,7 @@
       "wrapLabel": true
     },
     "CMPMKCICKYOU6QA": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23110,7 +23110,7 @@
       "kks": "CMPMKCICKYOU6QA"
     },
     "CMPMKCID1H1LWJM": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23146,7 +23146,7 @@
       "kks": "CMPMKCID1H1LWJM"
     },
     "10KBA10AA105": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23198,7 +23198,7 @@
       "wrapLabel": true
     },
     "10KBA10AA605": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23251,7 +23251,7 @@
       "wrapLabel": true
     },
     "CMPMKCIEE44XHNH": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23287,7 +23287,7 @@
       "kks": "CMPMKCIEE44XHNH"
     },
     "CMPMKCIF1IUWU9Y": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23323,7 +23323,7 @@
       "kks": "CMPMKCIF1IUWU9Y"
     },
     "CMPMKCIFAXLZVO7": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23374,7 +23374,7 @@
       "kks": "CMPMKCIFAXLZVO7"
     },
     "CMPMKCIGLTZDQP0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23410,7 +23410,7 @@
       "kks": "CMPMKCIGLTZDQP0"
     },
     "CMPMKCIGOYVWZE9": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23446,7 +23446,7 @@
       "kks": "CMPMKCIGOYVWZE9"
     },
     "CMPMKCIGV45GEL8": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23482,7 +23482,7 @@
       "kks": "CMPMKCIGV45GEL8"
     },
     "CMPMKCIGWZ8UKJU": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23518,7 +23518,7 @@
       "kks": "CMPMKCIGWZ8UKJU"
     },
     "CMPMKCIH2UBXT9Y": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23554,7 +23554,7 @@
       "kks": "CMPMKCIH2UBXT9Y"
     },
     "CMPMKCIH74FH10C": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23590,7 +23590,7 @@
       "kks": "CMPMKCIH74FH10C"
     },
     "CMPMKCIHAZLPO2D": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23626,7 +23626,7 @@
       "kks": "CMPMKCIHAZLPO2D"
     },
     "CMPMKCIHN1SNLUT": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23662,7 +23662,7 @@
       "kks": "CMPMKCIHN1SNLUT"
     },
     "CMPMKCIHTW29KT0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23698,7 +23698,7 @@
       "kks": "CMPMKCIHTW29KT0"
     },
     "CMPMKCIHZSJJITR": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23734,7 +23734,7 @@
       "kks": "CMPMKCIHZSJJITR"
     },
     "CMPMKCII3LG90C2": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23770,7 +23770,7 @@
       "kks": "CMPMKCII3LG90C2"
     },
     "CMPMKCII5X55TV5": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23806,7 +23806,7 @@
       "kks": "CMPMKCII5X55TV5"
     },
     "CMPMKCII7WN85GL": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23842,7 +23842,7 @@
       "kks": "CMPMKCII7WN85GL"
     },
     "CMPMKCIJ23LZSKP": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23878,7 +23878,7 @@
       "kks": "CMPMKCIJ23LZSKP"
     },
     "CMPMKCIJ95YH98S": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23914,7 +23914,7 @@
       "kks": "CMPMKCIJ95YH98S"
     },
     "CMPMKCIJW52GQGY": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -23965,7 +23965,7 @@
       "kks": "CMPMKCIJW52GQGY"
     },
     "CMPMKCIKWA342X1": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24001,7 +24001,7 @@
       "kks": "CMPMKCIKWA342X1"
     },
     "10KBA40AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24053,7 +24053,7 @@
       "wrapLabel": true
     },
     "10KBA40AA102": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24105,7 +24105,7 @@
       "kks": "10KBA40AA102"
     },
     "CMPMKCILVYIWPR8": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24141,7 +24141,7 @@
       "kks": "CMPMKCILVYIWPR8"
     },
     "CMPMKCIN96834JH": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24192,7 +24192,7 @@
       "kks": "CMPMKCIN96834JH"
     },
     "CMPMKCIN96LC4EM": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24243,7 +24243,7 @@
       "kks": "CMPMKCIN96LC4EM"
     },
     "CMPMKCIN97C5TQ3": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24294,7 +24294,7 @@
       "kks": "CMPMKCIN97C5TQ3"
     },
     "CMPMKCIN97TCXEF": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24345,7 +24345,7 @@
       "kks": "CMPMKCIN97TCXEF"
     },
     "10KBA64AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24397,7 +24397,7 @@
       "wrapLabel": true
     },
     "10KBA64AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24449,7 +24449,7 @@
       "wrapLabel": true
     },
     "10KBA64AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24501,7 +24501,7 @@
       "kks": "10KBA64AA101"
     },
     "10KBA63AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24553,7 +24553,7 @@
       "kks": "10KBA63AA602"
     },
     "10KBA63AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24605,7 +24605,7 @@
       "kks": "10KBA63AA601"
     },
     "10KBA63AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24657,7 +24657,7 @@
       "kks": "10KBA63AA101"
     },
     "10KBA66AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24709,7 +24709,7 @@
       "kks": "10KBA66AA602"
     },
     "10KBA66AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24761,7 +24761,7 @@
       "kks": "10KBA66AA601"
     },
     "10KBA66AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24813,7 +24813,7 @@
       "kks": "10KBA66AA101"
     },
     "10KBA65AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24867,7 +24867,7 @@
       "kks": "10KBA65AA602"
     },
     "10KBA65AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24919,7 +24919,7 @@
       "kks": "10KBA65AA601"
     },
     "10KBA65AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -24971,7 +24971,7 @@
       "kks": "10KBA65AA101"
     },
     "CMPMKCJJU6GJRGW": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -25319,7 +25319,7 @@
       "kks": "CMPMKCHSX2MHLPGKBA60"
     },
     "CMPMKCHUMZOE14LKBA60": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -25760,7 +25760,7 @@
       "kks": "CMPMKCI8F37XO53KBA10"
     },
     "CMPMKCI6PVEMSMDKBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -25811,7 +25811,7 @@
       "kks": "CMPMKCI6PVEMSMDKBA10"
     },
     "CMPMKCI5LAO96JXKBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -25862,7 +25862,7 @@
       "kks": "CMPMKCI5LAO96JXKBA10"
     },
     "CMPMKCI5HAZZG03KBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -25913,7 +25913,7 @@
       "kks": "CMPMKCI5HAZZG03KBA10"
     },
     "CMPMKCI6S4854ZDKBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -25964,7 +25964,7 @@
       "kks": "CMPMKCI6S4854ZDKBA10"
     },
     "CMPMKCIEA1GLD0SKBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26171,7 +26171,7 @@
       "kks": "CMPMKCHSPBIJ9A3KBA60"
     },
     "10KBA40AC001": {
-      "type": "heatexchangera-1767541344558-copy-1767546678193",
+      "type": "custom:heat-exchanger-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26417,7 +26417,7 @@
       "kks": "10KAB-18832"
     },
     "CMPMKCKZBIW25IS": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26468,7 +26468,7 @@
       "kks": "CMPMKCKZBIW25IS"
     },
     "10KBA40AF001": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26617,7 +26617,7 @@
       "kks": "10JEW11AA101-18837"
     },
     "10KBA40AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26669,7 +26669,7 @@
       "wrapLabel": true
     },
     "CMPMKCMKKHVC0JD": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26706,7 +26706,7 @@
       "kks": "CMPMKCMKKHVC0JD"
     },
     "CMPMKCMKMJKAM1M": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26743,7 +26743,7 @@
       "kks": "CMPMKCMKMJKAM1M"
     },
     "CMPMKCMKODGVDII": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26779,7 +26779,7 @@
       "kks": "CMPMKCMKODGVDII"
     },
     "CMPMKCMKVFM1BCZ": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26815,7 +26815,7 @@
       "kks": "CMPMKCMKVFM1BCZ"
     },
     "CMPMKCMKYYO0KZH": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26852,7 +26852,7 @@
       "kks": "CMPMKCMKYYO0KZH"
     },
     "CMPMKCML8RT87LG": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -26972,7 +26972,7 @@
       "kks": "10KTA-18768"
     },
     "CMPMKCMNBDVMRKL": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27008,7 +27008,7 @@
       "kks": "CMPMKCMNBDVMRKL"
     },
     "CMPMKCMNH11N42N": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27122,7 +27122,7 @@
       "kks": "CMPMKCMNMGUEHFC"
     },
     "10KBA10AA601": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27174,7 +27174,7 @@
       "wrapLabel": true
     },
     "10KBA10AA602": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27391,7 +27391,7 @@
       "kks": "10KBE-12590"
     },
     "CMPMKCMV6LKAREO": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27427,7 +27427,7 @@
       "kks": "CMPMKCMV6LKAREO"
     },
     "CMPMKCMV8TJKSWV": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27463,7 +27463,7 @@
       "kks": "CMPMKCMV8TJKSWV"
     },
     "CMPMKCMVCJ3FOF7": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27499,7 +27499,7 @@
       "kks": "CMPMKCMVCJ3FOF7"
     },
     "CMPMKCMVJCIVPCG": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27535,7 +27535,7 @@
       "kks": "CMPMKCMVJCIVPCG"
     },
     "CMPMKCMVLJOL8JW": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27571,7 +27571,7 @@
       "kks": "CMPMKCMVLJOL8JW"
     },
     "CMPMKCMVZQHQ0U7": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27686,7 +27686,7 @@
       "kks": "CMPMKCMSR7V9YNVKBA10"
     },
     "CMPMKCMY6QQNX6W": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27722,7 +27722,7 @@
       "kks": "CMPMKCMY6QQNX6W"
     },
     "CMPMKCMYEGEIO5L": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27758,7 +27758,7 @@
       "kks": "CMPMKCMYEGEIO5L"
     },
     "CMPMKCMYSOW5N0O": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27794,7 +27794,7 @@
       "kks": "CMPMKCMYSOW5N0O"
     },
     "CMPMKCMYUP0ZR30": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27830,7 +27830,7 @@
       "kks": "CMPMKCMYUP0ZR30"
     },
     "CMPMKCN3F23M7PH": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27866,7 +27866,7 @@
       "kks": "CMPMKCN3F23M7PH"
     },
     "CMPMKCN3L4U2J9P": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27902,7 +27902,7 @@
       "kks": "CMPMKCN3L4U2J9P"
     },
     "CMPMKCN3OVXKPZD": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27938,7 +27938,7 @@
       "kks": "CMPMKCN3OVXKPZD"
     },
     "CMPMKCN3RD1CLUT": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -27974,7 +27974,7 @@
       "kks": "CMPMKCN3RD1CLUT"
     },
     "CMPMKCN3Z35COHM": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28010,7 +28010,7 @@
       "kks": "CMPMKCN3Z35COHM"
     },
     "CMPMKCN41LDBKM8": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28046,7 +28046,7 @@
       "kks": "CMPMKCN41LDBKM8"
     },
     "CMPMKCN448E66YG": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28082,7 +28082,7 @@
       "kks": "CMPMKCN448E66YG"
     },
     "CMPMKCN47EUN6BY": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28428,7 +28428,7 @@
       "kks": "CMPMKB6K5SMWM3UKBA60"
     },
     "CMPMKAY5R5BIAQ2KBA60": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28557,7 +28557,7 @@
       "kks": "CMPMKCHC5868DGEKBA60"
     },
     "CMPMKCNE3JQ0VMX": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28671,7 +28671,7 @@
       "kks": "CMPMKC8H9G5U2VJKBA31"
     },
     "CMPMKCNNZQDMOV5": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28707,7 +28707,7 @@
       "kks": "CMPMKCNNZQDMOV5"
     },
     "CMPMKCNO3E1C8N5": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28821,7 +28821,7 @@
       "kks": "CMPMKCICUGSGJSAKBA60"
     },
     "CMPMKCNT86J612T": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28857,7 +28857,7 @@
       "kks": "CMPMKCNT86J612T"
     },
     "CMPMKCMN2AKXATWKBA4": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28908,7 +28908,7 @@
       "kks": "CMPMKCMN2AKXATWKBA4"
     },
     "CMPMKCNW0E9R1XO": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -28944,7 +28944,7 @@
       "kks": "CMPMKCNW0E9R1XO"
     },
     "CMPMKCKZXPUHRQNKBA40": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29149,7 +29149,7 @@
       "kks": "CMPMKCMJHT50NA3KBA40"
     },
     "CMPMKCNX101YVBF": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29185,7 +29185,7 @@
       "kks": "CMPMKCNX101YVBF"
     },
     "CMPMKCNX2XE2SED": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29221,7 +29221,7 @@
       "kks": "CMPMKCNX2XE2SED"
     },
     "CMPMKCNX5GEYRMZ": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29257,7 +29257,7 @@
       "kks": "CMPMKCNX5GEYRMZ"
     },
     "CMPMKCNXQLHNT3G": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29293,7 +29293,7 @@
       "kks": "CMPMKCNXQLHNT3G"
     },
     "CMPMKCO15FUGTVG": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29329,7 +29329,7 @@
       "kks": "CMPMKCO15FUGTVG"
     },
     "10KBA10CF001": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29394,7 +29394,7 @@
       "wrapLabel": true
     },
     "10KBA16AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29446,7 +29446,7 @@
       "wrapLabel": true
     },
     "10KBA15AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29498,7 +29498,7 @@
       "wrapLabel": true
     },
     "10KBA14AA103": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29550,7 +29550,7 @@
       "wrapLabel": true
     },
     "CMPMKCO3KFCM0QM": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29601,7 +29601,7 @@
       "kks": "CMPMKCO3KFCM0QM"
     },
     "10KBA14CF001": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29822,7 +29822,7 @@
       "kks": "CMPMKCO4EAL3CRVKBA16"
     },
     "CMPMKCO5LRUQ6YH": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29858,7 +29858,7 @@
       "kks": "CMPMKCO5LRUQ6YH"
     },
     "CMPMKCO5OWQL1Z8": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29894,7 +29894,7 @@
       "kks": "CMPMKCO5OWQL1Z8"
     },
     "CMPMKCO5RDNC05D": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29930,7 +29930,7 @@
       "kks": "CMPMKCO5RDNC05D"
     },
     "CMPMKCO62GWZOF8": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -29966,7 +29966,7 @@
       "kks": "CMPMKCO62GWZOF8"
     },
     "10KBA16AA201": {
-      "type": "shutoffvalve-1767428891387-copy-1767434623733",
+      "type": "custom:control-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30019,7 +30019,7 @@
       "flipX": true
     },
     "10KBA15AA201": {
-      "type": "shutoffvalve-1767428891387-copy-1767434623733",
+      "type": "custom:control-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30071,7 +30071,7 @@
       "wrapLabel": true
     },
     "10KBA14AA201": {
-      "type": "shutoffvalve-1767428891387-copy-1767434623733",
+      "type": "custom:control-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30123,7 +30123,7 @@
       "wrapLabel": true
     },
     "10KBA15BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30161,7 +30161,7 @@
       "wrapLabel": true
     },
     "10KBA14BP001": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30277,7 +30277,7 @@
       "kks": "CMPMKCOBU5BT3GW"
     },
     "CMPMKCOC37BCIBQKBA14": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30406,7 +30406,7 @@
       "kks": "CMPMKCOBVUABWJ3KBA10"
     },
     "CMPMKCOGUF7JT6H": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30442,7 +30442,7 @@
       "kks": "CMPMKCOGUF7JT6H"
     },
     "CMPMKCOGX5BRHWY": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30478,7 +30478,7 @@
       "kks": "CMPMKCOGX5BRHWY"
     },
     "CMPMKCOH0EMTGTX": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30514,7 +30514,7 @@
       "kks": "CMPMKCOH0EMTGTX"
     },
     "10KBA10BP003": {
-      "type": "throttledevice-1767541797918",
+      "type": "custom:throttle-device",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30552,7 +30552,7 @@
       "wrapLabel": true
     },
     "CMPMKCOIUG0SAJS": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30588,7 +30588,7 @@
       "kks": "CMPMKCOIUG0SAJS"
     },
     "10KBA10AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30640,7 +30640,7 @@
       "wrapLabel": true
     },
     "CMPMKCOJSUI8UY4KBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30691,7 +30691,7 @@
       "kks": "CMPMKCOJSUI8UY4KBA10"
     },
     "10KBA10AA401": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30755,7 +30755,7 @@
       "wrapLabel": true
     },
     "10KBA10AA402": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -30819,7 +30819,7 @@
       "wrapLabel": true
     },
     "10KBA10AA403": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31116,7 +31116,7 @@
       "kks": "CMPMKCOLP8FBXOLKBA10"
     },
     "CMPMKCOMLKG41G1KBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31167,7 +31167,7 @@
       "kks": "CMPMKCOMLKG41G1KBA10"
     },
     "CMPMKCON0G3166R": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31203,7 +31203,7 @@
       "kks": "CMPMKCON0G3166R"
     },
     "CMPMKCON57D9L6Q": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31239,7 +31239,7 @@
       "kks": "CMPMKCON57D9L6Q"
     },
     "CMPMKCON7QB1V1J": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31275,7 +31275,7 @@
       "kks": "CMPMKCON7QB1V1J"
     },
     "CMPMKCONA1O8U6T": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31311,7 +31311,7 @@
       "kks": "CMPMKCONA1O8U6T"
     },
     "CMPMKCONBM5HC1M": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31347,7 +31347,7 @@
       "kks": "CMPMKCONBM5HC1M"
     },
     "10KBA10AA801": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31399,7 +31399,7 @@
       "wrapLabel": true
     },
     "CMPMKCOOFT2F5I1": {
-      "type": "buildingbreach-1767531232143",
+      "type": "custom:building-breach",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31479,7 +31479,7 @@
       "kks": "CMPMKCOOFT2F5I1"
     },
     "CMPMKCOP1Q9P279": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31515,7 +31515,7 @@
       "kks": "CMPMKCOP1Q9P279"
     },
     "10KBA10AA810": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31657,7 +31657,7 @@
       "kks": "CMPMKCOOJQRNU5YKBA10"
     },
     "CMPMKCOQ07XOLET": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31693,7 +31693,7 @@
       "kks": "CMPMKCOQ07XOLET"
     },
     "CMPMKCOQ3LMCHT1": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31729,7 +31729,7 @@
       "kks": "CMPMKCOQ3LMCHT1"
     },
     "CMPMKCOQAQ9MNHU": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31765,7 +31765,7 @@
       "kks": "CMPMKCOQAQ9MNHU"
     },
     "CMPMKCOQLML2BU5": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31801,7 +31801,7 @@
       "kks": "CMPMKCOQLML2BU5"
     },
     "10KBA10AA802": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31853,7 +31853,7 @@
       "wrapLabel": true
     },
     "10KBA10AA603": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31906,7 +31906,7 @@
       "wrapLabel": true
     },
     "CMPMKCPOD89R0G8": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -31942,7 +31942,7 @@
       "kks": "CMPMKCPOD89R0G8"
     },
     "10KBA10AA112": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32072,7 +32072,7 @@
       "kks": "CMPMKCPRVKLPBBV"
     },
     "10KBA10AC004": {
-      "type": "heatexchangera-1767541344558-copy-1767546678193-copy-1767547239175",
+      "type": "custom:heat-exchanger-3",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32152,7 +32152,7 @@
       "wrapLabel": true
     },
     "10KBA10AA113": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32281,7 +32281,7 @@
       "kks": "CMPMKCPV1K8A0CH"
     },
     "10KBA10AA109": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32333,7 +32333,7 @@
       "wrapLabel": true
     },
     "10KBA10AA108": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32623,7 +32623,7 @@
       "kks": "CMPMKCQ3HFHR2EE"
     },
     "10KBA10AA110": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32675,7 +32675,7 @@
       "wrapLabel": true
     },
     "CMPMKCQ4GZA4B5W": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32711,7 +32711,7 @@
       "kks": "CMPMKCQ4GZA4B5W"
     },
     "CMPMKCQ4S9JEHAK": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32748,7 +32748,7 @@
       "kks": "CMPMKCQ4S9JEHAK"
     },
     "CMPMKCQ4W2E24LD": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32784,7 +32784,7 @@
       "kks": "CMPMKCQ4W2E24LD"
     },
     "CMPMKCQ50C64HQ0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32820,7 +32820,7 @@
       "kks": "CMPMKCQ50C64HQ0"
     },
     "10KBA10AA404": {
-      "type": "threewayvalve-1767425507210-copy-1767528115096",
+      "type": "custom:safety-valve-2",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32884,7 +32884,7 @@
       "wrapLabel": true
     },
     "10KBA17AA002": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -32936,7 +32936,7 @@
       "wrapLabel": true
     },
     "10KBA17AA001": {
-      "type": "manualValve1-1767425136723",
+      "type": "custom:manual-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33153,7 +33153,7 @@
       "kks": "10KTC-18776"
     },
     "CMPMKCQEGTWQ6U6": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33189,7 +33189,7 @@
       "kks": "CMPMKCQEGTWQ6U6"
     },
     "10KBA10AA114": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33318,7 +33318,7 @@
       "kks": "CMPMKCQHYVJK6YC"
     },
     "10KBA10AA104": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33448,7 +33448,7 @@
       "kks": "CMPMKCQJP2X97F9"
     },
     "CMPMKCQK2W8LNL3": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33484,7 +33484,7 @@
       "kks": "CMPMKCQK2W8LNL3"
     },
     "10KBA10AA606": {
-      "type": "manualValve1-1767425136723-copy-1767435119406",
+      "type": "custom:check-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33702,7 +33702,7 @@
       "kks": "10KBB11BB001-18830"
     },
     "10KBA82AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33754,7 +33754,7 @@
       "wrapLabel": true
     },
     "10KBA83AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33806,7 +33806,7 @@
       "kks": "10KBA83AA101"
     },
     "CMPMKCQOWECDANO": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33935,7 +33935,7 @@
       "kks": "CMPMKCQP01DKOYA"
     },
     "CMPMKCQQ2K284BJ": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -33971,7 +33971,7 @@
       "kks": "CMPMKCQQ2K284BJ"
     },
     "CMPMKCQQ4WNVMXX": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34007,7 +34007,7 @@
       "kks": "CMPMKCQQ4WNVMXX"
     },
     "CMPMKCQQ8FPY5KT": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34043,7 +34043,7 @@
       "kks": "CMPMKCQQ8FPY5KT"
     },
     "CMPMKCQQAH2V4A8": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34659,7 +34659,7 @@
       "kks": "10JNK-18811"
     },
     "CMPMKCQXEA80BSC": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34696,7 +34696,7 @@
       "kks": "CMPMKCQXEA80BSC"
     },
     "CMPMKCQXG8MBKXQ": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34733,7 +34733,7 @@
       "kks": "CMPMKCQXG8MBKXQ"
     },
     "CMPMKCQXI4DFH72": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34770,7 +34770,7 @@
       "kks": "CMPMKCQXI4DFH72"
     },
     "CMPMKCQXK9FIC9Q": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34807,7 +34807,7 @@
       "kks": "CMPMKCQXK9FIC9Q"
     },
     "CMPMKCQXM5QRBX6": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34844,7 +34844,7 @@
       "kks": "CMPMKCQXM5QRBX6"
     },
     "CMPMKCQXO17NJC1": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34881,7 +34881,7 @@
       "kks": "CMPMKCQXO17NJC1"
     },
     "CMPMKCQXQVV83OF": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -34918,7 +34918,7 @@
       "kks": "CMPMKCQXQVV83OF"
     },
     "CMPMKCR071LI6E0": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35053,7 +35053,7 @@
       "kks": "10KBB23AA101-23718"
     },
     "CMPMKCR7SIRF6GI": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35089,7 +35089,7 @@
       "kks": "CMPMKCR7SIRF6GI"
     },
     "10KBA17AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35224,7 +35224,7 @@
       "kks": "10KTA-18762-23590"
     },
     "CMPMKCRC6VO7374": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35275,7 +35275,7 @@
       "kks": "CMPMKCRC6VO7374"
     },
     "CMPMKCRCAE9X8UD": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35573,7 +35573,7 @@
       "kks": "10KUA-18774"
     },
     "CMPMKCRM4CHRG0D": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35610,7 +35610,7 @@
       "kks": "CMPMKCRM4CHRG0D"
     },
     "CMPMKCRM5ICE2AY": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35647,7 +35647,7 @@
       "kks": "CMPMKCRM5ICE2AY"
     },
     "10KBA10AA116": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35778,7 +35778,7 @@
       "kks": "CMPMKCRPHU4ZYZ2"
     },
     "CMPMKCPSEES1J2QKBA10": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35829,7 +35829,7 @@
       "kks": "CMPMKCPSEES1J2QKBA10"
     },
     "CMPMKCQGTDBSKPCKBA10": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35880,7 +35880,7 @@
       "kks": "CMPMKCQGTDBSKPCKBA10"
     },
     "CMPMKCQGYMUFABKKBA10": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35931,7 +35931,7 @@
       "kks": "CMPMKCQGYMUFABKKBA10"
     },
     "CMPMKCQH3K4IQEBKBA10": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -35982,7 +35982,7 @@
       "kks": "CMPMKCQH3K4IQEBKBA10"
     },
     "CMPMKCQHM82FBEKKBA10": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -36033,7 +36033,7 @@
       "kks": "CMPMKCQHM82FBEKKBA10"
     },
     "10KBA10AA115": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -36935,7 +36935,7 @@
       "kks": "CMPMKCQQPJQ0R2EKBA10"
     },
     "CMPMKCS7B7G3TKR": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -36971,7 +36971,7 @@
       "kks": "CMPMKCS7B7G3TKR"
     },
     "CMPMKCS7PMZVUAW": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37316,7 +37316,7 @@
       "kks": "CMPMKB7HC8K5GBPKBA10"
     },
     "CMPMKB7EUTYBHEBKBA10": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37367,7 +37367,7 @@
       "kks": "CMPMKB7EUTYBHEBKBA10"
     },
     "CMPMKB67DIV4YQOKBA10": {
-      "type": "reducerdesign-1767548490471",
+      "type": "custom:reducer",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37495,7 +37495,7 @@
       "kks": "CMPMKB67KWXVIUIKBA10"
     },
     "CMPMKCR2KQGJVO7KBA91": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37546,7 +37546,7 @@
       "kks": "CMPMKCR2KQGJVO7KBA91"
     },
     "CMPMKDOTB16DFJ0": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37583,7 +37583,7 @@
       "kks": "CMPMKDOTB16DFJ0"
     },
     "CMPMKB679ULR8ARKBA50": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37774,7 +37774,7 @@
       "kks": "CMPMKB64FK8L5XMKBA50"
     },
     "CMPMKCN7L1JYKD1KBA51": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -37965,7 +37965,7 @@
       "kks": "CMPMKAY9C7GCCA0KBA60"
     },
     "CMPMKB6NLMN3UXGKBA53": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38002,7 +38002,7 @@
       "kks": "CMPMKB6NLMN3UXGKBA53"
     },
     "CMPMKB6N66RQENOKBA62": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38039,7 +38039,7 @@
       "kks": "CMPMKB6N66RQENOKBA62"
     },
     "CMPMKB6JZ2ZYK9GKBA61": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38076,7 +38076,7 @@
       "kks": "CMPMKB6JZ2ZYK9GKBA61"
     },
     "CMPMKB7HLC27WOVKBA21": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38113,7 +38113,7 @@
       "kks": "CMPMKB7HLC27WOVKBA21"
     },
     "CMPMKB76JJP8TW5": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38150,7 +38150,7 @@
       "kks": "CMPMKB76JJP8TW5"
     },
     "CMPMKB76D3T24PR": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38264,7 +38264,7 @@
       "kks": "CMPMKCPP9L6FS6ZKBA10"
     },
     "CMPMKCS7NOEYK5SKBA82": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38378,7 +38378,7 @@
       "kks": "CMPMKCPRGCQ9B8WKBA10"
     },
     "CMPMKDSOXSMWLEMKBC24": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38415,7 +38415,7 @@
       "kks": "CMPMKDSOXSMWLEMKBC24"
     },
     "CMPMKDSPNBLTYRR": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38451,7 +38451,7 @@
       "kks": "CMPMKDSPNBLTYRR"
     },
     "CMPMKDSR84DPS4R": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38487,7 +38487,7 @@
       "kks": "CMPMKDSR84DPS4R"
     },
     "CMPMKDSRAS71EA0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38523,7 +38523,7 @@
       "kks": "CMPMKDSRAS71EA0"
     },
     "CMPMKDSRHSBQYKO": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38713,7 +38713,7 @@
       "kks": "CMPMKCQ866NOMNFKBA10"
     },
     "CMPMKDSSN26R44Z": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38749,7 +38749,7 @@
       "kks": "CMPMKDSSN26R44Z"
     },
     "CMPMKDSSTX0LJE0": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38785,7 +38785,7 @@
       "kks": "CMPMKDSSTX0LJE0"
     },
     "CMPMKDSSZ4KUAHE": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38899,7 +38899,7 @@
       "kks": "CMPMKCQCT82S2M5KBA17"
     },
     "CMPMKCPVQETT1IEKBA17": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -38950,7 +38950,7 @@
       "kks": "CMPMKCPVQETT1IEKBA17"
     },
     "CMPMKCPVKKGPTPLKBA17": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39001,7 +39001,7 @@
       "kks": "CMPMKCPVKKGPTPLKBA17"
     },
     "CMPMKDSVGF0C6QE": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39037,7 +39037,7 @@
       "kks": "CMPMKDSVGF0C6QE"
     },
     "CMPMKDSW2HKBRE2": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39075,7 +39075,7 @@
       "flipX": false
     },
     "CMPMKDSWG8RICPA": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39111,7 +39111,7 @@
       "kks": "CMPMKDSWG8RICPA"
     },
     "CMPMKDSWKAM6J5X": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39147,7 +39147,7 @@
       "kks": "CMPMKDSWKAM6J5X"
     },
     "CMPMKDSWNCMMC1J": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39183,7 +39183,7 @@
       "kks": "CMPMKDSWNCMMC1J"
     },
     "CMPMKDSWS92LT6P": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39219,7 +39219,7 @@
       "kks": "CMPMKDSWS92LT6P"
     },
     "CMPMKDT0VC6TJXI": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39255,7 +39255,7 @@
       "kks": "CMPMKDT0VC6TJXI"
     },
     "CMPMKDT0VVIARB0": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39368,7 +39368,7 @@
       "kks": "CMPMKCHBUMVP9S4KBA10"
     },
     "CMPMKDT4NLIELPZ": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39404,7 +39404,7 @@
       "kks": "CMPMKDT4NLIELPZ"
     },
     "CMPMKDT5A6G6GN0": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39440,7 +39440,7 @@
       "kks": "CMPMKDT5A6G6GN0"
     },
     "CMPMKDT5F2A2XN6": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39476,7 +39476,7 @@
       "kks": "CMPMKDT5F2A2XN6"
     },
     "CMPMKDT5J5M9YIK": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39512,7 +39512,7 @@
       "kks": "CMPMKDT5J5M9YIK"
     },
     "CMPMKDT5N9QUD65": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39548,7 +39548,7 @@
       "kks": "CMPMKDT5N9QUD65"
     },
     "CMPMKDT60CMLJCM": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -39584,7 +39584,7 @@
       "kks": "CMPMKDT60CMLJCM"
     },
     "CMPMKDT6UK3DGJF": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40128,7 +40128,7 @@
       "kks": "10JEC40-18798"
     },
     "CMPMKDTON6JF8AB": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40164,7 +40164,7 @@
       "kks": "CMPMKDTON6JF8AB"
     },
     "CMPMKDTPLKXBZ4K": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40200,7 +40200,7 @@
       "kks": "CMPMKDTPLKXBZ4K"
     },
     "CMPMKDTPX60GWJK": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40236,7 +40236,7 @@
       "kks": "CMPMKDTPX60GWJK"
     },
     "CMPMKB8LFMUYSN3KBA30": {
-      "type": "SystemBoundary-1767437234740",
+      "type": "custom:part-section",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40350,7 +40350,7 @@
       "kks": "CMPMKB8LFMGH7GXKBA30"
     },
     "CMPMKHU733ZO2MTG": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40387,7 +40387,7 @@
       "kks": "CMPMKHU733ZO2MTG"
     },
     "10KBA20AP001AT01": {
-      "type": "trapcatcherfilter-1768229243197",
+      "type": "custom:trap-catcher",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40517,7 +40517,7 @@
       "kks": "CMPMKCIEHAXBYJJKKBA10"
     },
     "10KBA10CF002": {
-      "type": "centrifugalpump-1767540010585-copy-1767540250815",
+      "type": "custom:flow-sensor",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40914,7 +40914,7 @@
       "kks": "10KBB-18783"
     },
     "CMPMKE4PY1Z51EO": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40950,7 +40950,7 @@
       "kks": "CMPMKE4PY1Z51EO"
     },
     "CMPMKE4Q2TLS3Q4": {
-      "type": "flowdirection-1767926358918",
+      "type": "custom:direction",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -40986,7 +40986,7 @@
       "kks": "CMPMKE4Q2TLS3Q4"
     },
     "CMPMKE4QBE677LV": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41023,7 +41023,7 @@
       "kks": "CMPMKE4QBE677LV"
     },
     "CMPMKE4QLJXF9V0": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41060,7 +41060,7 @@
       "kks": "CMPMKE4QLJXF9V0"
     },
     "CMPMKE4QP6VQ88U": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41097,7 +41097,7 @@
       "kks": "CMPMKE4QP6VQ88U"
     },
     "CMPMKE4W6IBOIB7": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41134,7 +41134,7 @@
       "kks": "CMPMKE4W6IBOIB7"
     },
     "10KBA10AA101": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41186,7 +41186,7 @@
       "kks": "10KBA10AA101"
     },
     "CMPMKGJYKTF02I8": {
-      "type": "hydrolockpipe-1768548234555",
+      "type": "custom:hydraulic-lock-pipe",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41237,7 +41237,7 @@
       "kks": "CMPMKGJYKTF02I8"
     },
     "CMPMKGK3TW1V24H": {
-      "type": "hydrolockpipe-1768548234555",
+      "type": "custom:hydraulic-lock-pipe",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41288,7 +41288,7 @@
       "kks": "CMPMKGK3TW1V24H"
     },
     "CMPMKGK454AM6JV": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41325,7 +41325,7 @@
       "kks": "CMPMKGK454AM6JV"
     },
     "CMPMKGK4WWAMWHV": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41362,7 +41362,7 @@
       "kks": "CMPMKGK4WWAMWHV"
     },
     "CMPMKGK61TGO8NH": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41399,7 +41399,7 @@
       "kks": "CMPMKGK61TGO8NH"
     },
     "CMPMKGK7DGGDXFW": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41436,7 +41436,7 @@
       "kks": "CMPMKGK7DGGDXFW"
     },
     "CMPMKGK7ELP4XOZ": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -41473,7 +41473,7 @@
       "kks": "CMPMKGK7ELP4XOZ"
     },
     "CMPMKGK7FTVRWIR": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -42502,7 +42502,7 @@
       "kks": "SDOIUFGHVOHGVBLRORKBA20"
     },
     "CMPMKGLFSYNDQI9": {
-      "type": "SystemBoundary-1767437234740-copy-1767437277280",
+      "type": "custom:pipe-boundary",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -42539,7 +42539,7 @@
       "kks": "CMPMKGLFSYNDQI9"
     },
     "CMPMKGK6CKXMCA5KBA20": {
-      "type": "hydrolockpipe-1768548234555",
+      "type": "custom:hydraulic-lock-pipe",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -42590,7 +42590,7 @@
       "kks": "CMPMKGK6CKXMCA5KBA20"
     },
     "CMPMKBAF4NWXB0DKBA20": {
-      "type": "bridgeconnection-1768210093389",
+      "type": "custom:bridge",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -43329,7 +43329,7 @@
       "kks": "10KBA-187792"
     },
     "10KBA90AA110": {
-      "type": "shutoffvalve-1767428891387",
+      "type": "custom:shut-off-valve",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {
@@ -43383,7 +43383,7 @@
       "wrapLabel": true
     },
     "10KBA10BB001": {
-      "type": "deaeratorprimarycircuit-1767548140606",
+      "type": "custom:deaerator",
       "systemKks": "10KBA",
       "buildingKks": "10UJA",
       "position": {

@@ -259,7 +259,7 @@
     }
   },
   {
-    "id": "manualValve1-1767425136723",
+    "id": "custom:manual-valve",
     "category": "AA",
     "name": "manualValve",
     "displayName": "Manual Valve",
@@ -538,7 +538,7 @@
     "hideLabel": false
   },
   {
-    "id": "threewayvalve-1767425507210",
+    "id": "custom:three-way-valve",
     "category": "AA",
     "name": "threewayvalve",
     "displayName": "Three-Way Valve",
@@ -766,7 +766,7 @@
     }
   },
   {
-    "id": "shutoffvalve-1767428891387",
+    "id": "custom:shut-off-valve",
     "category": "AA",
     "name": "shutoffvalve",
     "displayName": "Shut-Off Valve",
@@ -1013,7 +1013,7 @@
     "hideLabel": false
   },
   {
-    "id": "shutoffvalve-1767428891387-copy-1767434623733",
+    "id": "custom:control-valve",
     "category": "AA",
     "name": "controlValve1",
     "displayName": "Control Valve",
@@ -1287,7 +1287,7 @@
     }
   },
   {
-    "id": "manualValve1-1767425136723-copy-1767435119406",
+    "id": "custom:check-valve",
     "category": "AA",
     "name": "CheckValve",
     "displayName": "Check Valve",
@@ -1465,7 +1465,7 @@
     "hideLabel": false
   },
   {
-    "id": "SystemBoundary-1767437234740",
+    "id": "custom:part-section",
     "category": "additional",
     "name": "PartBoundary",
     "displayName": "Part Section",
@@ -1551,7 +1551,7 @@
     "hideLabel": true
   },
   {
-    "id": "SystemBoundary-1767437234740-copy-1767437277280",
+    "id": "custom:pipe-boundary",
     "category": "additional",
     "name": "Pipe Boundary",
     "displayName": "Pipe Boundary",
@@ -1643,7 +1643,7 @@
     "hideLabel": true
   },
   {
-    "id": "Tank-1767459062321",
+    "id": "custom:tank",
     "category": "BB",
     "name": "Tank",
     "displayName": "Tank",
@@ -2317,7 +2317,7 @@
     }
   },
   {
-    "id": "Tank-1767459062321-copy-1767513128202",
+    "id": "custom:tank-square",
     "category": "BB",
     "name": "Tanksquare",
     "displayName": "Tank Square",
@@ -2977,7 +2977,7 @@
     }
   },
   {
-    "id": "pressuresensor-1767519721575",
+    "id": "custom:pressure-sensor",
     "category": "CP",
     "name": "pressuresensor",
     "displayName": "Pressure Sensor",
@@ -3188,7 +3188,7 @@
     }
   },
   {
-    "id": "threewayvalve-1767425507210-copy-1767528115096",
+    "id": "custom:safety-valve-2",
     "category": "AA",
     "name": "SafetyValve",
     "displayName": "Safety Valve",
@@ -3490,7 +3490,7 @@
     "hideLabel": false
   },
   {
-    "id": "buildingbreach-1767531232143",
+    "id": "custom:building-breach",
     "category": "additional",
     "name": "buildingbreach",
     "displayName": "Building Breach",
@@ -3877,7 +3877,7 @@
     }
   },
   {
-    "id": "centrifugalpump-1767540010585",
+    "id": "custom:centrifugal-pump",
     "category": "AP",
     "name": "centrifugalpump",
     "displayName": "Centrifugal Pump",
@@ -4028,7 +4028,7 @@
     }
   },
   {
-    "id": "centrifugalpump-1767540010585-copy-1767540250815",
+    "id": "custom:flow-sensor",
     "category": "CF",
     "name": "flowsensor",
     "displayName": "Flow Sensor",
@@ -4206,7 +4206,7 @@
     }
   },
   {
-    "id": "pressuresensor-1767519721575-copy-1767540406190",
+    "id": "custom:flow-sensor-electronic-part",
     "category": "CF",
     "name": "flowsensora",
     "displayName": "Flow Sensor Electronic Part",
@@ -4417,7 +4417,7 @@
     }
   },
   {
-    "id": "heatexchangera-1767541344558",
+    "id": "custom:heat-exchanger",
     "category": "AC",
     "name": "heatexchangera",
     "displayName": "Heat Exchanger",
@@ -4716,7 +4716,7 @@
     }
   },
   {
-    "id": "throttledevice-1767541797918",
+    "id": "custom:throttle-device",
     "category": "BP",
     "name": "throttledevice",
     "displayName": "Throttle device",
@@ -4843,7 +4843,7 @@
     "hideLabel": false
   },
   {
-    "id": "heatexchangera-1767541344558-copy-1767546678193",
+    "id": "custom:heat-exchanger-2",
     "category": "AC",
     "name": "heatexchangerb",
     "displayName": "Heat Exchanger",
@@ -5128,7 +5128,7 @@
     }
   },
   {
-    "id": "heatexchangera-1767541344558-copy-1767546678193-copy-1767547239175",
+    "id": "custom:heat-exchanger-3",
     "category": "AC",
     "name": "heatexchangerc",
     "displayName": "Heat Exchanger",
@@ -5374,7 +5374,7 @@
     "hideLabel": false
   },
   {
-    "id": "deaeratorprimarycircuit-1767548140606",
+    "id": "custom:deaerator",
     "category": "BB",
     "name": "deaeratorprimarycircuit",
     "displayName": "Deaerator",
@@ -5910,7 +5910,7 @@
     }
   },
   {
-    "id": "reducerdesign-1767548490471",
+    "id": "custom:reducer",
     "category": "additional",
     "name": "reducerdesign",
     "displayName": "Reducer",
@@ -6019,7 +6019,7 @@
     }
   },
   {
-    "id": "centrifugalpump-1767540010585-copy-1767918102908",
+    "id": "custom:centrifugal-pump-with-actuator",
     "category": "AP",
     "name": "centrifugalpumpelectricactuator",
     "displayName": "Centrifugal Pump with Actuator",
@@ -6230,7 +6230,7 @@
     "hideLabel": false
   },
   {
-    "id": "flowdirection-1767926358918",
+    "id": "custom:direction",
     "category": "additional",
     "name": "flowdirection",
     "displayName": "Direction",
@@ -6328,7 +6328,7 @@
     }
   },
   {
-    "id": "bridgeconnection-1768210093389",
+    "id": "custom:bridge",
     "category": "additional",
     "name": "bridgeconnection",
     "displayName": "Bridge",
@@ -6425,7 +6425,7 @@
     }
   },
   {
-    "id": "trapcatcherfilter-1768229243197",
+    "id": "custom:trap-catcher",
     "category": "AT",
     "name": "trapcatcherfilter",
     "displayName": "Trap Catcher",
@@ -6948,7 +6948,7 @@
     "hideLabel": true
   },
   {
-    "id": "hydrolockpipe-1768548234555",
+    "id": "custom:hydraulic-lock-pipe",
     "category": "additional",
     "name": "hydrolockpipe",
     "displayName": "Hydraulic Lock Pipe  ",
@@ -7093,7 +7093,7 @@
     }
   },
   {
-    "id": "hydraulicaccumulator-1768564445723",
+    "id": "custom:hydraulic-accumulator",
     "category": "BB",
     "name": "hydraulicaccumulator",
     "displayName": "Hydraulic Accumulator",
@@ -7909,7 +7909,7 @@
     "allowDuplicateKks": false
   },
   {
-    "id": "atmosphericvent -1768574481063",
+    "id": "custom:atmospheric-vent",
     "category": "additional",
     "name": "atmosphericvent ",
     "displayName": "Atmospheric Vent ",
@@ -8007,7 +8007,7 @@
     }
   },
   {
-    "id": "reactorvessel-1768585431957",
+    "id": "custom:reactor-pressure-vessel",
     "category": "BB",
     "name": "reactorvessel",
     "displayName": "Reactor Pressure Vessel",

@@ -701,8 +701,14 @@ export const useDesignerStore = create<DesignerState>((set, get) => ({
   exportDefinition: () => {
     const state = get();
 
-    // Generate ID if not set
-    const id = state.metadata.id || `${state.metadata.name || 'symbol'}-${Date.now()}`;
+    // Always generate ID from the name (unique identifier) field
+    // This ensures when user changes the name textbox, the ID updates accordingly
+    // The sanitized name becomes the ID with 'custom:' prefix for user-created symbols
+    const sanitizedName = (state.metadata.name || 'symbol')
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+    const id = `custom:${sanitizedName}`;
 
     // Determine labels: if hideLabel is true, use empty array; otherwise use existing or default
     let labels: typeof state.labels;
